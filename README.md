@@ -4,7 +4,7 @@
 # ChatGPT.el
 > API for interacting with ChatGPT
 
-[![CI](https://github.com/emacs-eask/easky/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-eask/easky/actions/workflows/test.yml)
+[![CI](https://github.com/jcs090218/ChatGPT.el/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/ChatGPT.el/actions/workflows/test.yml)
 
 ## 🔨 Usage
 

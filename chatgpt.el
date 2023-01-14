@@ -6,7 +6,7 @@
 ;; Maintainer: Shen, Jen-Chieh <jcs090218@gmail.com>
 ;; URL: https://github.com/jcs090218/ChatGPT.el
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "26.1"))
+;; Package-Requires: ((emacs "26.1") (request "0.3.0"))
 ;; Keywords: comm gpt
 
 ;; This file is not part of GNU Emacs.
@@ -44,22 +44,46 @@
   :type 'list
   :group 'chatgpt)
 
+(defcustom chatgpt-model "text-davinci-003"
+  "Target trained model server's name."
+  :type 'string
+  :group 'chatgpt)
+
+(defcustom chatgpt-max-tokens 4000
+  "The maximum number of tokens to generate in the completion.
+
+The token count of your prompt plus max_tokens cannot exceed the model's context
+length.  Most models have a context length of 2048 tokens (except for the newest
+models, which support 4096)."
+  :type 'integer
+  :group 'chatgpt)
+
+(defcustom chatgpt-temperature 1.0
+  "What sampling temperature to use.
+
+Higher values means the model will take more risks.  Try 0.9 for more creative
+applications, and 0 (argmax sampling) for ones with a well-defined answer."
+  :type 'number
+  :group 'chatgpt)
+
 ;;;###autoload
-(defun chatgpt-send (query)
-  ""
+(defun chatgpt-query (query callback)
+  "Query ChatGPT with QUERY.
+
+Argument CALLBACK is a function received one argument which is the JSON data."
   (request "https://api.openai.com/v1/completions"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " chatgpt-key)))
     :data (json-encode
-           `(("model"      . "text-davinci-003")
-             ("prompt"     . ,query)
-             ("max_tokens" . 4000)
-             ("temperature" . 1.0)))
+           `(("model"       . ,chatgpt-model)
+             ("prompt"      . ,query)
+             ("max_tokens"  . ,chatgpt-max-tokens)
+             ("temperature" . ,chatgpt-temperature)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
-                ))))
+                (funcall callback data)))))
 
 (provide 'chatgpt)
 ;;; chatgpt.el ends here

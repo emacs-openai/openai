@@ -39,6 +39,9 @@
   :group 'comm
   :link '(url-link :tag "Repository" "https://github.com/jcs090218/ChatGPT.el"))
 
+(defconst chatgpt-request-url "https://api.openai.com/v1/completions"
+  "ChatGPT request URL.")
+
 (defcustom chatgpt-key ""
   "Generated API key."
   :type 'list
@@ -66,12 +69,33 @@ applications, and 0 (argmax sampling) for ones with a well-defined answer."
   :type 'number
   :group 'chatgpt)
 
+(defconst chatgpt-buffer-name "*ChatGPT*"
+  "Buffer name for display ChatGPT result.")
+
+(defmacro chatgpt--with-buffer (&rest body)
+  "Execute BODY within the ChatGPT buffer."
+  (declare (indent 0))
+  `(with-current-buffer (get-buffer-create chatgpt-buffer-name)
+     (setq-local buffer-read-only t)
+     (let ((inhibit-read-only))
+       ,@body)))
+
+(defun chatgpt--pop-to-buffer ()
+  "Show ChatGPT display buffer."
+  (pop-to-buffer (get-buffer-create chatgpt-buffer-name)
+                 `((display-buffer-in-direction)
+                   (dedicated . t))))
+
+(defun chatgpt-models ()
+  ""
+  (request "/backend-api/models"))
+
 ;;;###autoload
 (defun chatgpt-query (query callback)
   "Query ChatGPT with QUERY.
 
 Argument CALLBACK is a function received one argument which is the JSON data."
-  (request "https://api.openai.com/v1/completions"
+  (request chatgpt-request-url
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " chatgpt-key)))

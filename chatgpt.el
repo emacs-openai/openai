@@ -39,10 +39,7 @@
   :group 'comm
   :link '(url-link :tag "Repository" "https://github.com/jcs090218/ChatGPT.el"))
 
-(defconst chatgpt-request-url "https://api.openai.com/v1/completions"
-  "ChatGPT request URL.")
-
-(defcustom chatgpt-key ""
+(defcustom openai-key ""
   "Generated API key."
   :type 'list
   :group 'chatgpt)
@@ -86,19 +83,33 @@ applications, and 0 (argmax sampling) for ones with a well-defined answer."
                  `((display-buffer-in-direction)
                    (dedicated . t))))
 
-(defun chatgpt-models ()
+(defmacro openai-request (url &rest body)
+  "Wrapper for `request' function."
+  (declare (indent 1))
+  `(if (string-empty-p openai-key)
+       (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key)
+     (request ,url ,@body)))
+
+(defun openai-models (callback)
   ""
-  (request "/backend-api/models"))
+  (openai-request "https://api.openai.com/v1/models"
+    :type "GET"
+    :headers `(("Content-Type"  . "application/json")
+               ("Authorization" . ,(concat "Bearer " openai-key)))
+    :parser 'json-read
+    :success (cl-function
+              (lambda (&key data &allow-other-keys)
+                (funcall callback data)))))
 
 ;;;###autoload
-(defun chatgpt-query (query callback)
+(defun openai-complete (query callback)
   "Query ChatGPT with QUERY.
 
 Argument CALLBACK is a function received one argument which is the JSON data."
-  (request chatgpt-request-url
+  (request "https://api.openai.com/v1/completions"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " chatgpt-key)))
+               ("Authorization" . ,(concat "Bearer " openai-key)))
     :data (json-encode
            `(("model"       . ,chatgpt-model)
              ("prompt"      . ,query)
@@ -108,6 +119,22 @@ Argument CALLBACK is a function received one argument which is the JSON data."
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
+
+;;;###autoload
+(defun openai-list-models ()
+  "Lists the currently available models, and provides basic information about
+each one such as the owner and availability."
+  (interactive)
+  (openai-models (lambda (data)
+                   (let-alist data
+                     (mapc (lambda (model)
+                             (message "%s" model))
+                           .data)))))
+
+;;;###autoload
+(defun openai-retrieve-model (model)
+  ""
+  (interactive ))
 
 (provide 'chatgpt)
 ;;; chatgpt.el ends here

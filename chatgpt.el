@@ -47,20 +47,19 @@
 ;;;###autoload
 (defun chatgpt-send (query)
   ""
-  (let ((url-request-method "POST")
-        (url-request-extra-headers
-         `(("Content-Type"  . "application/json")
-           ("Authorization" . ,(concat "Bearer " chatgpt-key))))
-        (url-request-data
-         (json-encode`(("model"      . "text-davinci-003")
-                       ("prompt"     . ,query)
-                       ("max_tokens" . 4000)
-                       ("temperature" . 1.0)))))
-    (with-current-buffer (url-retrieve-synchronously "https://api.openai.com/v1/completions")
-      (set-buffer-multibyte t)
-      (goto-char url-http-end-of-headers)
-      (prog1 (let ((json-array-type 'list)) (json-read))
-        (kill-buffer)))))
+  (request "https://api.openai.com/v1/completions"
+    :type "POST"
+    :headers `(("Content-Type"  . "application/json")
+               ("Authorization" . ,(concat "Bearer " chatgpt-key)))
+    :data (json-encode
+           `(("model"      . "text-davinci-003")
+             ("prompt"     . ,query)
+             ("max_tokens" . 4000)
+             ("temperature" . 1.0)))
+    :parser 'json-read
+    :success (cl-function
+              (lambda (&key data &allow-other-keys)
+                ))))
 
 (provide 'chatgpt)
 ;;; chatgpt.el ends here

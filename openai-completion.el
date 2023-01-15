@@ -182,7 +182,7 @@ Argument CALLBACK is a function received one argument which is the JSON data."
 ;;; Application
 
 (defun openai-completion-select-insert (start end)
-  "Send the region to OpenAI and insert the result to the end of buffer.
+  "Send the region to OpenAI and insert the result to the next paragraph.
 
 START and END are selected region boundaries."
   (interactive "r")
@@ -202,7 +202,8 @@ START and END are selected region boundaries."
                               (car texts)
                             (completing-read "Response: " texts nil t))))
              (progn
-               (goto-char (point-max))
+               (goto-char end)
+               (forward-paragraph)
                (setq original-point (point))
                (insert "\n" (string-trim result) "\n")
                (fill-region original-point (point))

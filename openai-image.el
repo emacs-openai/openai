@@ -47,12 +47,6 @@ Must be one of `url' or `b64_json'."
   :type 'string
   :group 'openai)
 
-(defcustom openai-image-user "url"
-  "A unique identifier representing your end-user, which can help OpenAI to
-monitor and detect abuse."
-  :type 'string
-  :group 'openai)
-
 ;;
 ;;; API
 
@@ -69,7 +63,7 @@ Argument CALLBACK is function with data pass in."
              ("n"               . ,openai-image-n)
              ("size"            . ,openai-image-size)
              ("response_format" . ,openai-image-response-format)
-             ("user"            . ,openai-image-user)))
+             ("user"            . ,openai-user)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
@@ -81,7 +75,7 @@ Argument CALLBACK is function with data pass in."
   (interactive (list (read-string "Describe image: ")))
   (openai-image query
                 (lambda ()
-                  
+
                   )))
 
 (provide 'openai-image)

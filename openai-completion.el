@@ -197,20 +197,24 @@ START and END are selected region boundaries."
                                (let-alist choice
                                  (push .text texts)))
                              choices))
+              (result (if (= 1 (length texts))
+                          (car texts)
+                        (completing-read "Response: " texts nil t)))
               original-point)
-         (if-let ((result (if (= 1 (length texts))
-                              (car texts)
-                            (completing-read "Response: " texts nil t))))
-             (progn
+         (if (string-empty-p result)
+             (message "Empty result")
+           (when (= end (point-max))
+             (save-excursion
                (goto-char end)
-               (forward-paragraph)
-               (setq original-point (point))
-               (insert "\n" (string-trim result) "\n")
-               (fill-region original-point (point))
-               ;; Highlight the region!
-               (call-interactively #'set-mark-command)
-               (goto-char (1+ original-point)))
-           (message "Empty result")))))))
+               (insert "\n")))
+           (goto-char end)
+           (forward-paragraph)
+           (setq original-point (point))
+           (insert "\n" (string-trim result) "\n")
+           (fill-region original-point (point))
+           ;; Highlight the region!
+           (call-interactively #'set-mark-command)
+           (goto-char (1+ original-point))))))))
 
 (defun openai-completion-buffer-insert ()
   "Send the entire buffer to OpenAI and insert the result to the end of buffer."

@@ -5,7 +5,8 @@
 (website-url "https://github.com/jcs090218/openai")
 (keywords "comm" "openai")
 
-(package-file "ChatGPT.el")
+(package-file "openai.el")
+(files "openai-*.el")
 
 (script "test" "echo \"Error: no test specified\" && exit 1")
 

@@ -32,6 +32,8 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'let-alist)
+(require 'pp)
 
 (require 'request)
 (require 'tblui)
@@ -77,7 +79,7 @@ applications, and 0 (argmax sampling) for ones with a well-defined answer."
      (let ((inhibit-read-only))
        ,@body)))
 
-(defun chatgpt--pop-to-buffer (buffer-or-name)
+(defun openai--pop-to-buffer (buffer-or-name)
   "Show ChatGPT display buffer."
   (pop-to-buffer (get-buffer-create buffer-or-name)
                  `((display-buffer-in-direction)
@@ -91,59 +93,11 @@ applications, and 0 (argmax sampling) for ones with a well-defined answer."
      (request ,url ,@body)))
 
 ;;
-;;; Models
-
-(defun openai-models (callback)
-  "Return models data and execute the CALLBACK."
-  (openai-request "https://api.openai.com/v1/models"
-    :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
-
-;;;###autoload
-(defun openai-retrieve-model (model)
-  ""
-  (interactive ))
-
-(defvar openai-models-entries nil
-  "Async models entries.")
-
-(tblui-define
- openai-models
- (lambda () openai-models-entries)
- [("ID" 30 nil)
-  ("Owned By" 6 nil)]
- nil)
-
-;;;###autoload
-(defun openai-list-models ()
-  "Lists the currently available models, and provides basic information about
-each one such as the owner and availability."
-  (interactive)
-  (setq openai-models-entries nil)  ; reset
-  (openai-models (lambda (data)
-                   (let ((id 0))
-                     (let-alist data
-                       (mapc (lambda (model)
-                               (let-alist model
-                                 (push (list (number-to-string id)
-                                             (vector .id
-                                                     .owned_by))
-                                       openai-models-entries))
-                               (cl-incf id))
-                             .data)))
-                   (openai-models-goto-ui))))
-
-;;
 ;;; Completions
 
 ;;;###autoload
 (defun openai-complete (query callback)
-  "Query ChatGPT with QUERY.
+  "Query OpanAI with QUERY.
 
 Argument CALLBACK is a function received one argument which is the JSON data."
   (openai-request "https://api.openai.com/v1/completions"

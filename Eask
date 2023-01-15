@@ -1,9 +1,9 @@
-(package "ChatGPT.el"
+(package "openai"
          "0.1.0"
-         "API for interacting with ChatGPT")
+         "Elisp library for the OpenAI API.")
 
-(website-url "https://github.com/jcs090218/chatgpt")
-(keywords "comm" "gpt")
+(website-url "https://github.com/jcs090218/openai")
+(keywords "comm" "openai")
 
 (package-file "ChatGPT.el")
 

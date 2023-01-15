@@ -2,19 +2,18 @@
 [![JCS-ELPA](https://raw.githubusercontent.com/jcs-emacs/badges/master/elpa/v/chatgpt.svg)](https://jcs-emacs.github.io/jcs-elpa/#/chatgpt)
 
 # ChatGPT.el
-> API for interacting with ChatGPT
+> Elisp library for the OpenAI API
 
 [![CI](https://github.com/jcs090218/ChatGPT.el/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/ChatGPT.el/actions/workflows/test.yml)
 
 ## 🔨 Usage
 
 ```elisp
-(setq chatgpt-key "[YOUR API KEY]")
+(setq openai-key "[YOUR API KEY]")
 ```
 
-
 ```elisp
-(chatgpt-query "How are you?"
+(openai-complete "How are you?"
                (lambda (data)
                  (message "%s" data)))
 ```

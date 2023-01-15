@@ -1,13 +1,13 @@
-;;; chatgpt.el --- API for interacting with ChatGPT  -*- lexical-binding: t; -*-
+;;; openai.el --- Elisp library for the OpenAI API  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2023  Shen, Jen-Chieh
 
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
 ;; Maintainer: Shen, Jen-Chieh <jcs090218@gmail.com>
-;; URL: https://github.com/jcs090218/ChatGPT.el
+;; URL: https://github.com/jcs090218/openai
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "26.1") (request "0.3.0"))
-;; Keywords: comm gpt
+;; Keywords: comm openai
 
 ;; This file is not part of GNU Emacs.
 
@@ -26,60 +26,57 @@
 
 ;;; Commentary:
 ;;
-;; API for interacting with ChatGPT
+;; Elisp library for the OpenAI API
 ;;
 
 ;;; Code:
 
 (require 'request)
 
-(defgroup chatgpt nil
-  "Fuzzy matching for `company-mode'."
-  :prefix "chatgpt-"
+(defgroup openai nil
+  "Elisp library for the OpenAI API."
+  :prefix "openai-"
   :group 'comm
-  :link '(url-link :tag "Repository" "https://github.com/jcs090218/ChatGPT.el"))
+  :link '(url-link :tag "Repository" "https://github.com/jcs090218/openai"))
 
 (defcustom openai-key ""
   "Generated API key."
   :type 'list
-  :group 'chatgpt)
+  :group 'openai)
 
-(defcustom chatgpt-model "text-davinci-003"
+(defcustom openai-model "text-davinci-003"
   "Target trained model server's name."
   :type 'string
-  :group 'chatgpt)
+  :group 'openai)
 
-(defcustom chatgpt-max-tokens 4000
+(defcustom openai-max-tokens 4000
   "The maximum number of tokens to generate in the completion.
 
 The token count of your prompt plus max_tokens cannot exceed the model's context
 length.  Most models have a context length of 2048 tokens (except for the newest
 models, which support 4096)."
   :type 'integer
-  :group 'chatgpt)
+  :group 'openai)
 
-(defcustom chatgpt-temperature 1.0
+(defcustom openai-temperature 1.0
   "What sampling temperature to use.
 
 Higher values means the model will take more risks.  Try 0.9 for more creative
 applications, and 0 (argmax sampling) for ones with a well-defined answer."
   :type 'number
-  :group 'chatgpt)
+  :group 'openai)
 
-(defconst chatgpt-buffer-name "*ChatGPT*"
-  "Buffer name for display ChatGPT result.")
-
-(defmacro chatgpt--with-buffer (&rest body)
+(defmacro openai--with-buffer (buffer-or-name &rest body)
   "Execute BODY within the ChatGPT buffer."
-  (declare (indent 0))
-  `(with-current-buffer (get-buffer-create chatgpt-buffer-name)
+  (declare (indent 1))
+  `(with-current-buffer (get-buffer-create buffer-or-name)
      (setq-local buffer-read-only t)
      (let ((inhibit-read-only))
        ,@body)))
 
-(defun chatgpt--pop-to-buffer ()
+(defun chatgpt--pop-to-buffer (buffer-or-name)
   "Show ChatGPT display buffer."
-  (pop-to-buffer (get-buffer-create chatgpt-buffer-name)
+  (pop-to-buffer (get-buffer-create buffer-or-name)
                  `((display-buffer-in-direction)
                    (dedicated . t))))
 
@@ -91,7 +88,7 @@ applications, and 0 (argmax sampling) for ones with a well-defined answer."
      (request ,url ,@body)))
 
 (defun openai-models (callback)
-  ""
+  "Return models data and execute the CALLBACK."
   (openai-request "https://api.openai.com/v1/models"
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
@@ -111,10 +108,10 @@ Argument CALLBACK is a function received one argument which is the JSON data."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " openai-key)))
     :data (json-encode
-           `(("model"       . ,chatgpt-model)
+           `(("model"       . ,openai-model)
              ("prompt"      . ,query)
-             ("max_tokens"  . ,chatgpt-max-tokens)
-             ("temperature" . ,chatgpt-temperature)))
+             ("max_tokens"  . ,openai-max-tokens)
+             ("temperature" . ,openai-temperature)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
@@ -136,5 +133,5 @@ each one such as the owner and availability."
   ""
   (interactive ))
 
-(provide 'chatgpt)
-;;; chatgpt.el ends here
+(provide 'openai)
+;;; openai.el ends here

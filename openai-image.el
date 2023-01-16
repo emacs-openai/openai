@@ -69,14 +69,35 @@ Argument CALLBACK is function with data pass in."
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
+;;
+;;; Application
+
+(defvar openai-image-entries nil
+  "Async images entries.")
+
+(tblui-define
+ openai-image
+ (lambda () openai-image-entries)
+ [("URL" 200 nil)]
+ nil)
+
 ;;;###autoload
 (defun openai-image-prompt (query)
-  ""
+  "Prompt to ask for image QUERY, and display result in a buffer."
   (interactive (list (read-string "Describe image: ")))
+  (setq openai-image-entries nil)
   (openai-image query
-                (lambda ()
-
-                  )))
+                (lambda (data)
+                  (let ((id 0))
+                    (let-alist data
+                      (mapc (lambda (images)
+                              (dolist (image images)
+                                (push (list (number-to-string id)
+                                            (vector (cdr image)))
+                                      openai-image-entries)
+                                (cl-incf id)))
+                            .data)))
+                  (openai-image-goto-ui))))
 
 (provide 'openai-image)
 ;;; openai-image.el ends here

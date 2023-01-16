@@ -26,8 +26,11 @@
 
 (require 'openai)
 
-(defvar openai-models-entries nil
+(defvar openai-model-entries nil
   "Async models entries.")
+
+;;
+;;; API
 
 (defun openai-models (callback)
   "Return models data and execute the CALLBACK."
@@ -51,6 +54,9 @@
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
+;;
+;;; Application
+
 ;;;###autoload
 (defun openai-retrieve-model ()
   "Retrieves a model instance, providing basic information about the model such
@@ -69,8 +75,8 @@ as the owner and permissioning."
          (openai-model model (lambda (data) (message "%s" (pp-to-string data)))))))))
 
 (tblui-define
- openai-models
- (lambda () openai-models-entries)
+ openai-model
+ (lambda () openai-model-entries)
  [("ID" 30 nil)
   ("Owned By" 6 nil)]
  nil)
@@ -80,7 +86,7 @@ as the owner and permissioning."
   "Lists the currently available models, and provides basic information about
 each one such as the owner and availability."
   (interactive)
-  (setq openai-models-entries nil)  ; reset
+  (setq openai-model-entries nil)  ; reset
   (openai-models (lambda (data)
                    (let ((id 0))
                      (let-alist data
@@ -89,10 +95,10 @@ each one such as the owner and availability."
                                  (push (list (number-to-string id)
                                              (vector .id
                                                      .owned_by))
-                                       openai-models-entries))
+                                       openai-model-entries))
                                (cl-incf id))
                              .data)))
-                   (openai-models-goto-ui))))
+                   (openai-model-goto-ui))))
 
 (provide 'openai-model)
 ;;; openai-model.el ends here

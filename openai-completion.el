@@ -130,6 +130,8 @@ When used with `n', `best_of' controls the number of candidate completions and
   :type 'list
   :group 'openai)
 
+;;
+;;; Util
 
 (defmacro openai--with-buffer (buffer-or-name &rest body)
   "Execute BODY within the ChatGPT buffer."
@@ -144,6 +146,9 @@ When used with `n', `best_of' controls the number of candidate completions and
   (pop-to-buffer (get-buffer-create buffer-or-name)
                  `((display-buffer-in-direction)
                    (dedicated . t))))
+
+;;
+;;; API
 
 ;;;###autoload
 (defun openai-completion (query callback)

@@ -6,6 +6,10 @@
 
 [![CI](https://github.com/jcs090218/openai/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/openai/actions/workflows/test.yml)
 
+## Documentation
+
+- N/A
+
 ## 🔨 Usage
 
 ```elisp
@@ -13,7 +17,7 @@
 ```
 
 ```elisp
-(openai-complete "How are you?"
+(openai-completion "How are you?"
                (lambda (data)
                  (message "%s" data)))
 ```

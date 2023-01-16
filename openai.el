@@ -62,5 +62,42 @@ monitor and detect abuse."
        (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key)
      (request ,url ,@body)))
 
+;;
+;;; Util
+
+(defcustom openai-annotation-ratio 2.5
+  "Ratio align from the right to display `completin-read' annotation."
+  :type 'float
+  :group 'openai)
+
+(defun openai--2str (obj)
+  "Convert OBJ to string."
+  (format "%s" obj))
+
+(defun openai--seq-str-max (sequence)
+  "Return max length in list of strings."
+  (let ((result 0))
+    (mapc (lambda (elm) (setq result (max result (length (openai--2str elm))))) sequence)
+    result))
+
+(defun openai--completing-frame-offset (options)
+  "Return frame offset while `completing-read'.
+
+Argument OPTIONS ia an alist use to calculate the frame offset."
+  (max (openai--seq-str-max (mapcar #'cdr options))
+       (/ (frame-width) openai-annotation-ratio)))
+
+(defmacro openai--with-buffer (buffer-or-name &rest body)
+  "Execute BODY ensure the buffer is alive."
+  (declare (indent 1))
+  `(when (buffer-live-p ,buffer-or-name)
+     (with-current-buffer ,buffer-or-name ,@body)))
+
+(defun openai--pop-to-buffer (buffer-or-name)
+  "Show ChatGPT display buffer."
+  (pop-to-buffer (get-buffer-create buffer-or-name)
+                 `((display-buffer-in-direction)
+                   (dedicated . t))))
+
 (provide 'openai)
 ;;; openai.el ends here

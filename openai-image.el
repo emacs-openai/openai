@@ -125,9 +125,9 @@ the mask."
 ;;; Util
 
 (defun openai--select-png-files (candidate)
-  "Return t if CANDIDATE is either directory or an elisp file."
-  (or (string-suffix-p ".png" candidate t)
-      (file-directory-p candidate)))  ; allow navigation
+  "Return t if CANDIDATE is either directory or a PNG file."
+  (or (string-suffix-p ".png" candidate t)  ; only support png
+      (file-directory-p candidate)))        ; allow navigation
 
 ;;
 ;;; Application

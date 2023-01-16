@@ -133,19 +133,13 @@ When used with `n', `best_of' controls the number of candidate completions and
 ;;
 ;;; Util
 
-(defmacro openai--with-buffer (buffer-or-name &rest body)
+(defmacro openai-completion--with-buffer (buffer-or-name &rest body)
   "Execute BODY within the ChatGPT buffer."
   (declare (indent 1))
   `(with-current-buffer (get-buffer-create buffer-or-name)
      (setq-local buffer-read-only t)
      (let ((inhibit-read-only))
        ,@body)))
-
-(defun openai--pop-to-buffer (buffer-or-name)
-  "Show ChatGPT display buffer."
-  (pop-to-buffer (get-buffer-create buffer-or-name)
-                 `((display-buffer-in-direction)
-                   (dedicated . t))))
 
 ;;
 ;;; API
@@ -170,13 +164,13 @@ Argument CALLBACK is a function received one argument which is the JSON data."
              ;;("stream"            . ,(if openai-completon-stream "true" "false"))
              ("logprobs"          . ,openai-completon-logprobs)
              ;;("echo"              . ,(if openai-completon-echo "true" "false"))
-             ("stop"              . ,openai-completon-stop)
-             ("presence_penalty"  . ,openai-completon-presence-penalty)
-             ("frequency_penalty" . ,openai-completon-frequency-penalty)
-             ("best_of"           . ,openai-completon-best-of)
-             ;; ("logit_bias"        . ,(if (listp openai-completon-logit-bias)
-             ;;                             (json-encode openai-completon-logit-bias)
-             ;;                           openai-completon-logit-bias))
+             ;;("stop"              . ,openai-completon-stop)
+             ;;("presence_penalty"  . ,openai-completon-presence-penalty)
+             ;;("frequency_penalty" . ,openai-completon-frequency-penalty)
+             ;;("best_of"           . ,openai-completon-best-of)
+             ;;("logit_bias"        . ,(if (listp openai-completon-logit-bias)
+             ;;                            (json-encode openai-completon-logit-bias)
+             ;;                          openai-completon-logit-bias))
              ("user"              . ,openai-user)))
     :parser 'json-read
     :success (cl-function
@@ -191,23 +185,26 @@ Argument CALLBACK is a function received one argument which is the JSON data."
 
 START and END are selected region boundaries."
   (interactive "r")
-  (let* ((region )
-         original-point)
+  (let ((start-buffer (current-buffer)))
     (openai-completion
      (string-trim (buffer-substring-no-properties start end))
      (lambda (data)
-       (let* ((choices (let-alist data .choices))
-              (texts)
-              (choices (mapc (lambda (choice)
-                               (let-alist choice
-                                 (push .text texts)))
-                             choices))
-              (result (if (= 1 (length texts))
-                          (car texts)
-                        (completing-read "Response: " texts nil t)))
-              original-point)
-         (if (string-empty-p result)
-             (message "Empty result")
+       (openai--with-buffer start-buffer
+         (openai--pop-to-buffer start-buffer)  ; make sure to stay in that buffer
+         (let* ((choices (let-alist data .choices))
+                (texts)
+                (choices (mapc (lambda (choice)
+                                 (let-alist choice
+                                   (push .text texts)))
+                               choices))
+                (result (cond ((zerop (length texts))
+                               (user-error "No response, please try again"))
+                              ((= 1 (length texts))
+                               (car texts))
+                              (t (completing-read "Response: " texts nil t))))
+                original-point)
+           (when (string-empty-p result)
+             (user-error "No response, please try again"))
            (when (= end (point-max))
              (save-excursion
                (goto-char end)

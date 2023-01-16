@@ -72,6 +72,8 @@ as the owner and permissioning."
                .data))
        (when-let ((model (completing-read "Select model: " (reverse options) nil t)))
          ;; Nothing to do now, just print it out!
+         ;;
+         ;; XXX: Is there a way to improve the UX?
          (openai-model model (lambda (data) (message "%s" (pp-to-string data)))))))))
 
 (tblui-define

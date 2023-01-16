@@ -139,7 +139,7 @@ The argument CALLBACK is execuated after request is made."
        (let-alist data
          (mapc (lambda (file)
                  (let-alist file
-                   (push (cons .filename .id) data)))
+                   (push (cons .filename .id) options)))
                .data))
        (when (zerop (length options))
          (user-error "No response, please try again"))
@@ -232,7 +232,7 @@ The argument CALLBACK is execuated after request is made."
   "Prompt to select the file and print its' information."
   (interactive)
   (openai-file--select
-   (lambda (_options file file-id)
+   (lambda (_options _file file-id)
      (openai-file-retrieve
       file-id
       (lambda (data)
@@ -246,7 +246,7 @@ The argument CALLBACK is execuated after request is made."
   "Prompt to select the file and print its' content."
   (interactive)
   (openai-file--select
-   (lambda (_options file file-id)
+   (lambda (_options _file file-id)
      (openai-file-retrieve-content
       file-id
       (lambda (data)

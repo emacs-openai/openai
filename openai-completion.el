@@ -136,7 +136,7 @@ When used with `n', `best_of' controls the number of candidate completions and
 (defmacro openai-completion--with-buffer (buffer-or-name &rest body)
   "Execute BODY within the ChatGPT buffer."
   (declare (indent 1))
-  `(with-current-buffer (get-buffer-create buffer-or-name)
+  `(with-current-buffer (get-buffer-create ,buffer-or-name)
      (setq-local buffer-read-only t)
      (let ((inhibit-read-only))
        ,@body)))
@@ -191,18 +191,19 @@ START and END are selected region boundaries."
      (lambda (data)
        (openai--with-buffer start-buffer
          (openai--pop-to-buffer start-buffer)  ; make sure to stay in that buffer
-         (let* ((choices (let-alist data .choices))
-                (texts)
-                (choices (mapc (lambda (choice)
-                                 (let-alist choice
-                                   (push .text texts)))
-                               choices))
-                (result (cond ((zerop (length texts))
+         (let ((choices (let-alist data .choices))
+               (texts)
+               (result)
+               original-point)
+           (mapc (lambda (choice)
+                   (let-alist choice
+                     (push .text texts)))
+                 choices)
+           (setq result (cond ((zerop (length texts))
                                (user-error "No response, please try again"))
                               ((= 1 (length texts))
                                (car texts))
                               (t (completing-read "Response: " texts nil t))))
-                original-point)
            (when (string-empty-p result)
              (user-error "No response, please try again"))
            (when (= end (point-max))

@@ -1,10 +1,10 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![JCS-ELPA](https://raw.githubusercontent.com/jcs-emacs/badges/master/elpa/v/chatgpt.svg)](https://jcs-emacs.github.io/jcs-elpa/#/chatgpt)
+[![JCS-ELPA](https://raw.githubusercontent.com/jcs-emacs/badges/master/elpa/v/openai.svg)](https://jcs-emacs.github.io/jcs-elpa/#/openai)
 
-# ChatGPT.el
+# OpenAI.el
 > Elisp library for the OpenAI API
 
-[![CI](https://github.com/jcs090218/ChatGPT.el/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/ChatGPT.el/actions/workflows/test.yml)
+[![CI](https://github.com/jcs090218/openai/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/openai/actions/workflows/test.yml)
 
 ## 🔨 Usage
 

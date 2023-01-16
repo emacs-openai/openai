@@ -185,12 +185,12 @@ Argument CALLBACK is a function received one argument which is the JSON data."
 
 START and END are selected region boundaries."
   (interactive "r")
-  (let ((start-buffer (current-buffer)))
+  (let ((initial-buffer (current-buffer)))
     (openai-completion
      (string-trim (buffer-substring-no-properties start end))
      (lambda (data)
-       (openai--with-buffer start-buffer
-         (openai--pop-to-buffer start-buffer)  ; make sure to stay in that buffer
+       (openai--with-buffer initial-buffer
+         (openai--pop-to-buffer initial-buffer)  ; make sure to stay in that buffer
          (let ((choices (let-alist data .choices))
                (texts)
                (result)

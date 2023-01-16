@@ -26,9 +26,6 @@
 
 (require 'openai)
 
-(defvar openai-model-entries nil
-  "Async models entries.")
-
 ;;
 ;;; API
 
@@ -56,6 +53,9 @@
 
 ;;
 ;;; Application
+
+(defvar openai-model-entries nil
+  "Async models entries.")
 
 ;;;###autoload
 (defun openai-retrieve-model ()

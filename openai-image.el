@@ -47,7 +47,7 @@ Must be one of `url' or `b64_json'."
   :type 'string
   :group 'openai)
 
-(defcustom openai-image-mask "1024x1024"
+(defcustom openai-image-mask nil
   "An additional image whose fully transparent areas (e.g. where alpha is zero)
 indicate where image should be edited.
 
@@ -76,6 +76,58 @@ Argument CALLBACK is function with data pass in."
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
+
+(defun openai-image-edit (query callback)
+  "Creates an edited or extended image given an original image and a QUERY.
+
+Argument CALLBACK is function with data pass in."
+  (openai-request "https://api.openai.com/v1/images/edits"
+    :type "POST"
+    :headers `(("Content-Type"  . "application/json")
+               ("Authorization" . ,(concat "Bearer " openai-key)))
+    :data (json-encode
+           `(("prompt"          . ,query)
+             ("mask"            . ,openai-image-mask)
+             ("n"               . ,openai-image-n)
+             ("size"            . ,openai-image-size)
+             ("response_format" . ,openai-image-response-format)
+             ("user"            . ,openai-user)))
+    :parser 'json-read
+    :success (cl-function
+              (lambda (&key data &allow-other-keys)
+                (funcall callback data)))))
+
+(defun openai-image-variation (image callback)
+  "Creates an edited or extended image given an original IMAGE.
+
+Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
+a valid PNG file, less than 4MB, and square.
+
+If mask is not provided, image must have transparency, which will be used as
+the mask."
+  (openai-request "https://api.openai.com/v1/images/variations"
+    :type "POST"
+    :headers `(("Content-Type"  . "application/json")
+               ("Authorization" . ,(concat "Bearer " openai-key)))
+    :data (json-encode
+           `(("image"           . ,image)
+             ("mask"            . ,openai-image-mask)
+             ("n"               . ,openai-image-n)
+             ("size"            . ,openai-image-size)
+             ("response_format" . ,openai-image-response-format)
+             ("user"            . ,openai-user)))
+    :parser 'json-read
+    :success (cl-function
+              (lambda (&key data &allow-other-keys)
+                (funcall callback data)))))
+
+;;
+;;; Util
+
+(defun openai--select-png-files (candidate)
+  "Return t if CANDIDATE is either directory or an elisp file."
+  (or (string-suffix-p ".png" candidate t)
+      (file-directory-p candidate)))  ; allow navigation
 
 ;;
 ;;; Application
@@ -106,6 +158,43 @@ Argument CALLBACK is function with data pass in."
                                 (cl-incf id)))
                             .data)))
                   (openai-image-goto-ui))))
+
+;;;###autoload
+(defun openai-image-edit-prompt (query)
+  "Prompt to ask for image QUERY, and display result in a buffer."
+  (interactive (list (read-string "Describe image: ")))
+  (setq openai-image-entries nil)
+  (openai-image-edit query
+                     (lambda (data)
+                       (let ((id 0))
+                         (let-alist data
+                           (mapc (lambda (images)
+                                   (dolist (image images)
+                                     (push (list (number-to-string id)
+                                                 (vector (cdr image)))
+                                           openai-image-entries)
+                                     (cl-incf id)))
+                                 .data)))
+                       (openai-image-goto-ui))))
+
+;;;###autoload
+(defun openai-image-variation-prompt (image)
+  "Prompt to select an IMAGE file, and display result in a buffer."
+  (interactive (list (read-file-name "Select image file: " nil nil t nil
+                                     #'openai--select-png-files)))
+  (setq openai-image-entries nil)
+  (openai-image-variation image
+                          (lambda (data)
+                            (let ((id 0))
+                              (let-alist data
+                                (mapc (lambda (images)
+                                        (dolist (image images)
+                                          (push (list (number-to-string id)
+                                                      (vector (cdr image)))
+                                                openai-image-entries)
+                                          (cl-incf id)))
+                                      .data)))
+                            (openai-image-goto-ui))))
 
 (provide 'openai-image)
 ;;; openai-image.el ends here

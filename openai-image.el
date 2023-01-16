@@ -47,6 +47,14 @@ Must be one of `url' or `b64_json'."
   :type 'string
   :group 'openai)
 
+(defcustom openai-image-mask "1024x1024"
+  "An additional image whose fully transparent areas (e.g. where alpha is zero)
+indicate where image should be edited.
+
+Must be a valid PNG file, less than 4MB, and have the same dimensions as image."
+  :type 'string
+  :group 'openai)
+
 ;;
 ;;; API
 

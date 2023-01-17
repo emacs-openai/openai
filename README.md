@@ -6,9 +6,12 @@
 
 [![CI](https://github.com/jcs090218/openai/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/openai/actions/workflows/test.yml)
 
+The OpenAI Elisp library provides convenient access to the OpenAI API from
+applications written in the Elips language. 
+
 ## Documentation
 
-- [OpenAI](https://beta.openai.com/docs/introduction)
+- [OpenAI API docs](https://beta.openai.com/docs/introduction)
 
 ## 🔨 Usage
 

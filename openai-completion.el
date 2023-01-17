@@ -130,23 +130,15 @@ When used with `n', `best_of' controls the number of candidate completions and
   :type 'list
   :group 'openai)
 
-;;
-;;; Util
-
-(defmacro openai-completion--with-buffer (buffer-or-name &rest body)
-  "Execute BODY within the ChatGPT buffer."
-  (declare (indent 1))
-  `(with-current-buffer (get-buffer-create ,buffer-or-name)
-     (setq-local buffer-read-only t)
-     (let ((inhibit-read-only))
-       ,@body)))
+(defconst openai-completion-buffer-name "*OpenAI: completion*"
+  "Buffer name to do completion task.")
 
 ;;
 ;;; API
 
 ;;;###autoload
 (defun openai-completion (query callback)
-  "Query OpanAI with QUERY.
+  "Query OpenAI with QUERY.
 
 Argument CALLBACK is a function received one argument which is the JSON data."
   (openai-request "https://api.openai.com/v1/completions"
@@ -178,8 +170,39 @@ Argument CALLBACK is a function received one argument which is the JSON data."
                 (funcall callback data)))))
 
 ;;
+;;; Util
+
+(defmacro openai-completion--with-buffer (buffer-or-name &rest body)
+  "Execute BODY within the ChatGPT buffer."
+  (declare (indent 1))
+  `(with-current-buffer (get-buffer-create ,buffer-or-name)
+     (setq-local buffer-read-only t)
+     (let ((inhibit-read-only))
+       ,@body)))
+
+(defun openai-completion--data-choices (data)
+  "Extract choices from DATA request."
+  (let ((choices (let-alist data .choices))  ; choices if vector
+        (texts))
+    (mapc (lambda (choice)
+            (let-alist choice
+              (push .text texts)))  ; text is the only important data in there
+          choices)
+    texts))
+
+(defun openai-completion--get-choice (choices)
+  ""
+  (cond ((zerop (length choices))
+         (user-error "No response, please try again"))
+        ((= 1 (length choices))
+         (car choices))
+        (t
+         (completing-read "Response: " choices nil t))))
+
+;;
 ;;; Application
 
+;;;###autoload
 (defun openai-completion-select-insert (start end)
   "Send the region to OpenAI and insert the result to the next paragraph.
 
@@ -191,19 +214,9 @@ START and END are selected region boundaries."
      (lambda (data)
        (openai--with-buffer initial-buffer
          (openai--pop-to-buffer initial-buffer)  ; make sure to stay in that buffer
-         (let ((choices (let-alist data .choices))
-               (texts)
-               (result)
-               original-point)
-           (mapc (lambda (choice)
-                   (let-alist choice
-                     (push .text texts)))
-                 choices)
-           (setq result (cond ((zerop (length texts))
-                               (user-error "No response, please try again"))
-                              ((= 1 (length texts))
-                               (car texts))
-                              (t (completing-read "Response: " texts nil t))))
+         (let* ((choices (openai-completion--data-choices data))
+                (result (openai-completion--get-choice choices))
+                original-point)
            (when (string-empty-p result)
              (user-error "No response, please try again"))
            (when (= end (point-max))
@@ -219,10 +232,132 @@ START and END are selected region boundaries."
            (call-interactively #'set-mark-command)
            (goto-char (1+ original-point))))))))
 
+;;;###autoload
 (defun openai-completion-buffer-insert ()
   "Send the entire buffer to OpenAI and insert the result to the end of buffer."
   (interactive)
   (openai-completion-select-insert (point-min) (point-max)))
+
+(defmacro openai-completon--ask-in-buffer (instruction &rest body)
+  "Insert INSTRUCTION then execute BODY form."
+  `(progn
+     (openai--pop-to-buffer openai-completion-buffer-name)  ; create it
+     (openai--with-buffer openai-completion-buffer-name
+       (erase-buffer)
+       (insert ,instruction "\n\n")
+       ,@body)))
+
+(defun openai-completion-code--internal (instruction start end)
+  "Do INSTRUCTION with partial code.
+
+The partial code is defined in with the region, and the START nad END are
+boundaries of that region in buffer."
+  (let ((text (string-trim (buffer-substring start end))))
+    (openai-completon--ask-in-buffer
+        instruction
+      (insert text "\n\n")
+      (openai-completion
+       (buffer-string)
+       (lambda (data)
+         (openai--with-buffer openai-completion-buffer-name
+           (openai--pop-to-buffer openai-completion-buffer-name)
+           (let* ((choices (openai-completion--data-choices data))
+                  (result (openai-completion--get-choice choices)))
+             (insert result "\n"))))))))
+
+;;;###autoload
+(defun openai-completion-code-doc (start end)
+  "Automatically write documentation for your code.
+
+This command is interactive region only, the START and END are boundaries of
+that region in buffer."
+  (interactive "r")
+  (openai-completion-code--internal
+   "Please write the documentation for the following function."
+   start end))
+
+;;;###autoload
+(defun openai-completion-code-fix (start end)
+  "Fix your code.
+
+This command is interactive region only, the START and END are boundaries of
+that region in buffer."
+  (interactive "r")
+  (openai-completion-code--internal
+   "There is a bug in the following function, please help me fix it."
+   start end))
+
+;;;###autoload
+(defun openai-completion-code-explain (start end)
+  "Explain the selected code.
+
+This command is interactive region only, the START and END are boundaries of
+that region in buffer."
+  (interactive "r")
+  (openai-completion-code--internal
+   "What is the following?"
+   start end))
+
+;;;###autoload
+(defun openai-completion-code-improve (start end)
+  "Improve, refactor or optimize your code.
+
+This command is interactive region only, the START and END are boundaries of
+that region in buffer."
+  (interactive "r")
+  (openai-completion-code--internal
+   "Please improve the following."
+   start end))
+
+;;;###autoload
+(defun openai-completion-code-custom (start end)
+  "Do completion with custom instruction.
+
+This command is interactive region only, the START and END are boundaries of
+that region in buffer."
+  (interactive "r")
+  (openai-completion-code--internal
+   (read-string "Instruction: ")
+   start end))
+
+(defconst openai-completion-code-action-alist
+  `(("custom"  . "Write your own instruction")
+    ("doc"     . "Automatically write documentation for your code")
+    ("fix"     . "Find problems with it")
+    ("explain" . "Explain the selected code")
+    ("improve" . "Improve, refactor or optimize it"))
+  "Alist of code completion actions and its' description.")
+
+;;;###autoload
+(defun openai-completion-code (start end)
+  "Do completon with OpenAI to your code.
+
+This command is interactive region only, the START and END are boundaries of
+that region in buffer."
+  (interactive "r")
+  (let*
+      ((offset (openai--completing-frame-offset openai-completion-code-action-alist))
+       (action
+        (completing-read
+         "Select completion action: "
+         (lambda (string predicate action)
+           (if (eq action 'metadata)
+               `(metadata
+                 (display-sort-function . ,#'identity)
+                 (annotation-function
+                  . ,(lambda (cand)
+                       (concat (propertize " " 'display `((space :align-to (- right ,offset))))
+                               (cdr (assoc cand openai-completion-code-action-alist))))))
+             (complete-with-action action openai-completion-code-action-alist string predicate)))
+         nil t)))
+    (funcall
+     (pcase action
+       ("custom"  #'openai-completion-code-custom)
+       ("doc"     #'openai-completion-code-doc)
+       ("fix"     #'openai-completion-code-fix)
+       ("explain" #'openai-completion-code-explain)
+       ("improve" #'openai-completion-code-improve))
+     start end)))
 
 (provide 'openai-completion)
 ;;; openai-completion.el ends here

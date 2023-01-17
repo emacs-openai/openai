@@ -148,6 +148,7 @@ The argument CALLBACK is execuated after request is made."
             (file (if (= 1 (length options))
                       (car options)
                     (completing-read
+                     "Select file: "
                      (lambda (string predicate action)
                        (if (eq action 'metadata)
                            `(metadata

@@ -33,6 +33,7 @@
 
 (require 'cl-lib)
 (require 'let-alist)
+(require 'pcase)
 (require 'pp)
 
 (require 'request)
@@ -90,7 +91,7 @@ Argument OPTIONS ia an alist use to calculate the frame offset."
 (defmacro openai--with-buffer (buffer-or-name &rest body)
   "Execute BODY ensure the buffer is alive."
   (declare (indent 1))
-  `(when (buffer-live-p ,buffer-or-name)
+  `(when (buffer-live-p (get-buffer ,buffer-or-name))
      (with-current-buffer ,buffer-or-name ,@body)))
 
 (defun openai--pop-to-buffer (buffer-or-name)

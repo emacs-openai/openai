@@ -8,7 +8,7 @@
 
 ## Documentation
 
-- N/A
+- [OpenAI](https://beta.openai.com/docs/introduction)
 
 ## 🔨 Usage
 
@@ -21,6 +21,12 @@
                (lambda (data)
                  (message "%s" data)))
 ```
+
+## References
+
+- [CodeGPT](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3)
+- [aide.el](https://github.com/junjizhi/aide.el)
+- [ChatGPT.el](https://github.com/joshcho/ChatGPT.el)
 
 ## Contribute
 

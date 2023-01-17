@@ -2,7 +2,7 @@
          "0.1.0"
          "Elisp library for the OpenAI API")
 
-(website-url "https://github.com/jcs090218/openai")
+(website-url "https://github.com/emacs-openai/openai")
 (keywords "comm" "openai")
 
 (package-file "openai.el")

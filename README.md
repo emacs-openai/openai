@@ -4,7 +4,7 @@
 # OpenAI.el
 > Elisp library for the OpenAI API
 
-[![CI](https://github.com/jcs090218/openai/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/openai/actions/workflows/test.yml)
+[![CI](https://github.com/emacs-openai/openai/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-openai/openai/actions/workflows/test.yml)
 
 The OpenAI Elisp library provides convenient access to the OpenAI API from
 applications written in the Elips language. 

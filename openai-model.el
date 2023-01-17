@@ -41,7 +41,7 @@
                 (funcall callback data)))))
 
 (defun openai-model (model callback)
-  "Return models data and execute the CALLBACK."
+  "Return MODEL data and execute the CALLBACK."
   (openai-request (format "https://api.openai.com/v1/models/%s" model)
     :type "GET"
     :headers `(("Content-Type"  . "application/json")

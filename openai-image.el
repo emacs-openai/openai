@@ -29,7 +29,7 @@
 (require 'openai)
 
 (defcustom openai-image-n 1
-  "The number of images to generate. Must be between 1 and 10."
+  "The number of images to generate.  Must be between 1 and 10."
   :type 'integer
   :group 'openai)
 
@@ -78,7 +78,7 @@ Argument CALLBACK is function with data pass in."
                 (funcall callback data)))))
 
 (defun openai-image-edit (query callback)
-  "Creates an edited or extended image given an original image and a QUERY.
+  "Create an edited or extended image given an original image and a QUERY.
 
 Argument CALLBACK is function with data pass in."
   (openai-request "https://api.openai.com/v1/images/edits"
@@ -98,7 +98,7 @@ Argument CALLBACK is function with data pass in."
                 (funcall callback data)))))
 
 (defun openai-image-variation (image callback)
-  "Creates an edited or extended image given an original IMAGE.
+  "Create an edited or extended image given an original IMAGE.
 
 Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
 a valid PNG file, less than 4MB, and square.

@@ -33,7 +33,7 @@
 ;;; API
 
 (defun openai-file-list (callback)
-  "Returns a list of files that belong to the user's organization.
+  "Return a list of files that belong to the user's organization.
 
 The argument CALLBACK is execuated after request is made."
   (openai-request "https://api.openai.com/v1/files"
@@ -46,7 +46,7 @@ The argument CALLBACK is execuated after request is made."
                 (funcall callback data)))))
 
 (defun openai-file-upload (file purpose callback)
-  "Upload a file that contains document(s) to be used across various
+  "Upload a file that contain document(s) to be used across various
 endpoints/features.
 
 The argument FILE is the JSON Lines file to be uploaded.
@@ -90,7 +90,7 @@ Argument CALLBACK is function with data pass in."
                 (funcall callback data)))))
 
 (defun openai-file-retrieve (file-id callback)
-  "Returns information about a specific file.
+  "Return information about a specific file.
 
 The arument FILE-ID is id of the file to use for this request.
 
@@ -107,7 +107,7 @@ The argument CALLBACK is execuated after request is made."
                 (funcall callback data)))))
 
 (defun openai-file-retrieve-content (file-id callback)
-  "Returns the contents of the specified file
+  "Return the contents of the specified file
 
 The arument FILE-ID is id of the file to use for this request.
 

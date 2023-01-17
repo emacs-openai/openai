@@ -57,7 +57,9 @@ monitor and detect abuse."
   :group 'openai)
 
 (defmacro openai-request (url &rest body)
-  "Wrapper for `request' function."
+  "Wrapper for `request' function.
+
+The URL is the url for `request' function; then BODY is the arguments for rest."
   (declare (indent 1))
   `(if (string-empty-p openai-key)
        (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key)
@@ -76,7 +78,7 @@ monitor and detect abuse."
   (format "%s" obj))
 
 (defun openai--seq-str-max (sequence)
-  "Return max length in list of strings."
+  "Return max length in SEQUENCE of strings."
   (let ((result 0))
     (mapc (lambda (elm) (setq result (max result (length (openai--2str elm))))) sequence)
     result))
@@ -89,13 +91,13 @@ Argument OPTIONS ia an alist use to calculate the frame offset."
        (/ (frame-width) openai-annotation-ratio)))
 
 (defmacro openai--with-buffer (buffer-or-name &rest body)
-  "Execute BODY ensure the buffer is alive."
+  "Execute BODY ensure the BUFFER-OR-NAME is alive."
   (declare (indent 1))
   `(when (buffer-live-p (get-buffer ,buffer-or-name))
      (with-current-buffer ,buffer-or-name ,@body)))
 
 (defun openai--pop-to-buffer (buffer-or-name)
-  "Show ChatGPT display buffer."
+  "Show BUFFER-OR-NAME to display GPT result."
   (pop-to-buffer (get-buffer-create buffer-or-name)
                  `((display-buffer-in-direction)
                    (dedicated . t))))

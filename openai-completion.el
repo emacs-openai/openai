@@ -83,7 +83,7 @@ available, with the stream terminated by a data: [DONE] message."
 (defcustom openai-completon-logprobs nil
   "Include the log probabilities on the logprobs most likely tokens, as well the
 chosen tokens.  For example, if logprobs is 5, the API will return a list of the
-5 most likely tokens. The API will always return the logprob of the sampled
+5 most likely tokens.  The API will always return the logprob of the sampled
 token, so there may be up to logprobs+1 elements in the response.
 
 The maximum value for logprobs is 5."
@@ -172,14 +172,6 @@ Argument CALLBACK is a function received one argument which is the JSON data."
 ;;
 ;;; Util
 
-(defmacro openai-completion--with-buffer (buffer-or-name &rest body)
-  "Execute BODY within the ChatGPT buffer."
-  (declare (indent 1))
-  `(with-current-buffer (get-buffer-create ,buffer-or-name)
-     (setq-local buffer-read-only t)
-     (let ((inhibit-read-only))
-       ,@body)))
-
 (defun openai-completion--data-choices (data)
   "Extract choices from DATA request."
   (let ((choices (let-alist data .choices))  ; choices if vector
@@ -191,7 +183,7 @@ Argument CALLBACK is a function received one argument which is the JSON data."
     texts))
 
 (defun openai-completion--get-choice (choices)
-  ""
+  "Return choice from CHOICES."
   (cond ((zerop (length choices))
          (user-error "No response, please try again"))
         ((= 1 (length choices))

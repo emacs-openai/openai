@@ -130,9 +130,6 @@ When used with `n', `best_of' controls the number of candidate completions and
   :type 'list
   :group 'openai)
 
-(defconst openai-completion-buffer-name "*OpenAI: completion*"
-  "Buffer name to do completion task.")
-
 ;;
 ;;; API
 
@@ -229,15 +226,6 @@ START and END are selected region boundaries."
   "Send the entire buffer to OpenAI and insert the result to the end of buffer."
   (interactive)
   (openai-completion-select-insert (point-min) (point-max)))
-
-(defmacro openai-completon--ask-in-buffer (instruction &rest body)
-  "Insert INSTRUCTION then execute BODY form."
-  `(progn
-     (openai--pop-to-buffer openai-completion-buffer-name)  ; create it
-     (openai--with-buffer openai-completion-buffer-name
-       (erase-buffer)
-       (insert ,instruction "\n\n")
-       ,@body)))
 
 (provide 'openai-completion)
 ;;; openai-completion.el ends here

@@ -56,6 +56,18 @@ monitor and detect abuse."
   :type 'string
   :group 'openai)
 
+(defun openai--handle-error (response)
+  "Handle error status code from the RESPONSE.
+
+See https://beta.openai.com/docs/guides/error-codes/api-errors."
+  (let ((status-code (request-response-status-code response)))
+    (pcase status-code
+      (400 (error "400 - Bad request.  Please check error message and your parameters"))
+      (401 (error "401 - Invalid Authentication"))
+      (429 (error "429 - Rate limit reached for requests"))
+      (500 (error "500 - The server had an error while processing your request"))
+      (_   (error "Internal error: %s" status-code)))))
+
 (defmacro openai-request (url &rest body)
   "Wrapper for `request' function.
 
@@ -63,7 +75,11 @@ The URL is the url for `request' function; then BODY is the arguments for rest."
   (declare (indent 1))
   `(if (string-empty-p openai-key)
        (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key)
-     (request ,url ,@body)))
+     (request ,url
+       :error (cl-function
+               (lambda (&key response &allow-other-keys)
+                 (openai--handle-error response)))
+       ,@body)))
 
 ;;
 ;;; Util

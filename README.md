@@ -25,14 +25,14 @@ applications written in the Elips language.
                  (message "%s" data)))
 ```
 
-You can also choose which model you want to use by going to the (api)[https://api.openai.com/v1/models] website and looking at the id's. For 
-code usage you probably want something that starts with `code-` whereas with more text related files you'll likely want something starting with
-`text-`. 
+You can also choose which model you want to use by going to the (api)[https://api.openai.com/v1/models] 
+website and looking at the id's. For code usage you probably want something that
+starts with `code-` whereas with more text related files you'll likely want 
+something starting with `text-`. 
 
 ```elisp
 (setq openai-completion-model "NAME-HERE")
 ```
-
 
 ## References
 

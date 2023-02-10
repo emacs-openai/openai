@@ -1,4 +1,4 @@
-;;; openai-engine.el --- Control moderations with OpenAI API  -*- lexical-binding: t; -*-
+;;; openai-engine.el --- Control engines with OpenAI API  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2023  Shen, Jen-Chieh
 
@@ -21,8 +21,8 @@
 ;;
 ;; [DEPRECATED]
 ;;
-;; Given a input text, outputs if the model classifies it as violating OpenAI's
-;; content policy.
+;; These endpoints describe and provide access to the various engines available
+;; in the API.
 ;;
 ;; See https://platform.openai.com/docs/api-reference/engines
 ;;
@@ -55,12 +55,10 @@ owner and availability.
 The argument ENGINE-ID is the engine to use for this request.
 
 The argument CALLBACK is execuated after request is made."
-  (openai-request "https://api.openai.com/v1/engines/"
+  (openai-request (format "https://api.openai.com/v1/engines/%s" engine-id)
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
-           `(("engine_id" . ,engine-id)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)

@@ -16,6 +16,21 @@ interactable commands you can use, and those are mostly examples.*
 
 - [OpenAI API docs](https://beta.openai.com/docs/introduction)
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [OpenAI.el](#openaiel)
+  - [Documentation](#documentation)
+  - [🔨 Usage](#🔨-usage)
+    - [The simplest example](#the-simplest-example)
+    - [📝 Customization](#📝-customization)
+    - [📢 API functions](#📢-api-functions)
+    - [🖥 Setting Model](#🖥-setting-model)
+  - [References](#references)
+  - [Contribute](#contribute)
+
+<!-- markdown-toc end -->
+
 ## 🔨 Usage
 
 You will need to set up your API key before you can use this library.

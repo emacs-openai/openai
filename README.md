@@ -49,8 +49,8 @@ by the following pattern:
 
 For example:
 
-```
-openai-edit-temperature
+```elisp
+(setq openai-edit-temperature 1)
 ```
 
 - `openai` - is the package name
@@ -68,9 +68,23 @@ You can change the model for a single request without changing its global value.
                         (message "%s" data))))
 ```
 
-### 📢 API
+### 📢 API functions
 
+The API functions are followed by this pattern:
 
+```
+[PACKAGE NAME]-[API TYPE]-[REQUEST NAME]
+```
+
+For example:
+
+```elisp
+(openai-file-list ...)
+```
+
+- `openai` - is the package name
+- `file` - is the api type, see [OpenAI API reference](https://platform.openai.com/docs/api-reference/introduction)
+- `list` - is the request name
 
 ### 🖥 Setting Model
 

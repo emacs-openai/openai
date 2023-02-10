@@ -72,23 +72,36 @@ tells the model how to edit the prompt.
 
 The argument CALLBACK is execuated after request is made."
   (openai-request "https://api.openai.com/v1/edits"
-                  :type "POST"
-                  :headers `(("Content-Type"  . "application/json")
-                             ("Authorization" . ,(concat "Bearer " openai-key)))
-                  :data (json-encode
-                         `(("model"       . ,openai-edit-model)
-                           ("input"       . ,input)
-                           ("instruction" . ,instruction)
-                           ("temperature" . ,openai-edit-temperature)
-                           ("top_p"       . ,openai-edit-top-p)
-                           ("n"           . ,openai-edit-n)))
-                  :parser 'json-read
-                  :success (cl-function
-                            (lambda (&key data &allow-other-keys)
-                              (funcall callback data)))))
+    :type "POST"
+    :headers `(("Content-Type"  . "application/json")
+               ("Authorization" . ,(concat "Bearer " openai-key)))
+    :data (json-encode
+           `(("model"       . ,openai-edit-model)
+             ("input"       . ,input)
+             ("instruction" . ,instruction)
+             ("temperature" . ,openai-edit-temperature)
+             ("top_p"       . ,openai-edit-top-p)
+             ("n"           . ,openai-edit-n)))
+    :parser 'json-read
+    :success (cl-function
+              (lambda (&key data &allow-other-keys)
+                (funcall callback data)))))
 
 ;;
 ;;; Application
+
+;;;###autoload
+(defun openai-edit-prompt ()
+  "Prompt to ask for edited version."
+  (interactive)
+  (let ((input (read-string "Input: "))
+        (instruction (read-string "Instruction: ")))
+    (openai-edit-create input instruction
+                        (lambda (data)
+                          (when-let* ((choices (openai--data-choices data))
+                                      (result (openai--get-choice choices)))
+                            
+                            )))))
 
 (provide 'openai-edit)
 ;;; openai-edit.el ends here

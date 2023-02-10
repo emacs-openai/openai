@@ -12,7 +12,7 @@ applications written in the Elips language.
 *P.S. This package is expected to be used as a library, so there are only a few
 interactable commands you can use, and those are mostly examples.*
 
-## Documentation
+## 📚 Documentation
 
 - [OpenAI API docs](https://beta.openai.com/docs/introduction)
 
@@ -20,13 +20,13 @@ interactable commands you can use, and those are mostly examples.*
 **Table of Contents**
 
 - [OpenAI.el](#openaiel)
-  - [Documentation](#documentation)
+  - [📚 Documentation](#📚-documentation)
   - [🔨 Usage](#🔨-usage)
     - [The simplest example](#the-simplest-example)
     - [📝 Customization](#📝-customization)
     - [📢 API functions](#📢-api-functions)
     - [🖥 Setting Model](#🖥-setting-model)
-  - [References](#references)
+  - [🔗 References](#🔗-references)
   - [Contribute](#contribute)
 
 <!-- markdown-toc end -->
@@ -112,7 +112,7 @@ with more text related files you'll likely want something starting with `text-`.
 (setq openai-completion-model "NAME-HERE")
 ```
 
-## References
+## 🔗 References
 
 - [CodeGPT](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3)
 - [aide.el](https://github.com/junjizhi/aide.el)

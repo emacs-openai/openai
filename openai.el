@@ -89,6 +89,9 @@ The URL is the url for `request' function; then BODY is the arguments for rest."
   :type 'float
   :group 'openai)
 
+;;
+;;; General
+
 (defun openai--2str (obj)
   "Convert OBJ to string."
   (format "%s" obj))
@@ -106,6 +109,9 @@ Argument OPTIONS ia an alist use to calculate the frame offset."
   (max (openai--seq-str-max (mapcar #'cdr options))
        (/ (frame-width) openai-annotation-ratio)))
 
+;;
+;;; Buffer
+
 (defmacro openai--with-buffer (buffer-or-name &rest body)
   "Execute BODY ensure the BUFFER-OR-NAME is alive."
   (declare (indent 1))
@@ -117,6 +123,28 @@ Argument OPTIONS ia an alist use to calculate the frame offset."
   (pop-to-buffer (get-buffer-create buffer-or-name)
                  `((display-buffer-in-direction)
                    (dedicated . t))))
+
+;;
+;;; Choices
+
+(defun openai--data-choices (data)
+  "Extract choices from DATA request."
+  (let ((choices (let-alist data .choices))  ; choices if vector
+        (texts))
+    (mapc (lambda (choice)
+            (let-alist choice
+              (push .text texts)))  ; text is the only important data in there
+          choices)
+    texts))
+
+(defun openai--get-choice (choices)
+  "Return choice from CHOICES."
+  (cond ((zerop (length choices))
+         (user-error "No response, please try again"))
+        ((= 1 (length choices))
+         (car choices))
+        (t
+         (completing-read "Response: " choices nil t))))
 
 (provide 'openai)
 ;;; openai.el ends here

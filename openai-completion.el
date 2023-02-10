@@ -167,28 +167,6 @@ Argument CALLBACK is a function received one argument which is the JSON data."
                 (funcall callback data)))))
 
 ;;
-;;; Util
-
-(defun openai-completion--data-choices (data)
-  "Extract choices from DATA request."
-  (let ((choices (let-alist data .choices))  ; choices if vector
-        (texts))
-    (mapc (lambda (choice)
-            (let-alist choice
-              (push .text texts)))  ; text is the only important data in there
-          choices)
-    texts))
-
-(defun openai-completion--get-choice (choices)
-  "Return choice from CHOICES."
-  (cond ((zerop (length choices))
-         (user-error "No response, please try again"))
-        ((= 1 (length choices))
-         (car choices))
-        (t
-         (completing-read "Response: " choices nil t))))
-
-;;
 ;;; Application
 
 ;;;###autoload
@@ -203,8 +181,8 @@ START and END are selected region boundaries."
      (lambda (data)
        (openai--with-buffer initial-buffer
          (openai--pop-to-buffer initial-buffer)  ; make sure to stay in that buffer
-         (let* ((choices (openai-completion--data-choices data))
-                (result (openai-completion--get-choice choices))
+         (let* ((choices (openai--data-choices data))
+                (result (openai--get-choice choices))
                 original-point)
            (when (string-empty-p result)
              (user-error "No response, please try again"))

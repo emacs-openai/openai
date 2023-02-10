@@ -183,6 +183,7 @@ The argument CALLBACK is execuated after request is made."
 (defun openai-list-files ()
   "List files that belong to the user's organization."
   (interactive)
+  (setq openai-file-entries nil)  ; reset
   (openai-file-list (lambda (data)
                       (let ((id 0))
                         (let-alist data

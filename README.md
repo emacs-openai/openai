@@ -21,8 +21,8 @@ applications written in the Elips language.
 
 ```elisp
 (openai-completion "How are you?"
-               (lambda (data)
-                 (message "%s" data)))
+                   (lambda (data)
+                     (message "%s" data)))
 ```
 
 You can also choose which model you want to use by going to the 

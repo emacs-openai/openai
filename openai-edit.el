@@ -100,8 +100,8 @@ The argument CALLBACK is execuated after request is made."
                         (lambda (data)
                           (when-let* ((choices (openai--data-choices data))
                                       (result (openai--get-choice choices)))
-                            
-                            )))))
+                            (kill-new result)
+                            (message "The result is pasted into kill ring"))))))
 
 (provide 'openai-edit)
 ;;; openai-edit.el ends here

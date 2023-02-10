@@ -35,7 +35,7 @@ a function with a `query` and a callback function.
                      (message "%s" data)))
 ```
 
-### Customization
+### 📝 Customization
 
 Most arguments are extracted (excepts the required one) as global variables.
 For example, one variable `openai-completon-n` is defined in `openai-completion.el`
@@ -68,7 +68,11 @@ You can change the model for a single request without changing its global value.
                         (message "%s" data))))
 ```
 
-### Setting Model
+### 📢 API
+
+
+
+### 🖥 Setting Model
 
 You can also choose which model you want to use by going to the 
 [api](https://api.openai.com/v1/models) website and looking at the id's. 

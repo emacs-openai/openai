@@ -38,6 +38,12 @@ You will need to set up your API key before you can use this library.
 (setq openai-key "[YOUR API KEY]")
 ```
 
+For requests that need your user identifier,
+
+```elisp
+(setq openai-user "[YOUR USER UID]")
+```
+
 ### 🔰 The simplest example
 
 Here is the simplest example that teaches you how to use this library. This is 
@@ -65,10 +71,9 @@ For example, the request function `openai-completion` accepts argument
 > the newest models, which support 4096).
 
 ```elisp
-(openai-completion "How are you?"
-                   (lambda (data)
-                     ...)
-                   :max-tokens 4069)
+(openai-completion ...
+                   ...
+                   :max-tokens 4069)  ; max out tokens!
 ```
 
 ### 📢 API functions

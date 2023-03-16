@@ -58,6 +58,7 @@
     :data (openai--json-encode
            `(("model"             . ,model)
              ("prompt"            . ,prompt)
+             ("suffix"            . ,suffix)
              ("max_tokens"        . ,max-tokens)
              ("temperature"       . ,temperature)
              ("top-p"             . ,top-p)

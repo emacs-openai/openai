@@ -108,7 +108,9 @@ The argument CALLBACK is execuated after request is made."
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(cl-defun openai-fine-tune-cancel (fine-tune-id callback)
+(cl-defun openai-fine-tune-cancel ( fine-tune-id callback
+                                    &key
+                                    (key openai-key))
   "Immediately cancel a fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job to cancel.
@@ -140,9 +142,9 @@ The argument CALLBACK is execuated after request is made."
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(cl-defun openai-fine-tune-list-events ( model callback
-                                         &key
-                                         (key openai-key))
+(cl-defun openai-fine-tune-delete ( model callback
+                                    &key
+                                    (key openai-key))
   "Delete a fine-tuned model.  You must have the Owner role in your organization.
 
 The MODEL to delete.

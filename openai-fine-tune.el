@@ -184,28 +184,29 @@ The argument CALLBACK is execuated after request is made."
   "List fine-tuning jobs."
   (interactive)
   (setq openai-fine-tune-entries nil)  ; reset
-  (openai-file-list (lambda (data)
-                      (let ((id 0))
-                        (let-alist data
-                          (mapc (lambda (fine-tune)
-                                  (let-alist fine-tune
-                                    (push (list (number-to-string id)
-                                                (vector .id
-                                                        .object
-                                                        .model
-                                                        .created_at
-                                                        .fine_tuned_model
-                                                        .hyperparams
-                                                        .organization_id
-                                                        .result_files
-                                                        .status
-                                                        .validation_files
-                                                        .training_files
-                                                        .updated_at))
-                                          openai-fine-tune-entries))
-                                  (cl-incf id))
-                                .data)))
-                      (openai-fine-tune-goto-ui))))
+  (openai-fine-tune-list
+   (lambda (data)
+     (let ((id 0))
+       (let-alist data
+         (mapc (lambda (fine-tune)
+                 (let-alist fine-tune
+                   (push (list (number-to-string id)
+                               (vector .id
+                                       .object
+                                       .model
+                                       .created_at
+                                       .fine_tuned_model
+                                       .hyperparams
+                                       .organization_id
+                                       .result_files
+                                       .status
+                                       .validation_files
+                                       .training_files
+                                       .updated_at))
+                         openai-fine-tune-entries))
+                 (cl-incf id))
+               .data)))
+     (openai-fine-tune-goto-ui))))
 
 (provide 'openai-fine-tune)
 ;;; openai-fine-tune.el ends here

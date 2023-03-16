@@ -32,10 +32,10 @@
 ;;
 ;;; API
 
-(defun openai-moderation-create ( input callback
-                                  &key
-                                  (key openai-key)
-                                  (model "text-moderation-latest"))
+(cl-defun openai-moderation-create ( input callback
+                                     &key
+                                     (key openai-key)
+                                     (model "text-moderation-latest"))
   "Classifies if text violates OpenAI's Content Policy.
 
 Argument INPUT is the text to classify.

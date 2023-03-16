@@ -34,7 +34,9 @@
 ;;
 ;;; API
 
-(defun openai-engine-list (callback)
+(cl-defun openai-engine-list ( callback
+                               &key
+                               (key openai-key))
   "Lists the currently available (non-finetuned) models, and provides basic
 information about each one such as the owner and availability.
 
@@ -42,13 +44,15 @@ The argument CALLBACK is execuated after request is made."
   (openai-request "https://api.openai.com/v1/engines"
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
+               ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(defun openai-engine-retrieve (engine-id callback)
+(cl-defun openai-engine-retrieve ( engine-id callback
+                                   &key
+                                   (key openai-key))
   "Retrieves a model instance, providing basic information about it such as the
 owner and availability.
 
@@ -58,7 +62,7 @@ The argument CALLBACK is execuated after request is made."
   (openai-request (format "https://api.openai.com/v1/engines/%s" engine-id)
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
+               ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)

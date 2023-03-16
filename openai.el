@@ -35,6 +35,7 @@
 (require 'let-alist)
 (require 'pcase)
 (require 'pp)
+(require 'json)
 
 (require 'request)
 (require 'tblui)
@@ -45,16 +46,21 @@
   :group 'comm
   :link '(url-link :tag "Repository" "https://github.com/emacs-openai/openai"))
 
-(defcustom openai-key ""
-  "Generated API key."
-  :type 'list
-  :group 'openai)
+(defvar openai-key ""
+  "Generated API key.")
 
-(defcustom openai-user ""
+(defvar openai-user ""
   "A unique identifier representing your end-user, which can help OpenAI to
-monitor and detect abuse."
-  :type 'string
-  :group 'openai)
+monitor and detect abuse.")
+
+(defun openai--json-encode (object)
+  "Wrapper for function `json-encode' but it removes `nil' value before
+constructing JSON data.
+
+The argument OBJECT is an alist that can be construct to JSON data; see function
+`json-encode' for the detials."
+  (let ((object (cl-remove-if-not (lambda (pair) (cdr pair)) object)))
+    (json-encode object)))
 
 (defun openai--handle-error (response)
   "Handle error status code from the RESPONSE.

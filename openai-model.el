@@ -29,23 +29,27 @@
 ;;
 ;;; API
 
-(defun openai-models (callback)
+(cl-defun openai-models ( callback
+                          &key
+                          (key openai-key))
   "Return models data and execute the CALLBACK."
   (openai-request "https://api.openai.com/v1/models"
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
+               ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(defun openai-model (model callback)
+(cl-defun openai-model ( model callback
+                         &key
+                         (key openai-key))
   "Return MODEL data and execute the CALLBACK."
   (openai-request (format "https://api.openai.com/v1/models/%s" model)
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
+               ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)

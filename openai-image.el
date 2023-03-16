@@ -58,46 +58,66 @@ Must be a valid PNG file, less than 4MB, and have the same dimensions as image."
 ;;
 ;;; API
 
-(defun openai-image (query callback)
-  "Create image with QUERY.
+(cl-defun openai-image ( prompt callback
+                         &key
+                         (key openai-key)
+                         n
+                         size
+                         response-format
+                         (user openai-user))
+  "Send create image request.
 
 Argument CALLBACK is function with data pass in."
   (openai-request "https://api.openai.com/v1/images/generations"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
-           `(("prompt"          . ,query)
-             ("n"               . ,openai-image-n)
-             ("size"            . ,openai-image-size)
-             ("response_format" . ,openai-image-response-format)
-             ("user"            . ,openai-user)))
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
+           `(("prompt"          . ,prompt)
+             ("n"               . ,n)
+             ("size"            . ,size)
+             ("response_format" . ,response-format)
+             ("user"            . ,user)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(defun openai-image-edit (query callback)
-  "Create an edited or extended image given an original image and a QUERY.
+(cl-defun openai-image-edit ( prompt callback
+                              &key
+                              (key openai-key)
+                              mask
+                              n
+                              size
+                              response-format
+                              (user openai-user))
+  "Create an edited or extended image given an original image.
 
 Argument CALLBACK is function with data pass in."
   (openai-request "https://api.openai.com/v1/images/edits"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
-           `(("prompt"          . ,query)
-             ("mask"            . ,openai-image-mask)
-             ("n"               . ,openai-image-n)
-             ("size"            . ,openai-image-size)
-             ("response_format" . ,openai-image-response-format)
-             ("user"            . ,openai-user)))
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
+           `(("prompt"          . ,prompt)
+             ("mask"            . ,mask)
+             ("n"               . ,n)
+             ("size"            . ,size)
+             ("response_format" . ,response-format)
+             ("user"            . ,user)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(defun openai-image-variation (image callback)
+(cl-defun openai-image-variation ( image callback
+                                   &key
+                                   (key openai-key)
+                                   mask
+                                   n
+                                   size
+                                   response-format
+                                   (user openai-user))
   "Create an edited or extended image given an original IMAGE.
 
 Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
@@ -108,14 +128,14 @@ the mask."
   (openai-request "https://api.openai.com/v1/images/variations"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
            `(("image"           . ,image)
-             ("mask"            . ,openai-image-mask)
-             ("n"               . ,openai-image-n)
-             ("size"            . ,openai-image-size)
-             ("response_format" . ,openai-image-response-format)
-             ("user"            . ,openai-user)))
+             ("mask"            . ,mask)
+             ("n"               . ,n)
+             ("size"            . ,size)
+             ("response_format" . ,response-format)
+             ("user"            . ,user)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)

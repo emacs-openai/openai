@@ -63,7 +63,8 @@ a function with a `query` and a callback function.
 
 ### 📨 Sending Request
 
-Most arguments are exposed in the argument list (excepts the required one).
+All arguments are exposed in the argument list, so you can send any request in
+any way you want.
 
 For example, the request function `openai-completion` accepts argument
 `max-tokens`. By seeing OpenAI's references page:
@@ -99,6 +100,21 @@ For example:
 - `openai` - is the package name
 - `file` - is the api type, see [OpenAI API reference](https://platform.openai.com/docs/api-reference/introduction)
 - `list` - is the request name
+
+#### Parameters
+
+The function's parameters are followed in this order:
+
+1. required - variables are required for this type of request
+2. `callback` - execution after the request is made
+3. optional - other variables that are not required, but will affect the final output
+
+```elisp
+(openai-completion "How are you?"          ; required
+                   (lambda (data)          ; callback
+                     ...)
+                   :max-tokens 4069)       ; optional
+```
 
 ## 🔗 References
 

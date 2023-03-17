@@ -47,6 +47,17 @@
   :link '(url-link :tag "Repository" "https://github.com/emacs-openai/openai"))
 
 ;;
+;;; Logger
+
+(defvar openai--show-log nil
+  "Get more information from the program.")
+
+(defun openai--log (fmt &rest args)
+  "Debug message like function `message' with same argument FMT and ARGS."
+  (when openai--show-log
+    (apply 'message fmt args)))
+
+;;
 ;;; Request
 
 (defvar openai-key ""
@@ -62,8 +73,15 @@ constructing JSON data.
 
 The argument OBJECT is an alist that can be construct to JSON data; see function
 `json-encode' for the detials."
-  (let ((object (cl-remove-if-not (lambda (pair) (cdr pair)) object)))
-    (json-encode object)))
+  (let* ((object (cl-remove-if (lambda (pair)
+                                 (let ((value (cdr pair)))
+                                   (or (null value)          ; ignore null
+                                       (and (stringp value)  ; ignore empty string
+                                            (string-empty-p value)))))
+                               object))
+         (encoded (json-encode object)))
+    (openai--log "[ENCODED]: %s" encoded)
+    encoded))
 
 (defun openai--handle-error (response)
   "Handle error status code from the RESPONSE.

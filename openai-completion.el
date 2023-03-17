@@ -108,7 +108,9 @@ START and END are selected region boundaries."
            (fill-region original-point (point))
            ;; Highlight the region!
            (call-interactively #'set-mark-command)
-           (goto-char (1+ original-point))))))))
+           (goto-char (1+ original-point)))))
+     :max-tokens openai-max-tokens
+     :temperature openai-temperature)))
 
 ;;;###autoload
 (defun openai-completion-buffer-insert ()

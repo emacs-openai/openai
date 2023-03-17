@@ -46,6 +46,9 @@
   :group 'comm
   :link '(url-link :tag "Repository" "https://github.com/emacs-openai/openai"))
 
+;;
+;;; Request
+
 (defvar openai-key ""
   "Generated API key.")
 
@@ -86,6 +89,22 @@ The URL is the url for `request' function; then BODY is the arguments for rest."
                (lambda (&key response &allow-other-keys)
                  (openai--handle-error response)))
        ,@body)))
+
+;;
+;;; Application
+
+;; XXX(everyone): This section is only for application use, and will not be used
+;; as the default value anymore!
+
+(defcustom openai-max-tokens 4000
+  "The maximum number of tokens to generate in the completion."
+  :type 'integer
+  :group 'openai)
+
+(defcustom openai-temperature 1.0
+  "What sampling temperature to use."
+  :type 'number
+  :group 'openai)
 
 ;;
 ;;; Util

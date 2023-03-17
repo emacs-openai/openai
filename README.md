@@ -44,6 +44,12 @@ For requests that need your user identifier,
 (setq openai-user "[YOUR USER UID]")
 ```
 
+> 💡 Information
+>
+> The two variables `openai-key` and `openai-user` are the default values for
+> sending requests! However, you can still overwrite the value by passing the
+> keywords `:key` and `:user`!
+
 ### 🔰 The simplest example
 
 Here is the simplest example that teaches you how to use this library. This is 

@@ -19,14 +19,13 @@ interactable commands you can use, and those are mostly examples.*
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
-- [OpenAI.el](#openaiel)
-  - [📚 Documentation](#📚-documentation)
-  - [🔨 Usage](#🔨-usage)
-    - [🔰 The simplest example](#🔰-the-simplest-example)
-    - [📨 Sending Request](#📨-sending-request)
-    - [📢 API functions](#📢-api-functions)
-  - [🔗 References](#🔗-references)
-  - [Contribute](#contribute)
+- [🔨 Usage](#🔨-usage)
+  - [🔰 The simplest example](#🔰-the-simplest-example)
+  - [📨 Sending Request](#📨-sending-request)
+  - [📢 API functions](#📢-api-functions)
+    - [🔍 Parameters](#🔍-parameters)
+- [🔗 References](#🔗-references)
+- [Contribute](#contribute)
 
 <!-- markdown-toc end -->
 
@@ -101,7 +100,7 @@ For example:
 - `file` - is the api type, see [OpenAI API reference](https://platform.openai.com/docs/api-reference/introduction)
 - `list` - is the request name
 
-#### Parameters
+#### 🔍 Parameters
 
 The function's parameters are followed in this order:
 

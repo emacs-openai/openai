@@ -28,33 +28,6 @@
 
 (require 'openai)
 
-(defcustom openai-image-n 1
-  "The number of images to generate.  Must be between 1 and 10."
-  :type 'integer
-  :group 'openai)
-
-(defcustom openai-image-size "1024x1024"
-  "The size of the generated images.
-
-Must be one of `256x256', `512x512', or `1024x1024'."
-  :type 'string
-  :group 'openai)
-
-(defcustom openai-image-response-format "url"
-  "The format in which the generated images are returned.
-
-Must be one of `url' or `b64_json'."
-  :type 'string
-  :group 'openai)
-
-(defcustom openai-image-mask nil
-  "An additional image whose fully transparent areas (e.g. where alpha is zero)
-indicate where image should be edited.
-
-Must be a valid PNG file, less than 4MB, and have the same dimensions as image."
-  :type 'string
-  :group 'openai)
-
 ;;
 ;;; API
 
@@ -152,6 +125,25 @@ the mask."
 ;;
 ;;; Application
 
+(defcustom openai-image-n 1
+  "The number of images to generate.  Must be between 1 and 10."
+  :type 'integer
+  :group 'openai)
+
+(defcustom openai-image-size "1024x1024"
+  "The size of the generated images.
+
+Must be one of `256x256', `512x512', or `1024x1024'."
+  :type 'string
+  :group 'openai)
+
+(defcustom openai-image-response-format "url"
+  "The format in which the generated images are returned.
+
+Must be one of `url' or `b64_json'."
+  :type 'string
+  :group 'openai)
+
 (defvar openai-image-entries nil
   "Async images entries.")
 
@@ -162,11 +154,11 @@ the mask."
  nil)
 
 ;;;###autoload
-(defun openai-image-prompt (query)
-  "Prompt to ask for image QUERY, and display result in a buffer."
+(defun openai-image-prompt (prompt)
+  "Use PROMPT to ask for image, and display result in a buffer."
   (interactive (list (read-string "Describe image: ")))
   (setq openai-image-entries nil)
-  (openai-image query
+  (openai-image prompt
                 (lambda (data)
                   (let ((id 0))
                     (let-alist data
@@ -177,14 +169,17 @@ the mask."
                                       openai-image-entries)
                                 (cl-incf id)))
                             .data)))
-                  (openai-image-goto-ui))))
+                  (openai-image-goto-ui)
+                  :size openai-image-size
+                  :n openai-image-n
+                  :response-format openai-image-response-format)))
 
 ;;;###autoload
-(defun openai-image-edit-prompt (query)
-  "Prompt to ask for image QUERY, and display result in a buffer."
+(defun openai-image-edit-prompt (prompt)
+  "Use PROMPT to ask for image, and display result in a buffer."
   (interactive (list (read-string "Describe image: ")))
   (setq openai-image-entries nil)
-  (openai-image-edit query
+  (openai-image-edit prompt
                      (lambda (data)
                        (let ((id 0))
                          (let-alist data
@@ -195,7 +190,10 @@ the mask."
                                            openai-image-entries)
                                      (cl-incf id)))
                                  .data)))
-                       (openai-image-goto-ui))))
+                       (openai-image-goto-ui))
+                     :size openai-image-size
+                     :n openai-image-n
+                     :response-format openai-image-response-format))
 
 ;;;###autoload
 (defun openai-image-variation-prompt (image)
@@ -214,7 +212,10 @@ the mask."
                                                 openai-image-entries)
                                           (cl-incf id)))
                                       .data)))
-                            (openai-image-goto-ui))))
+                            (openai-image-goto-ui))
+                          :size openai-image-size
+                          :n openai-image-n
+                          :response-format openai-image-response-format))
 
 (provide 'openai-image)
 ;;; openai-image.el ends here

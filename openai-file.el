@@ -37,7 +37,10 @@
                              (key openai-key))
   "Return a list of files that belong to the user's organization.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
@@ -63,7 +66,10 @@ The argument PURPOSE is the intended purpose of the uploaded documents.
 Use \"fine-tune\" for Fine-tuning. This allows us to validate the format of the
 uploaded file.
 
-Argument CALLBACK is function with data pass in."
+Argument CALLBACK is function with data pass in.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
@@ -83,7 +89,10 @@ Argument CALLBACK is function with data pass in."
 
 The arument FILE-ID is id of the file to use for this request.
 
-Argument CALLBACK is function with data pass in."
+Argument CALLBACK is function with data pass in.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "DELETE"
     :headers `(("Content-Type"  . "application/json")
@@ -102,7 +111,10 @@ Argument CALLBACK is function with data pass in."
 
 The arument FILE-ID is id of the file to use for this request.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request (format "https://api.openai.com/v1/files/%s" file-id)
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
@@ -121,7 +133,10 @@ The argument CALLBACK is execuated after request is made."
 
 The arument FILE-ID is id of the file to use for this request.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request (format "https://api.openai.com/v1/files/%s/content" file-id)
     :type "GET"
     :headers `(("Content-Type"  . "application/json")

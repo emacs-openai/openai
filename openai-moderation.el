@@ -40,7 +40,10 @@
 
 Argument INPUT is the text to classify.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global options; however, you can overwrite the value by passing
+it in."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")

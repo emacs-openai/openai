@@ -53,7 +53,16 @@ of the fine-tuned models once complete.
 The argument TRAINING-FILE is the ID of an uploaded file that contains training
 data.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in.
+
+The rest of the arugments are optional, please see OpenAI API reference page
+for more information.  Arguments here refer to MODEL, VALIDATION-FILE, N-EPOCHS,
+BATCH-SIZE, LEARNING-RATE-MULTIPLIER, PROMPT-LOSS-WEIGHT,
+COMPUTE-CLASSIFICATION-METRICS, CLASSIFICATION-N-CLASSES,
+CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, and SUFFIX"
   (openai-request "https://api.openai.com/v1/fine-tunes"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")

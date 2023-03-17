@@ -91,22 +91,6 @@ The URL is the url for `request' function; then BODY is the arguments for rest."
        ,@body)))
 
 ;;
-;;; Application
-
-;; XXX(everyone): This section is only for application use, and will not be used
-;; as the default value anymore!
-
-(defcustom openai-max-tokens 4000
-  "The maximum number of tokens to generate in the completion."
-  :type 'integer
-  :group 'openai)
-
-(defcustom openai-temperature 1.0
-  "What sampling temperature to use."
-  :type 'number
-  :group 'openai)
-
-;;
 ;;; Util
 
 (defcustom openai-annotation-ratio 2.5

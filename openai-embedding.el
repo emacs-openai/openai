@@ -44,7 +44,13 @@ To get embeddings for multiple inputs in a single request, pass an array of
 strings or array of token arrays. Each input must not exceed 8192 tokens in
 length.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY and USER are global options; however, you can overwrite the value
+by passing it in.
+
+The rest of the arugments are optional, please see OpenAI API reference page
+for more information.  Arguments here refer to MODEL."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")

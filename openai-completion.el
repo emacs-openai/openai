@@ -50,7 +50,19 @@
                               best-of
                               logit-bias
                               (user openai-user))
-  "Send completion request."
+  "Send completion request.
+
+Arguments PROMPT and CALLBACK are required for this type of request. PROMPT is
+either the question or instruction to OpenAI.  CALLBACK is the execuation after
+request is made.
+
+Arguments KEY and USER are global options; however, you can overwrite the value
+by passing it in.
+
+The rest of the arugments are optional, please see OpenAI API reference page
+for more information.  Arguments here refer to MODEL, SUFFIX, MAX-TOKENS,
+TEMPERATURE, TOP-P, N, STREAM, LOGPROBS, ECHO, STOP, PRESENCE-PENALTY,
+FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
   (openai-request "https://api.openai.com/v1/completions"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
@@ -79,6 +91,16 @@
 
 ;;
 ;;; Application
+
+(defcustom openai-completion-max-tokens 4000
+  "The maximum number of tokens to generate in the completion."
+  :type 'integer
+  :group 'openai)
+
+(defcustom openai-completion-temperature 1.0
+  "What sampling temperature to use."
+  :type 'number
+  :group 'openai)
 
 ;;;###autoload
 (defun openai-completion-select-insert (start end)
@@ -109,8 +131,8 @@ START and END are selected region boundaries."
            ;; Highlight the region!
            (call-interactively #'set-mark-command)
            (goto-char (1+ original-point)))))
-     :max-tokens openai-max-tokens
-     :temperature openai-temperature)))
+     :max-tokens openai-completion-max-tokens
+     :temperature openai-completion-temperature)))
 
 ;;;###autoload
 (defun openai-completion-buffer-insert ()

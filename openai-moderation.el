@@ -48,7 +48,7 @@ it in."
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
-    :data (json-encode
+    :data (openai--json-encode
            `(("model" . ,model)
              ("input" . ,input)))
     :parser 'json-read

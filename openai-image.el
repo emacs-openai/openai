@@ -28,6 +28,103 @@
 
 (require 'openai)
 
+;;
+;;; API
+
+(cl-defun openai-image ( prompt callback
+                         &key
+                         (key openai-key)
+                         n
+                         size
+                         response-format
+                         (user openai-user))
+  "Send create image request.
+
+Argument CALLBACK is function with data pass in."
+  (openai-request "https://api.openai.com/v1/images/generations"
+    :type "POST"
+    :headers `(("Content-Type"  . "application/json")
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
+           `(("prompt"          . ,prompt)
+             ("n"               . ,n)
+             ("size"            . ,size)
+             ("response_format" . ,response-format)
+             ("user"            . ,user)))
+    :parser 'json-read
+    :success (cl-function
+              (lambda (&key data &allow-other-keys)
+                (funcall callback data)))))
+
+(cl-defun openai-image-edit ( prompt callback
+                              &key
+                              (key openai-key)
+                              mask
+                              n
+                              size
+                              response-format
+                              (user openai-user))
+  "Create an edited or extended image given an original image.
+
+Argument CALLBACK is function with data pass in."
+  (openai-request "https://api.openai.com/v1/images/edits"
+    :type "POST"
+    :headers `(("Content-Type"  . "application/json")
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
+           `(("prompt"          . ,prompt)
+             ("mask"            . ,mask)
+             ("n"               . ,n)
+             ("size"            . ,size)
+             ("response_format" . ,response-format)
+             ("user"            . ,user)))
+    :parser 'json-read
+    :success (cl-function
+              (lambda (&key data &allow-other-keys)
+                (funcall callback data)))))
+
+(cl-defun openai-image-variation ( image callback
+                                   &key
+                                   (key openai-key)
+                                   mask
+                                   n
+                                   size
+                                   response-format
+                                   (user openai-user))
+  "Create an edited or extended image given an original IMAGE.
+
+Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
+a valid PNG file, less than 4MB, and square.
+
+If mask is not provided, image must have transparency, which will be used as
+the mask."
+  (openai-request "https://api.openai.com/v1/images/variations"
+    :type "POST"
+    :headers `(("Content-Type"  . "application/json")
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
+           `(("image"           . ,image)
+             ("mask"            . ,mask)
+             ("n"               . ,n)
+             ("size"            . ,size)
+             ("response_format" . ,response-format)
+             ("user"            . ,user)))
+    :parser 'json-read
+    :success (cl-function
+              (lambda (&key data &allow-other-keys)
+                (funcall callback data)))))
+
+;;
+;;; Util
+
+(defun openai--select-png-files (candidate)
+  "Return t if CANDIDATE is either directory or a PNG file."
+  (or (string-suffix-p ".png" candidate t)  ; only support png
+      (file-directory-p candidate)))        ; allow navigation
+
+;;
+;;; Application
+
 (defcustom openai-image-n 1
   "The number of images to generate.  Must be between 1 and 10."
   :type 'integer
@@ -47,91 +144,6 @@ Must be one of `url' or `b64_json'."
   :type 'string
   :group 'openai)
 
-(defcustom openai-image-mask nil
-  "An additional image whose fully transparent areas (e.g. where alpha is zero)
-indicate where image should be edited.
-
-Must be a valid PNG file, less than 4MB, and have the same dimensions as image."
-  :type 'string
-  :group 'openai)
-
-;;
-;;; API
-
-(defun openai-image (query callback)
-  "Create image with QUERY.
-
-Argument CALLBACK is function with data pass in."
-  (openai-request "https://api.openai.com/v1/images/generations"
-    :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
-           `(("prompt"          . ,query)
-             ("n"               . ,openai-image-n)
-             ("size"            . ,openai-image-size)
-             ("response_format" . ,openai-image-response-format)
-             ("user"            . ,openai-user)))
-    :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
-
-(defun openai-image-edit (query callback)
-  "Create an edited or extended image given an original image and a QUERY.
-
-Argument CALLBACK is function with data pass in."
-  (openai-request "https://api.openai.com/v1/images/edits"
-    :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
-           `(("prompt"          . ,query)
-             ("mask"            . ,openai-image-mask)
-             ("n"               . ,openai-image-n)
-             ("size"            . ,openai-image-size)
-             ("response_format" . ,openai-image-response-format)
-             ("user"            . ,openai-user)))
-    :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
-
-(defun openai-image-variation (image callback)
-  "Create an edited or extended image given an original IMAGE.
-
-Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
-a valid PNG file, less than 4MB, and square.
-
-If mask is not provided, image must have transparency, which will be used as
-the mask."
-  (openai-request "https://api.openai.com/v1/images/variations"
-    :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
-           `(("image"           . ,image)
-             ("mask"            . ,openai-image-mask)
-             ("n"               . ,openai-image-n)
-             ("size"            . ,openai-image-size)
-             ("response_format" . ,openai-image-response-format)
-             ("user"            . ,openai-user)))
-    :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
-
-;;
-;;; Util
-
-(defun openai--select-png-files (candidate)
-  "Return t if CANDIDATE is either directory or a PNG file."
-  (or (string-suffix-p ".png" candidate t)  ; only support png
-      (file-directory-p candidate)))        ; allow navigation
-
-;;
-;;; Application
-
 (defvar openai-image-entries nil
   "Async images entries.")
 
@@ -142,11 +154,11 @@ the mask."
  nil)
 
 ;;;###autoload
-(defun openai-image-prompt (query)
-  "Prompt to ask for image QUERY, and display result in a buffer."
+(defun openai-image-prompt (prompt)
+  "Use PROMPT to ask for image, and display result in a buffer."
   (interactive (list (read-string "Describe image: ")))
   (setq openai-image-entries nil)
-  (openai-image query
+  (openai-image prompt
                 (lambda (data)
                   (let ((id 0))
                     (let-alist data
@@ -157,14 +169,17 @@ the mask."
                                       openai-image-entries)
                                 (cl-incf id)))
                             .data)))
-                  (openai-image-goto-ui))))
+                  (openai-image-goto-ui)
+                  :size openai-image-size
+                  :n openai-image-n
+                  :response-format openai-image-response-format)))
 
 ;;;###autoload
-(defun openai-image-edit-prompt (query)
-  "Prompt to ask for image QUERY, and display result in a buffer."
+(defun openai-image-edit-prompt (prompt)
+  "Use PROMPT to ask for image, and display result in a buffer."
   (interactive (list (read-string "Describe image: ")))
   (setq openai-image-entries nil)
-  (openai-image-edit query
+  (openai-image-edit prompt
                      (lambda (data)
                        (let ((id 0))
                          (let-alist data
@@ -175,7 +190,10 @@ the mask."
                                            openai-image-entries)
                                      (cl-incf id)))
                                  .data)))
-                       (openai-image-goto-ui))))
+                       (openai-image-goto-ui))
+                     :size openai-image-size
+                     :n openai-image-n
+                     :response-format openai-image-response-format))
 
 ;;;###autoload
 (defun openai-image-variation-prompt (image)
@@ -194,7 +212,10 @@ the mask."
                                                 openai-image-entries)
                                           (cl-incf id)))
                                       .data)))
-                            (openai-image-goto-ui))))
+                            (openai-image-goto-ui))
+                          :size openai-image-size
+                          :n openai-image-n
+                          :response-format openai-image-response-format))
 
 (provide 'openai-image)
 ;;; openai-image.el ends here

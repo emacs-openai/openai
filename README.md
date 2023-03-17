@@ -22,10 +22,9 @@ interactable commands you can use, and those are mostly examples.*
 - [OpenAI.el](#openaiel)
   - [📚 Documentation](#📚-documentation)
   - [🔨 Usage](#🔨-usage)
-    - [The simplest example](#the-simplest-example)
-    - [📝 Customization](#📝-customization)
+    - [🔰 The simplest example](#🔰-the-simplest-example)
+    - [📨 Sending Request](#📨-sending-request)
     - [📢 API functions](#📢-api-functions)
-    - [🖥 Setting Model](#🖥-setting-model)
   - [🔗 References](#🔗-references)
   - [Contribute](#contribute)
 
@@ -39,7 +38,19 @@ You will need to set up your API key before you can use this library.
 (setq openai-key "[YOUR API KEY]")
 ```
 
-### The simplest example
+For requests that need your user identifier,
+
+```elisp
+(setq openai-user "[YOUR USER UID]")
+```
+
+> 💡 Tip
+>
+> The two variables `openai-key` and `openai-user` are the default values for
+> sending requests! However, you can still overwrite the value by passing the
+> keywords `:key` and `:user`!
+
+### 🔰 The simplest example
 
 Here is the simplest example that teaches you how to use this library. This is 
 a function with a `query` and a callback function.
@@ -50,37 +61,25 @@ a function with a `query` and a callback function.
                      (message "%s" data)))
 ```
 
-### 📝 Customization
+### 📨 Sending Request
 
-Most arguments are extracted (excepts the required one) as global variables.
-For example, one variable `openai-completon-n` is defined in `openai-completion.el`
-file. That variable is used for the completion request, for more information see
-https://beta.openai.com/docs/api-reference/completions. The naming convention is
-by the following pattern:
+Most arguments are exposed in the argument list (excepts the required one).
 
-```
-[PACKAGE NAME]-[API TYPE]-[NAME OF THE ARGUMENT]
-```
+For example, the request function `openai-completion` accepts argument
+`max-tokens`. By seeing OpenAI's references page:
 
-For example:
-
-```elisp
-(setq openai-edit-temperature 1)
-```
-
-- `openai` - is the package name
-- `edit` - is the api type, see [OpenAI API reference](https://platform.openai.com/docs/api-reference/introduction)
-- `temperature` - is the argument for the [Edit](https://platform.openai.com/docs/api-reference/edits) request.
-
-You can change the model for a single request without changing its global value.
+> `max_tokens`  integer  Optional  Defaults to 16
+>
+> The maximum number of tokens to generate in the completion.
+>
+> The token count of your prompt plus `max_tokens` cannot exceed the model's
+> context length. Most models have a context length of 2048 tokens (except for
+> the newest models, which support 4096).
 
 ```elisp
-(let ((openai-edit-model "text-davinci-edit-001")  ; use another model for this request,
-      (openai-edit-n 3))                           ; and i want three outcomes
-  (openai-edit-create "What day of the wek is it?"
-                      "Fix the spelling mistakes"
-                      (lambda (data)
-                        (message "%s" data))))
+(openai-completion ...
+                   ...
+                   :max-tokens 4069)  ; max out tokens!
 ```
 
 ### 📢 API functions
@@ -100,17 +99,6 @@ For example:
 - `openai` - is the package name
 - `file` - is the api type, see [OpenAI API reference](https://platform.openai.com/docs/api-reference/introduction)
 - `list` - is the request name
-
-### 🖥 Setting Model
-
-You can also choose which model you want to use by going to the 
-[api](https://api.openai.com/v1/models) website and looking at the id's. 
-For code usage you probably want something that starts with `code-` whereas 
-with more text related files you'll likely want something starting with `text-`.
-
-```elisp
-(setq openai-completion-model "NAME-HERE")
-```
 
 ## 🔗 References
 

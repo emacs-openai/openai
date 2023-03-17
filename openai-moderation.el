@@ -29,33 +29,27 @@
 
 (require 'openai)
 
-(defcustom openai-moderation-model "text-moderation-latest"
-  "Two content moderations models are available: `text-moderation-stable' and
-`text-moderation-latest'.
-
-The default is text-moderation-latest which will be automatically upgraded over
-time.  This ensures you are always using our most accurate model.  If you use
-`text-moderation-stable', we will provide advanced notice before updating the
-model.  Accuracy of `text-moderation-stable' may be slightly lower than for
-`text-moderation-latest'."
-  :type 'string
-  :group 'openai)
-
 ;;
 ;;; API
 
-(defun openai-moderation-create (input callback)
+(cl-defun openai-moderation-create ( input callback
+                                     &key
+                                     (key openai-key)
+                                     (model "text-moderation-latest"))
   "Classifies if text violates OpenAI's Content Policy.
 
 Argument INPUT is the text to classify.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global options; however, you can overwrite the value by passing
+it in."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
-           `(("model" . ,openai-moderation-model)
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
+           `(("model" . ,model)
              ("input" . ,input)))
     :parser 'json-read
     :success (cl-function

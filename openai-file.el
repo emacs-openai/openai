@@ -32,20 +32,27 @@
 ;;
 ;;; API
 
-(defun openai-file-list (callback)
+(cl-defun openai-file-list ( callback
+                             &key
+                             (key openai-key))
   "Return a list of files that belong to the user's organization.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
+               ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(defun openai-file-upload (file purpose callback)
+(cl-defun openai-file-upload ( file purpose callback
+                               &key
+                               (key openai-key))
   "Upload a file that contain document(s) to be used across various
 endpoints/features.
 
@@ -59,12 +66,15 @@ The argument PURPOSE is the intended purpose of the uploaded documents.
 Use \"fine-tune\" for Fine-tuning. This allows us to validate the format of the
 uploaded file.
 
-Argument CALLBACK is function with data pass in."
+Argument CALLBACK is function with data pass in.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
            `(("file"    . ,file)
              ("purpose" . ,purpose)))
     :parser 'json-read
@@ -72,51 +82,66 @@ Argument CALLBACK is function with data pass in."
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(defun openai-file-delete (file-id callback)
+(cl-defun openai-file-delete ( file-id callback
+                               &key
+                               (key openai-key))
   "Delete a file.
 
 The arument FILE-ID is id of the file to use for this request.
 
-Argument CALLBACK is function with data pass in."
+Argument CALLBACK is function with data pass in.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "DELETE"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
            `(("file_id" . ,file-id)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(defun openai-file-retrieve (file-id callback)
+(cl-defun openai-file-retrieve ( file-id callback
+                                 &key
+                                 (key openai-key))
   "Return information about a specific file.
 
 The arument FILE-ID is id of the file to use for this request.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request (format "https://api.openai.com/v1/files/%s" file-id)
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
            `(("file_id" . ,file-id)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(defun openai-file-retrieve-content (file-id callback)
+(cl-defun openai-file-retrieve-content ( file-id callback
+                                         &key
+                                         (key openai-key))
   "Return the contents of the specified file
 
 The arument FILE-ID is id of the file to use for this request.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY is global option; however, you can overwrite the value by passing
+it in."
   (openai-request (format "https://api.openai.com/v1/files/%s/content" file-id)
     :type "GET"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
            `(("file_id" . ,file-id)))
     :parser 'json-read
     :success (cl-function

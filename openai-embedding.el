@@ -29,15 +29,14 @@
 
 (require 'openai)
 
-(defcustom openai-embedding-model "text-embedding-ada-002"
-  "ID of the model to use."
-  :type 'string
-  :group 'openai)
-
 ;;
 ;;; API
 
-(defun openai-embedding-create (input callback)
+(cl-defun openai-embedding-create ( input callback
+                                    &key
+                                    (key openai-key)
+                                    (model "text-embedding-ada-002")
+                                    (user openai-user))
   "Creates an embedding vector representing the input text.
 
 INPUT text to get embeddings for, encoded as a string or array of tokens.
@@ -45,15 +44,21 @@ To get embeddings for multiple inputs in a single request, pass an array of
 strings or array of token arrays. Each input must not exceed 8192 tokens in
 length.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments KEY and USER are global options; however, you can overwrite the value
+by passing it in.
+
+The rest of the arugments are optional, please see OpenAI API reference page
+for more information.  Arguments here refer to MODEL."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " openai-key)))
-    :data (json-encode
-           `(("model" . ,openai-embedding-model)
+               ("Authorization" . ,(concat "Bearer " key)))
+    :data (openai--json-encode
+           `(("model" . ,model)
              ("input" . ,input)
-             ("user"  . ,openai-user)))
+             ("user"  . ,user)))
     :parser 'json-read
     :success (cl-function
               (lambda (&key data &allow-other-keys)

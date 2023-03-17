@@ -52,7 +52,7 @@
                               (user openai-user))
   "Send completion request.
 
-Arguments PROMPT and CALLBACK are required for this type of request. PROMPT is
+Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
 either the question or instruction to OpenAI.  CALLBACK is the execuation after
 request is made.
 

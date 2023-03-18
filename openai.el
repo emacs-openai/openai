@@ -88,6 +88,7 @@ The argument OBJECT is an alist that can be construct to JSON data; see function
 
 See https://beta.openai.com/docs/guides/error-codes/api-errors."
   (let ((status-code (request-response-status-code response)))
+    (openai--log "[ERROR]: %s" response)
     (pcase status-code
       (400 (error "400 - Bad request.  Please check error message and your parameters"))
       (401 (error "401 - Invalid Authentication"))

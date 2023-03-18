@@ -56,7 +56,7 @@ Argument CALLBACK is function with data pass in."
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
-(cl-defun openai-image-edit ( prompt callback
+(cl-defun openai-image-edit ( image prompt callback
                               &key
                               (key openai-key)
                               mask
@@ -64,15 +64,15 @@ Argument CALLBACK is function with data pass in."
                               size
                               response-format
                               (user openai-user))
-  "Create an edited or extended image given an original image.
+  "Creates an edited or extended image given an original IMAGE and a PROMPT.
 
 Argument CALLBACK is function with data pass in."
   (openai-request "https://api.openai.com/v1/images/edits"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers `(("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
-           `(("prompt"          . ,prompt)
+           `(("image"           . ,image)
+             ("prompt"          . ,prompt)
              ("mask"            . ,mask)
              ("n"               . ,n)
              ("size"            . ,size)
@@ -91,7 +91,7 @@ Argument CALLBACK is function with data pass in."
                                    size
                                    response-format
                                    (user openai-user))
-  "Create an edited or extended image given an original IMAGE.
+  "Creates a variation of a given IMAGE.
 
 Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
 a valid PNG file, less than 4MB, and square.
@@ -100,8 +100,7 @@ If mask is not provided, image must have transparency, which will be used as
 the mask."
   (openai-request "https://api.openai.com/v1/images/variations"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers `(("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("image"           . ,image)
              ("mask"            . ,mask)

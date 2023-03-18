@@ -8,7 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## 0.2.0 (Unreleased)
 > Released N/A
 
-* N/A
+* Add support for `Audio` requests (#9)
 
 ## 0.1.0
 > Released N/A

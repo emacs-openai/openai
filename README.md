@@ -24,7 +24,7 @@ interactable commands you can use, and those are mostly examples.*
   - [📨 Sending Request](#📨-sending-request)
   - [📢 API functions](#📢-api-functions)
     - [🔍 Parameters](#🔍-parameters)
-- [🖥 Setting Model](#🖥-setting-model)
+  - [🖥 Setting Model](#🖥-setting-model)
 - [🔗 References](#🔗-references)
 - [Contribute](#contribute)
 
@@ -116,7 +116,7 @@ The function's parameters are followed in this order:
                    :max-tokens 4069)       ; optional
 ```
 
-## 🖥 Setting Model
+### 🖥 Setting Model
 
 Every type of request has a default `model`, and we hope this benefits the users
 to not worry about what model to use for their request! However, if you want to

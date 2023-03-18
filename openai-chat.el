@@ -79,5 +79,40 @@ STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
               (lambda (&key data &allow-other-keys)
                 (funcall callback data)))))
 
+;;
+;;; Application
+
+(defcustom openai-chat-max-tokens 4000
+  "The maximum number of tokens to generate in the completion."
+  :type 'integer
+  :group 'openai)
+
+(defcustom openai-chat-temperature 1.0
+  "What sampling temperature to use."
+  :type 'number
+  :group 'openai)
+
+;;;###autoload
+(defun openai-chat-say ()
+  "Start making a conversation to OpenAI.
+
+This is a ping pong message, so you will only get one response."
+  (interactive)
+  (if-let* ((user (read-string "What is your name? " "user"))
+            (say  (read-string "Start the conversation: ")))
+      (openai-chat `[(("role"    . ,user)
+                      ("content" . ,say))]
+                   (lambda (data)
+                     (let ((choices (let-alist data .choices)))
+                       (mapc (lambda (choice)
+                               (let-alist choice
+                                 (let-alist .message
+                                   (message "%s: %s" .role (string-trim .content)))))
+                             choices)))
+                   :max-tokens openai-chat-max-tokens
+                   :temperature openai-chat-temperature
+                   :user (unless (string= user "user") user))
+    (user-error "Abort, canecel chat operation")))
+
 (provide 'openai-chat)
 ;;; openai-chat.el ends here

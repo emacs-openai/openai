@@ -173,5 +173,16 @@ Argument OPTIONS ia an alist use to calculate the frame offset."
         (t
          (completing-read "Response: " choices nil t))))
 
+;;
+;;; Testing
+
+;; The module here is for users to test to see some result.
+
+(defun openai-print-json-encode (object)
+  "Encode OBJECT to JSON format then print out the result."
+  (let ((encoded (openai--json-encode object)))
+    (message "%s" encoded)  ; don't pretty it, show the raw!
+    encoded))
+
 (provide 'openai)
 ;;; openai.el ends here

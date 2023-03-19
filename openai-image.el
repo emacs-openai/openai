@@ -38,9 +38,17 @@
                          size
                          response-format
                          (user openai-user))
-  "Send create image request.
+  "Creates an image given a PROMPT.
 
-Argument CALLBACK is function with data pass in."
+Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
+either the question or instruction to OpenAI.  CALLBACK is the execuation after
+request is made.
+
+Arguments KEY and USER are global options; however, you can overwrite the value
+by passing it in.
+
+The rest of the arugments are optional, please see OpenAI API reference page
+for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/generations"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
@@ -66,7 +74,16 @@ Argument CALLBACK is function with data pass in."
                               (user openai-user))
   "Creates an edited or extended image given an original IMAGE and a PROMPT.
 
-Argument CALLBACK is function with data pass in."
+Arguments IMAGE, PROMPT and CALLBACK are required for this type of request.
+PROMPT is a text description of the desired image(s).  IMAGE is the image file
+to edit.  CALLBACK is the execuation after request is made.
+
+Arguments KEY and USER are global options; however, you can overwrite the value
+by passing it in.
+
+The rest of the arugments are optional, please see OpenAI API reference page
+for more information.  Arguments here refer to MASK, N, SIZE, and
+RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/edits"
     :type "POST"
     :headers `(("Authorization" . ,(concat "Bearer " key)))
@@ -96,8 +113,12 @@ Argument CALLBACK is function with data pass in."
 Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
 a valid PNG file, less than 4MB, and square.
 
-If mask is not provided, image must have transparency, which will be used as
-the mask."
+Arguments KEY and USER are global options; however, you can overwrite the value
+by passing it in.
+
+The rest of the arugments are optional, please see OpenAI API reference page
+for more information.  Arguments here refer to MASK, N, SIZE, and
+RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/variations"
     :type "POST"
     :headers `(("Authorization" . ,(concat "Bearer " key)))
@@ -174,25 +195,28 @@ Must be one of `url' or `b64_json'."
                   :response-format openai-image-response-format)))
 
 ;;;###autoload
-(defun openai-image-edit-prompt (prompt)
-  "Use PROMPT to ask for image, and display result in a buffer."
-  (interactive (list (read-string "Describe image: ")))
+(defun openai-image-edit-prompt ()
+  "Use prompt to ask for image, and display result in a buffer."
+  (interactive)
   (setq openai-image-entries nil)
-  (openai-image-edit prompt
-                     (lambda (data)
-                       (let ((id 0))
-                         (let-alist data
-                           (mapc (lambda (images)
-                                   (dolist (image images)
-                                     (push (list (number-to-string id)
-                                                 (vector (cdr image)))
-                                           openai-image-entries)
-                                     (cl-incf id)))
-                                 .data)))
-                       (openai-image-goto-ui))
-                     :size openai-image-size
-                     :n openai-image-n
-                     :response-format openai-image-response-format))
+  (let ((image (read-file-name "Select image file: " nil nil t nil
+                               #'openai--select-png-files))
+        (prompt (read-string "Describe image: ")))
+    (openai-image-edit image prompt
+                       (lambda (data)
+                         (let ((id 0))
+                           (let-alist data
+                             (mapc (lambda (images)
+                                     (dolist (image images)
+                                       (push (list (number-to-string id)
+                                                   (vector (cdr image)))
+                                             openai-image-entries)
+                                       (cl-incf id)))
+                                   .data)))
+                         (openai-image-goto-ui))
+                       :size openai-image-size
+                       :n openai-image-n
+                       :response-format openai-image-response-format)))
 
 ;;;###autoload
 (defun openai-image-variation-prompt (image)

@@ -46,9 +46,9 @@ it in."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-file-upload ( file purpose callback
                                &key
@@ -78,9 +78,9 @@ it in."
            `(("file"    . ,file)
              ("purpose" . ,purpose)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-file-delete ( file-id callback
                                &key
@@ -100,9 +100,9 @@ it in."
     :data (openai--json-encode
            `(("file_id" . ,file-id)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-file-retrieve ( file-id callback
                                  &key
@@ -122,9 +122,9 @@ it in."
     :data (openai--json-encode
            `(("file_id" . ,file-id)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-file-retrieve-content ( file-id callback
                                          &key
@@ -144,9 +144,9 @@ it in."
     :data (openai--json-encode
            `(("file_id" . ,file-id)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 ;;
 ;;; Util

@@ -75,9 +75,9 @@ STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
              ("logit_bias"        . ,logit-bias)
              ("user"              . ,user)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 ;;
 ;;; Application

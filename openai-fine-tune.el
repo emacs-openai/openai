@@ -81,9 +81,9 @@ CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, and SUFFIX"
              ("classification_betas"           . ,classification-betas)
              ("suffix"                         . ,suffix)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-fine-tune-list ( callback
                                   &key
@@ -96,9 +96,9 @@ The argument CALLBACK is execuated after request is made."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-fine-tune-retrieve ( fine-tune-id callback
                                       &key
@@ -113,9 +113,9 @@ The argument CALLBACK is execuated after request is made."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-fine-tune-cancel ( fine-tune-id callback
                                     &key
@@ -130,9 +130,9 @@ The argument CALLBACK is execuated after request is made."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-fine-tune-list-events ( fine-tune-id callback
                                          &key
@@ -147,9 +147,9 @@ The argument CALLBACK is execuated after request is made."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-fine-tune-delete ( model callback
                                     &key
@@ -164,9 +164,9 @@ The argument CALLBACK is execuated after request is made."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 ;;
 ;;; Application

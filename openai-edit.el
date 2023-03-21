@@ -63,9 +63,9 @@ for more information.  Arguments here refer to TEMPERATURE, TOP-P, and N."
              ("top_p"       . ,top-p)
              ("n"           . ,n)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 ;;
 ;;; Application

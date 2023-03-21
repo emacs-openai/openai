@@ -52,9 +52,9 @@ it in."
            `(("model" . ,model)
              ("input" . ,input)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (provide 'openai-moderation)
 ;;; openai-moderation.el ends here

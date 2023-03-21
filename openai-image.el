@@ -60,9 +60,9 @@ for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
              ("response_format" . ,response-format)
              ("user"            . ,user)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-image-edit ( image prompt callback
                               &key
@@ -96,9 +96,9 @@ RESPONSE-FORMAT."
              ("response_format" . ,response-format)
              ("user"            . ,user)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-image-variation ( image callback
                                    &key
@@ -130,9 +130,9 @@ RESPONSE-FORMAT."
              ("response_format" . ,response-format)
              ("user"            . ,user)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 ;;
 ;;; Util

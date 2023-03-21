@@ -60,9 +60,9 @@ for more information.  Arguments here refer to MODEL."
              ("input" . ,input)
              ("user"  . ,user)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (provide 'openai-embedding)
 ;;; openai-embedding.el ends here

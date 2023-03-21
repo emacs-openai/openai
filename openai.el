@@ -90,11 +90,14 @@ See https://beta.openai.com/docs/guides/error-codes/api-errors."
   (let ((status-code (request-response-status-code response)))
     (openai--log "[ERROR]: %s" response)
     (pcase status-code
-      (400 (error "400 - Bad request.  Please check error message and your parameters"))
-      (401 (error "401 - Invalid Authentication"))
-      (429 (error "429 - Rate limit reached for requests"))
-      (500 (error "500 - The server had an error while processing your request"))
-      (_   (error "Internal error: %s" status-code)))))
+      (400 (message "400 - Bad request.  Please check error message and your parameters"))
+      (401 (message "401 - Invalid Authentication"))
+      (429 (message "429 - Rate limit reached for requests"))
+      (500 (message "500 - The server had an error while processing your request"))
+      (_   (message "Internal error: %s" status-code)))))
+
+(defvar openai-error nil
+  "Records for the last error.")
 
 (defmacro openai-request (url &rest body)
   "Wrapper for `request' function.
@@ -103,9 +106,11 @@ The URL is the url for `request' function; then BODY is the arguments for rest."
   (declare (indent 1))
   `(if (string-empty-p openai-key)
        (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key)
+     (setq openai-error nil)
      (request ,url
        :error (cl-function
                (lambda (&key response &allow-other-keys)
+                 (setq openai-error response)
                  (openai--handle-error response)))
        ,@body)))
 

@@ -25,6 +25,7 @@ interactable commands you can use, and those are mostly examples.*
   - [📢 API functions](#📢-api-functions)
     - [🔍 Parameters](#🔍-parameters)
   - [🖥 Setting Model](#🖥-setting-model)
+- [🛑 Debugging](#🛑-debugging)
 - [🔗 References](#🔗-references)
 - [Contribute](#contribute)
 
@@ -127,6 +128,16 @@ use other models, you can use the keyword `:model` to replace them!
                    ... 
                    :model "text-davinci-003")  ; replace the default model
 ```
+
+## 🛑 Debugging
+
+While playing through this library, you might see this error quite often.
+
+```
+400 - Bad request.  Please check error message and your parameters
+```
+
+Try set the variable `openai--show-log` to `t`, it will show more error messages.
 
 ## 🔗 References
 

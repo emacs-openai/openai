@@ -64,9 +64,9 @@ TEMPERATURE, and LANGUAGE."
              ("temperature"     . ,temperature)
              ("language"        . ,language)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 ;;;###autoload
 (cl-defun openai-audio-create-translation ( file callback
@@ -98,9 +98,9 @@ and TEMPERATURE."
              ("response_format" . ,response-format)
              ("temperature"     . ,temperature)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (provide 'openai-audio)
 ;;; openai-audio.el ends here

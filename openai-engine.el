@@ -49,9 +49,9 @@ it in."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 (cl-defun openai-engine-retrieve ( engine-id callback
                                    &key
@@ -70,9 +70,9 @@ it in."
     :headers `(("Content-Type"  . "application/json")
                ("Authorization" . ,(concat "Bearer " key)))
     :parser 'json-read
-    :success (cl-function
-              (lambda (&key data &allow-other-keys)
-                (funcall callback data)))))
+    :complete (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (funcall callback data)))))
 
 ;;
 ;;; Application

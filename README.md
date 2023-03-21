@@ -26,6 +26,7 @@ interactable commands you can use, and those are mostly examples.*
     - [🔍 Parameters](#🔍-parameters)
   - [🖥 Setting Model](#🖥-setting-model)
 - [🛑 Debugging](#🛑-debugging)
+- [📂 Example projects](#📂-example-projects)
 - [🔗 References](#🔗-references)
 - [Contribute](#contribute)
 
@@ -138,6 +139,11 @@ While playing through this library, you might see this error quite often.
 ```
 
 Try set the variable `openai--show-log` to `t`, it will show more error messages.
+
+## 📂 Example projects
+
+- [codegpt](https://github.com/emacs-openai/codegpt)
+- [chatgpt](https://github.com/emacs-openai/chatgpt)
 
 ## 🔗 References
 

@@ -144,6 +144,7 @@ Try set the variable `openai--show-log` to `t`, it will show more error messages
 
 - [codegpt](https://github.com/emacs-openai/codegpt)
 - [chatgpt](https://github.com/emacs-openai/chatgpt)
+- [dall-e](https://github.com/emacs-openai/dall-e)
 
 ## 🔗 References
 

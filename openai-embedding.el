@@ -34,7 +34,6 @@
 
 (cl-defun openai-embedding-create ( input callback
                                     &key
-                                    (key openai-key)
                                     (model "text-embedding-ada-002")
                                     (user openai-user))
   "Creates an embedding vector representing the input text.
@@ -53,13 +52,10 @@ The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("model" . ,model)
              ("input" . ,input)
              ("user"  . ,user)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

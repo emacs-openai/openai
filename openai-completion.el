@@ -34,7 +34,6 @@
 ;;;###autoload
 (cl-defun openai-completion ( prompt callback
                               &key
-                              (key openai-key)
                               (model "text-davinci-003")
                               suffix
                               max-tokens
@@ -65,8 +64,6 @@ TEMPERATURE, TOP-P, N, STREAM, LOGPROBS, ECHO, STOP, PRESENCE-PENALTY,
 FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
   (openai-request "https://api.openai.com/v1/completions"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("model"             . ,model)
              ("prompt"            . ,prompt)
@@ -84,7 +81,6 @@ FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
              ("best_of"           . ,best-of)
              ("logit_bias"        . ,logit-bias)
              ("user"              . ,user)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

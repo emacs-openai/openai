@@ -34,7 +34,6 @@
 ;;;###autoload
 (cl-defun openai-audio-create-transcription ( file callback
                                               &key
-                                              (key openai-key)
                                               (model "whisper-1")
                                               prompt
                                               response-format
@@ -54,8 +53,6 @@ for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 TEMPERATURE, and LANGUAGE."
   (openai-request "https://api.openai.com/v1/audio/transcriptions"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("model"           . ,model)
              ("file"            . ,file)
@@ -63,7 +60,6 @@ TEMPERATURE, and LANGUAGE."
              ("response_format" . ,response-format)
              ("temperature"     . ,temperature)
              ("language"        . ,language)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
@@ -71,7 +67,6 @@ TEMPERATURE, and LANGUAGE."
 ;;;###autoload
 (cl-defun openai-audio-create-translation ( file callback
                                             &key
-                                            (key openai-key)
                                             (model "whisper-1")
                                             prompt
                                             response-format
@@ -89,15 +84,12 @@ for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 and TEMPERATURE."
   (openai-request "https://api.openai.com/v1/audio/transcriptions"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("model"           . ,model)
              ("file"            . ,file)
              ("prompt"          . ,prompt)
              ("response_format" . ,response-format)
              ("temperature"     . ,temperature)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

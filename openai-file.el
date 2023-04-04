@@ -32,9 +32,7 @@
 ;;
 ;;; API
 
-(cl-defun openai-file-list ( callback
-                             &key
-                             (key openai-key))
+(cl-defun openai-file-list (callback)
   "Return a list of files that belong to the user's organization.
 
 The argument CALLBACK is execuated after request is made.
@@ -43,16 +41,11 @@ Arguments KEY is global option; however, you can overwrite the value by passing
 it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-file-upload ( file purpose callback
-                               &key
-                               (key openai-key))
+(cl-defun openai-file-upload (file purpose callback)
   "Upload a file that contain document(s) to be used across various
 endpoints/features.
 
@@ -72,19 +65,14 @@ Arguments KEY is global option; however, you can overwrite the value by passing
 it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("file"    . ,file)
              ("purpose" . ,purpose)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-file-delete ( file-id callback
-                               &key
-                               (key openai-key))
+(cl-defun openai-file-delete (file-id callback)
   "Delete a file.
 
 The arument FILE-ID is id of the file to use for this request.
@@ -95,18 +83,13 @@ Arguments KEY is global option; however, you can overwrite the value by passing
 it in."
   (openai-request "https://api.openai.com/v1/files"
     :type "DELETE"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("file_id" . ,file-id)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-file-retrieve ( file-id callback
-                                 &key
-                                 (key openai-key))
+(cl-defun openai-file-retrieve (file-id callback)
   "Return information about a specific file.
 
 The arument FILE-ID is id of the file to use for this request.
@@ -117,18 +100,13 @@ Arguments KEY is global option; however, you can overwrite the value by passing
 it in."
   (openai-request (format "https://api.openai.com/v1/files/%s" file-id)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("file_id" . ,file-id)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-file-retrieve-content ( file-id callback
-                                         &key
-                                         (key openai-key))
+(cl-defun openai-file-retrieve-content (file-id callback)
   "Return the contents of the specified file
 
 The arument FILE-ID is id of the file to use for this request.
@@ -139,11 +117,8 @@ Arguments KEY is global option; however, you can overwrite the value by passing
 it in."
   (openai-request (format "https://api.openai.com/v1/files/%s/content" file-id)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("file_id" . ,file-id)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

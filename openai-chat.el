@@ -34,7 +34,6 @@
 ;;;###autoload
 (cl-defun openai-chat ( messages callback
                         &key
-                        (key openai-key)
                         (model "gpt-3.5-turbo")
                         temperature
                         top-p
@@ -59,8 +58,6 @@ for more information.  Arguments here refer to MODEL,  TEMPERATURE, TOP-P, N,
 STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
   (openai-request "https://api.openai.com/v1/chat/completions"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " (openai--resolve-key key))))
     :data (openai--json-encode
            `(("model"             . ,model)
              ("messages"          . ,messages)
@@ -74,7 +71,6 @@ STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
              ("frequency_penalty" . ,frequency-penalty)
              ("logit_bias"        . ,logit-bias)
              ("user"              . ,user)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
@@ -91,11 +87,6 @@ STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
   "What sampling temperature to use."
   :type 'number
   :group 'openai)
-
-(defun openai--resolve-key (key)
-  (if (functionp key)
-      (funcall key)
-    key))
 
 ;;;###autoload
 (defun openai-chat-say ()

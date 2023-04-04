@@ -34,7 +34,6 @@
 
 (cl-defun openai-moderation-create ( input callback
                                      &key
-                                     (key openai-key)
                                      (model "text-moderation-latest"))
   "Classifies if text violates OpenAI's Content Policy.
 
@@ -46,12 +45,9 @@ Arguments KEY is global options; however, you can overwrite the value by passing
 it in."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("model" . ,model)
              ("input" . ,input)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

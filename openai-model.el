@@ -29,34 +29,24 @@
 ;;
 ;;; API
 
-(cl-defun openai-models ( callback
-                          &key
-                          (key openai-key))
+(cl-defun openai-models (callback)
   "Return models data and execute the CALLBACK.
 
 Arguments KEY is global options; however, you can overwrite the value by passing
 it in."
   (openai-request "https://api.openai.com/v1/models"
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-model ( model callback
-                         &key
-                         (key openai-key))
+(cl-defun openai-model (model callback)
   "Return MODEL data and execute the CALLBACK.
 
 Arguments KEY is global options; however, you can overwrite the value by passing
 it in."
   (openai-request (format "https://api.openai.com/v1/models/%s" model)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

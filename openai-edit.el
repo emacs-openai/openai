@@ -34,7 +34,6 @@
 
 (cl-defun openai-edit-create ( input instruction callback
                                &key
-                               (key openai-key)
                                (model "text-davinci-edit-001")
                                temperature
                                top-p
@@ -53,8 +52,6 @@ The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to TEMPERATURE, TOP-P, and N."
   (openai-request "https://api.openai.com/v1/edits"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("model"       . ,model)
              ("input"       . ,input)
@@ -62,7 +59,6 @@ for more information.  Arguments here refer to TEMPERATURE, TOP-P, and N."
              ("temperature" . ,temperature)
              ("top_p"       . ,top-p)
              ("n"           . ,n)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

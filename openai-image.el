@@ -33,7 +33,6 @@
 
 (cl-defun openai-image ( prompt callback
                          &key
-                         (key openai-key)
                          n
                          size
                          response-format
@@ -51,22 +50,18 @@ The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/generations"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("prompt"          . ,prompt)
              ("n"               . ,n)
              ("size"            . ,size)
              ("response_format" . ,response-format)
              ("user"            . ,user)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
 (cl-defun openai-image-edit ( image prompt callback
                               &key
-                              (key openai-key)
                               mask
                               n
                               size
@@ -86,7 +81,6 @@ for more information.  Arguments here refer to MASK, N, SIZE, and
 RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/edits"
     :type "POST"
-    :headers `(("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("image"           . ,image)
              ("prompt"          . ,prompt)
@@ -95,14 +89,12 @@ RESPONSE-FORMAT."
              ("size"            . ,size)
              ("response_format" . ,response-format)
              ("user"            . ,user)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
 (cl-defun openai-image-variation ( image callback
                                    &key
-                                   (key openai-key)
                                    mask
                                    n
                                    size
@@ -121,7 +113,6 @@ for more information.  Arguments here refer to MASK, N, SIZE, and
 RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/variations"
     :type "POST"
-    :headers `(("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("image"           . ,image)
              ("mask"            . ,mask)
@@ -129,7 +120,6 @@ RESPONSE-FORMAT."
              ("size"            . ,size)
              ("response_format" . ,response-format)
              ("user"            . ,user)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

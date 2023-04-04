@@ -33,7 +33,6 @@
 
 (cl-defun openai-fine-tune-create ( training-file callback
                                     &key
-                                    (key openai-key)
                                     (model "curie")
                                     validation-file
                                     n-epochs
@@ -65,8 +64,6 @@ COMPUTE-CLASSIFICATION-METRICS, CLASSIFICATION-N-CLASSES,
 CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, and SUFFIX"
   (openai-request "https://api.openai.com/v1/fine-tunes"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
     :data (openai--json-encode
            `(("model"                          . ,model)
              ("training_file"                  . ,training-file)
@@ -80,29 +77,21 @@ CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, and SUFFIX"
              ("classification_positive_class"  . ,classification-positive-class)
              ("classification_betas"           . ,classification-betas)
              ("suffix"                         . ,suffix)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-fine-tune-list ( callback
-                                  &key
-                                  (key openai-key))
+(cl-defun openai-fine-tune-list (callback)
   "List your organization's fine-tuning jobs.
 
 The argument CALLBACK is execuated after request is made."
   (openai-request "https://api.openai.com/v1/fine-tunes"
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-fine-tune-retrieve ( fine-tune-id callback
-                                      &key
-                                      (key openai-key))
+(cl-defun openai-fine-tune-retrieve (fine-tune-id callback)
   "Gets info about the fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job.
@@ -110,16 +99,11 @@ The FINE-TUNE-ID of the fine-tune job.
 The argument CALLBACK is execuated after request is made."
   (openai-request (format "https://api.openai.com/v1/fine-tunes/%s" fine-tune-id)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-fine-tune-cancel ( fine-tune-id callback
-                                    &key
-                                    (key openai-key))
+(cl-defun openai-fine-tune-cancel (fine-tune-id callback)
   "Immediately cancel a fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job to cancel.
@@ -127,16 +111,11 @@ The FINE-TUNE-ID of the fine-tune job to cancel.
 The argument CALLBACK is execuated after request is made."
   (openai-request (format "https://api.openai.com/v1/fine-tunes/%s/cancel" fine-tune-id)
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-fine-tune-list-events ( fine-tune-id callback
-                                         &key
-                                         (key openai-key))
+(cl-defun openai-fine-tune-list-events (fine-tune-id callback)
   "Get fine-grained status updates for a fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job to get events for.
@@ -144,16 +123,11 @@ The FINE-TUNE-ID of the fine-tune job to get events for.
 The argument CALLBACK is execuated after request is made."
   (openai-request (format "https://api.openai.com/v1/fine-tunes/%s/events" fine-tune-id)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))
 
-(cl-defun openai-fine-tune-delete ( model callback
-                                    &key
-                                    (key openai-key))
+(cl-defun openai-fine-tune-delete (model callback)
   "Delete a fine-tuned model.  You must have the Owner role in your organization.
 
 The MODEL to delete.
@@ -161,9 +135,6 @@ The MODEL to delete.
 The argument CALLBACK is execuated after request is made."
   (openai-request (format "https://api.openai.com/v1/models/%s" model)
     :type "DELETE"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
-    :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
                  (funcall callback data)))))

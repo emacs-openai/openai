@@ -60,7 +60,7 @@ STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
   (openai-request "https://api.openai.com/v1/chat/completions"
     :type "POST"
     :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+               ("Authorization" . ,(concat "Bearer " (openai--resolve-key key))))
     :data (openai--json-encode
            `(("model"             . ,model)
              ("messages"          . ,messages)
@@ -91,6 +91,11 @@ STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
   "What sampling temperature to use."
   :type 'number
   :group 'openai)
+
+(defun openai--resolve-key (key)
+  (if (functionp key)
+      (funcall key)
+    key))
 
 ;;;###autoload
 (defun openai-chat-say ()

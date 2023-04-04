@@ -31,6 +31,7 @@
 
 ;;; Code:
 
+(require 'auth-source)
 (require 'cl-lib)
 (require 'let-alist)
 (require 'pcase)
@@ -57,35 +58,26 @@
   (when openai--show-log
     (apply 'message fmt args)))
 
-(defun openai-key--auth-source ()
-  "Retrieve the OpenAI API key from auth-source."
-  (let ((auth-info (auth-source-search :max 1
-                                       :host "api.openai.com"
-                                       :require '(:user :secret))))
-    (if auth-info
-          (funcall (plist-get (car auth-info) :secret))
-	(error "OpenAI API key not found in auth-source"))))
-
 ;;
 ;;; Request
 
+;;;###autoload
+(defun openai-key-auth-source ()
+  "Retrieve the OpenAI API key from auth-source."
+  (if-let ((auth-info (auth-source-search :max 1
+                                       :host "api.openai.com"
+                                       :require '(:user :secret))))
+    (funcall (plist-get (car auth-info) :secret))
+    (error "OpenAI API key not found in auth-source")))
 
-(defcustom openai-key ""
-  "Variable storing the openai key or a function to retrieve it.
+(defvar openai-key ""
+  "Variable storing the openai key or a function name to retrieve it.
 
 The function should take no arguments and return a string containing the key.
 
-A function, `openai-key--auth-source',  that retrieves the key from auth-source is provided for convenience.
-"
-  :type '(choice string function)
-  :set (lambda (option value)
-         (cond ((stringp value)
-                  (set-default option value))
-               ((functionp value)
-                  (set-default option (symbol-name value)))
-               (t
-                  (error "Invalid value for %s" option))))
-  :group 'openai)
+A function, `openai-key-auth-source', that retrieves the key from
+auth-source is provided for convenience.
+")
 
 
 (defvar openai-user ""

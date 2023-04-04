@@ -40,6 +40,14 @@ You will need to set up your API key before you can use this library.
 (setq openai-key "[YOUR API KEY]")
 ```
 
+Alternatively you can configure a function to retrieve the key from some
+external source. A function, `openai-key-auth-source` is provided to retrieve
+the key from an auth-source entry under the `:host` key `api.openai.com`
+
+```elisp
+(setq openai-key 'openai-key-auth-source)
+```
+
 For requests that need your user identifier,
 
 ```elisp

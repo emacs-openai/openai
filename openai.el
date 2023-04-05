@@ -70,12 +70,7 @@
     (funcall (plist-get (car auth-info) :secret))
     (error "OpenAI API key not found in auth-source")))
 
-(defun openai--resolve-key (key)
-  "If the given KEY is a function call it and return the result, otherwise return KEY."
-  (cond
-   ((functionp key) (funcall key))
-   ((not (string-empty-p key)) key)
-   (t  (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key))))
+
 
 (defvar openai-key ""
   "Variable storing the openai key or a function name to retrieve it.
@@ -85,10 +80,17 @@ The function should take no arguments and return a string containing the key.
 A function, `openai-key-auth-source', that retrieves the key from
 auth-source is provided for convenience.")
 
-
 (defvar openai-user ""
   "A unique identifier representing your end-user, which can help OpenAI to
 monitor and detect abuse.")
+
+(defun openai--resolve-key (key)
+  "If the given KEY is a function call it and return the result,
+otherwise return KEY."
+  (cond
+   ((functionp key) (funcall key))
+   ((not (string-empty-p key)) key)
+   (t  (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key))))
 
 (defun openai--json-encode (object)
   "Wrapper for function `json-encode' but it removes `nil' value before
@@ -122,41 +124,37 @@ See https://beta.openai.com/docs/guides/error-codes/api-errors."
 (defvar openai-error nil
   "Records for the last error.")
 
-
-;; FIXME - it feels that there's a better way to do this. The quoting at the end is a but ugly, but required because the return from this function is spliced into a call to openai-request.
 (defun openai--add-missing-defaults (p)
   "Add Content-Type and Authorization headers to BODY if not present."
 
-  (message "%s" p)
-  (setq headers (plist-get p :headers))
-  (unless (assq "Content-Type" headers)
-    (setq headers  (cons '("Content-Type" . "application/json") headers)))
-  (unless (assq "Authorization" headers)
-    (setq headers (cons `("Authorization" . ,(concat "Bearer " (openai--resolve-key openai-key))) headers)))
-  (setq parser (if-let ((parser (plist-get p :parser)))
-		   parser
-		 'json-read))
-  (thread-first p
-		(plist-put :parser `(quote ,parser))
-		(plist-put :headers `(quote ,headers))))
+  (let* ((headers (plist-get p :headers))
+	 (headers (if (assoc-string "Content-Type" headers) headers
+		    (cons `("Content-Type" . "application/json") headers)))
+	 (headers (if (assoc-string "Authorization" headers) headers
+		    (cons `("Authorization" . ,(concat "Bearer " (openai--resolve-key openai-key))) headers)))
+	 (parser (if-let ((parser (plist-get p :parser))) parser
+		   'json-read)))
+    (thread-first p
+		  (plist-put :parser parser)
+		  (plist-put :headers headers))))
 
 (defmacro openai-request (url &rest body)
   "Wrapper for `request' function.
 
 The URL is the url for `request' function; then BODY is the arguments for rest."
   (declare (indent 1))
-  `(progn
-    (setq openai-error nil)
-    (request ,url
-      :error (cl-function
-	      (lambda (&key response &allow-other-keys)
-                (setq openai-error response)
-                (openai--handle-error response)))
-      ,@(openai--add-missing-defaults body)
-      )))
+  `(let ((args (plist-put
+		(list ,@body)
+		:error (cl-function
+			(lambda (&key response &allow-other-keys)
+			  (setq openai-error response)
+			  (openai--handle-error response))))))
+     (setq openai-error nil)
+     (apply (symbol-function 'request) ,url
+	    (openai--add-missing-defaults args))))
 
 ;;
-;;; Util
+;;; d
 
 (defcustom openai-annotation-ratio 2.5
   "Ratio align from the right to display `completin-read' annotation."

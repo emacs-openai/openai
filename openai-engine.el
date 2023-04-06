@@ -36,7 +36,7 @@
 
 (cl-defun openai-engine-list ( callback
                                &key
-                               (content-type openai-content-type)
+                               (content-type "application/json")
                                (key openai-key)
                                org-id)
   "Lists the currently available (non-finetuned) models, and provides basic
@@ -56,7 +56,7 @@ it in."
 
 (cl-defun openai-engine-retrieve ( engine-id callback
                                    &key
-                                   (content-type openai-content-type)
+                                   (content-type "application/json")
                                    (key openai-key)
                                    org-id)
   "Retrieves a model instance, providing basic information about it such as the

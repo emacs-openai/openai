@@ -33,7 +33,7 @@
 
 (cl-defun openai-image ( prompt callback
                          &key
-                         (content-type openai-content-type)
+                         (content-type "application/json")
                          (key openai-key)
                          org-id
                          n
@@ -67,7 +67,7 @@ for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
 
 (cl-defun openai-image-edit ( image prompt callback
                               &key
-                              (content-type openai-content-type)
+                              content-type
                               (key openai-key)
                               org-id
                               mask
@@ -105,7 +105,7 @@ RESPONSE-FORMAT."
 
 (cl-defun openai-image-variation ( image callback
                                    &key
-                                   (content-type openai-content-type)
+                                   content-type
                                    (key openai-key)
                                    org-id
                                    mask

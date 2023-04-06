@@ -34,7 +34,7 @@
 
 (cl-defun openai-embedding-create ( input callback
                                     &key
-                                    (content-type openai-content-type)
+                                    (content-type "application/json")
                                     (key openai-key)
                                     org-id
                                     (model "text-embedding-ada-002")

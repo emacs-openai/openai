@@ -70,11 +70,6 @@
       (funcall (plist-get (car auth-info) :secret))
     (error "OpenAI API key not found in auth-source")))
 
-(defcustom openai-content-type "application/json"
-  "Default content type to make the request."
-  :type 'string
-  :group 'openai)
-
 (defvar openai-key ""
   "Variable storing the openai key or a function name to retrieve it.
 

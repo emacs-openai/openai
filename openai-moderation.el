@@ -34,7 +34,7 @@
 
 (cl-defun openai-moderation-create ( input callback
                                      &key
-                                     (content-type openai-content-type)
+                                     (content-type "application/json")
                                      (key openai-key)
                                      org-id
                                      (model "text-moderation-latest"))

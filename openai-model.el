@@ -31,7 +31,7 @@
 
 (cl-defun openai-models ( callback
                           &key
-                          (content-type openai-content-type)
+                          (content-type "application/json")
                           (key openai-key)
                           org-id)
   "Return models data and execute the CALLBACK.
@@ -48,7 +48,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-model ( model callback
                          &key
-                         (content-type openai-content-type)
+                         (content-type "application/json")
                          (key openai-key)
                          org-id)
   "Return MODEL data and execute the CALLBACK.

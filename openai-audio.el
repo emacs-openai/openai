@@ -34,7 +34,7 @@
 ;;;###autoload
 (cl-defun openai-audio-create-transcription ( file callback
                                               &key
-                                              (content-type openai-content-type)
+                                              (content-type "application/json")
                                               (key openai-key)
                                               org-id
                                               (model "whisper-1")
@@ -72,7 +72,7 @@ TEMPERATURE, and LANGUAGE."
 ;;;###autoload
 (cl-defun openai-audio-create-translation ( file callback
                                             &key
-                                            (content-type openai-content-type)
+                                            (content-type "application/json")
                                             (key openai-key)
                                             org-id
                                             (model "whisper-1")

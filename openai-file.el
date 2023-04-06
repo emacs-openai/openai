@@ -34,7 +34,7 @@
 
 (cl-defun openai-file-list ( callback
                              &key
-                             (content-type openai-content-type)
+                             (content-type "application/json")
                              (key openai-key)
                              org-id)
   "Return a list of files that belong to the user's organization.
@@ -53,7 +53,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-file-upload ( file purpose callback
                                &key
-                               (content-type openai-content-type)
+                               (content-type "application/json")
                                (key openai-key)
                                org-id)
   "Upload a file that contain document(s) to be used across various
@@ -86,7 +86,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-file-delete ( file-id callback
                                &key
-                               (content-type openai-content-type)
+                               (content-type "application/json")
                                (key openai-key)
                                org-id)
   "Delete a file.
@@ -109,7 +109,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-file-retrieve ( file-id callback
                                  &key
-                                 (content-type openai-content-type)
+                                 (content-type "application/json")
                                  (key openai-key)
                                  org-id)
   "Return information about a specific file.
@@ -132,7 +132,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-file-retrieve-content ( file-id callback
                                          &key
-                                         (content-type openai-content-type)
+                                         (content-type "application/json")
                                          (key openai-key)
                                          org-id)
   "Return the contents of the specified file

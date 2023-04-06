@@ -34,7 +34,7 @@
 ;;;###autoload
 (cl-defun openai-completion ( prompt callback
                               &key
-                              (content-type openai-content-type)
+                              (content-type "application/json")
                               (key openai-key)
                               org-id
                               (model "text-davinci-003")

@@ -33,7 +33,7 @@
 
 (cl-defun openai-fine-tune-create ( training-file callback
                                     &key
-                                    (content-type openai-content-type)
+                                    (content-type "application/json")
                                     (key openai-key)
                                     org-id
                                     (model "curie")
@@ -88,7 +88,7 @@ CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, and SUFFIX"
 
 (cl-defun openai-fine-tune-list ( callback
                                   &key
-                                  (content-type openai-content-type)
+                                  (content-type "application/json")
                                   (key openai-key)
                                   org-id)
   "List your organization's fine-tuning jobs.
@@ -107,7 +107,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-fine-tune-retrieve ( fine-tune-id callback
                                       &key
-                                      (content-type openai-content-type)
+                                      (content-type "application/json")
                                       (key openai-key)
                                       org-id)
   "Gets info about the fine-tune job.
@@ -128,7 +128,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-fine-tune-cancel ( fine-tune-id callback
                                     &key
-                                    (content-type openai-content-type)
+                                    (content-type "application/json")
                                     (key openai-key)
                                     org-id)
   "Immediately cancel a fine-tune job.
@@ -149,7 +149,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-fine-tune-list-events ( fine-tune-id callback
                                          &key
-                                         (content-type openai-content-type)
+                                         (content-type "application/json")
                                          (key openai-key)
                                          org-id)
   "Get fine-grained status updates for a fine-tune job.
@@ -170,7 +170,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-fine-tune-delete ( model callback
                                     &key
-                                    (content-type openai-content-type)
+                                    (content-type "application/json")
                                     (key openai-key)
                                     org-id)
   "Delete a fine-tuned model.  You must have the Owner role in your organization.

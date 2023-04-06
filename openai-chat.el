@@ -34,7 +34,7 @@
 ;;;###autoload
 (cl-defun openai-chat ( messages callback
                         &key
-                        (content-type openai-content-type)
+                        (content-type "application/json")
                         (key openai-key)
                         org-id
                         (model "gpt-3.5-turbo")

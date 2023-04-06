@@ -83,11 +83,11 @@ auth-source is provided for convenience.")
 monitor and detect abuse.")
 
 (defun openai--resolve-key (key)
-  "If the given KEY is a function call it and return the result,
-otherwise return KEY."
-  (cond ((functionp key)            (funcall key))
-        ((not (string-empty-p key)) key)
-        (t  (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key))))
+  "If the given KEY is a function call it and return the result, otherwise
+return KEY."
+  (cond ((functionp key)                                (funcall key))
+        ((and (stringp key) (not (string-empty-p key))) key)
+        (t  (user-error "[INFO] Invalid API key, please set it to the correct value: %s" key))))
 
 (defun open--alist-omit-null (alist)
   "Omit null value or empty string in ALIST."
@@ -102,6 +102,7 @@ otherwise return KEY."
   "Construct request headers.
 
 Arguments CONTENT-TYPE, KEY, and ORG-ID are common request headers."
+  (setq key (openai--resolve-key key))
   (open--alist-omit-null `(("Content-Type"        . ,content-type)
                            ("Authorization"       . ,(if (or (null key)
                                                              (string-empty-p key))
@@ -115,12 +116,7 @@ constructing JSON data.
 
 The argument OBJECT is an alist that can be construct to JSON data; see function
 `json-encode' for the detials."
-  (let* ((object (cl-remove-if (lambda (pair)
-                                 (let ((value (cdr pair)))
-                                   (or (null value)          ; ignore null
-                                       (and (stringp value)  ; ignore empty string
-                                            (string-empty-p value)))))
-                               object))
+  (let* ((object (open--alist-omit-null object))
          (encoded (json-encode object)))
     (openai--log "[ENCODED]: %s" encoded)
     encoded))

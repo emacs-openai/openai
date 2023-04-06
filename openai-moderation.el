@@ -34,7 +34,9 @@
 
 (cl-defun openai-moderation-create ( input callback
                                      &key
+                                     (content-type openai-content-type)
                                      (key openai-key)
+                                     org-id
                                      (model "text-moderation-latest"))
   "Classifies if text violates OpenAI's Content Policy.
 
@@ -42,12 +44,11 @@ Argument INPUT is the text to classify.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments KEY is global options; however, you can overwrite the value by passing
-it in."
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model" . ,model)
              ("input" . ,input)))

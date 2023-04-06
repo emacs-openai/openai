@@ -36,7 +36,9 @@
 
 (cl-defun openai-engine-list ( callback
                                &key
-                               (key openai-key))
+                               (content-type openai-content-type)
+                               (key openai-key)
+                               org-id)
   "Lists the currently available (non-finetuned) models, and provides basic
 information about each one such as the owner and availability.
 
@@ -46,8 +48,7 @@ Arguments KEY is global option; however, you can overwrite the value by passing
 it in."
   (openai-request "https://api.openai.com/v1/engines"
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
@@ -55,7 +56,9 @@ it in."
 
 (cl-defun openai-engine-retrieve ( engine-id callback
                                    &key
-                                   (key openai-key))
+                                   (content-type openai-content-type)
+                                   (key openai-key)
+                                   org-id)
   "Retrieves a model instance, providing basic information about it such as the
 owner and availability.
 
@@ -67,8 +70,7 @@ Arguments KEY is global option; however, you can overwrite the value by passing
 it in."
   (openai-request (format "https://api.openai.com/v1/engines/%s" engine-id)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)

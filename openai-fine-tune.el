@@ -33,7 +33,9 @@
 
 (cl-defun openai-fine-tune-create ( training-file callback
                                     &key
+                                    (content-type openai-content-type)
                                     (key openai-key)
+                                    org-id
                                     (model "curie")
                                     validation-file
                                     n-epochs
@@ -55,8 +57,8 @@ data.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments KEY is global option; however, you can overwrite the value by passing
-it in.
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL, VALIDATION-FILE, N-EPOCHS,
@@ -65,8 +67,7 @@ COMPUTE-CLASSIFICATION-METRICS, CLASSIFICATION-N-CLASSES,
 CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, and SUFFIX"
   (openai-request "https://api.openai.com/v1/fine-tunes"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model"                          . ,model)
              ("training_file"                  . ,training-file)
@@ -87,14 +88,18 @@ CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, and SUFFIX"
 
 (cl-defun openai-fine-tune-list ( callback
                                   &key
-                                  (key openai-key))
+                                  (content-type openai-content-type)
+                                  (key openai-key)
+                                  org-id)
   "List your organization's fine-tuning jobs.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in."
   (openai-request "https://api.openai.com/v1/fine-tunes"
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
@@ -102,16 +107,20 @@ The argument CALLBACK is execuated after request is made."
 
 (cl-defun openai-fine-tune-retrieve ( fine-tune-id callback
                                       &key
-                                      (key openai-key))
+                                      (content-type openai-content-type)
+                                      (key openai-key)
+                                      org-id)
   "Gets info about the fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in."
   (openai-request (format "https://api.openai.com/v1/fine-tunes/%s" fine-tune-id)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
@@ -119,16 +128,20 @@ The argument CALLBACK is execuated after request is made."
 
 (cl-defun openai-fine-tune-cancel ( fine-tune-id callback
                                     &key
-                                    (key openai-key))
+                                    (content-type openai-content-type)
+                                    (key openai-key)
+                                    org-id)
   "Immediately cancel a fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job to cancel.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in."
   (openai-request (format "https://api.openai.com/v1/fine-tunes/%s/cancel" fine-tune-id)
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
@@ -136,16 +149,20 @@ The argument CALLBACK is execuated after request is made."
 
 (cl-defun openai-fine-tune-list-events ( fine-tune-id callback
                                          &key
-                                         (key openai-key))
+                                         (content-type openai-content-type)
+                                         (key openai-key)
+                                         org-id)
   "Get fine-grained status updates for a fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job to get events for.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in."
   (openai-request (format "https://api.openai.com/v1/fine-tunes/%s/events" fine-tune-id)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
@@ -153,16 +170,20 @@ The argument CALLBACK is execuated after request is made."
 
 (cl-defun openai-fine-tune-delete ( model callback
                                     &key
-                                    (key openai-key))
+                                    (content-type openai-content-type)
+                                    (key openai-key)
+                                    org-id)
   "Delete a fine-tuned model.  You must have the Owner role in your organization.
 
 The MODEL to delete.
 
-The argument CALLBACK is execuated after request is made."
+The argument CALLBACK is execuated after request is made.
+
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in."
   (openai-request (format "https://api.openai.com/v1/models/%s" model)
     :type "DELETE"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)

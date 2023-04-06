@@ -47,7 +47,7 @@
                                     classification-positive-class
                                     classification-betas
                                     suffix)
-  "Creates a job that fine-tunes a specified model from a given dataset.
+  "Create a job that fine-tunes a specified model from a given dataset.
 
 Response includes details of the enqueued job including job status and the name
 of the fine-tuned models once complete.
@@ -110,7 +110,7 @@ can overwrite the value by passing it in."
                                       (content-type "application/json")
                                       (key openai-key)
                                       org-id)
-  "Gets info about the fine-tune job.
+  "Get info about the fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job.
 
@@ -152,7 +152,7 @@ can overwrite the value by passing it in."
                                          (content-type "application/json")
                                          (key openai-key)
                                          org-id)
-  "Get fine-grained status updates for a fine-tune job.
+  "Get fine-grained status update for a fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job to get events for.
 

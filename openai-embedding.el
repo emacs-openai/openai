@@ -39,11 +39,11 @@
                                     org-id
                                     (model "text-embedding-ada-002")
                                     (user openai-user))
-  "Creates an embedding vector representing the input text.
+  "Create an embedding vector representing the input text.
 
 INPUT text to get embeddings for, encoded as a string or array of tokens.
 To get embeddings for multiple inputs in a single request, pass an array of
-strings or array of token arrays. Each input must not exceed 8192 tokens in
+strings or array of token arrays.  Each input must not exceed 8192 tokens in
 length.
 
 The argument CALLBACK is execuated after request is made.

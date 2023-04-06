@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 > Released N/A
 
 * Add support for `Audio` requests (#9)
+* Implemented `auth-source` and add arguments for `content-type` and `org-id` (#13)
 
 ## 0.1.0
 > Released N/A

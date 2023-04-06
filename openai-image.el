@@ -40,7 +40,7 @@
                          size
                          response-format
                          (user openai-user))
-  "Creates an image given a PROMPT.
+  "Create an image given a PROMPT.
 
 Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
 either the question or instruction to OpenAI.  CALLBACK is the execuation after
@@ -75,7 +75,7 @@ for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
                               size
                               response-format
                               (user openai-user))
-  "Creates an edited or extended image given an original IMAGE and a PROMPT.
+  "Create an edited or extended image given an original IMAGE and a PROMPT.
 
 Arguments IMAGE, PROMPT and CALLBACK are required for this type of request.
 PROMPT is a text description of the desired image(s).  IMAGE is the image file
@@ -113,7 +113,7 @@ RESPONSE-FORMAT."
                                    size
                                    response-format
                                    (user openai-user))
-  "Creates a variation of a given IMAGE.
+  "Create a variation of a given IMAGE.
 
 Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
 a valid PNG file, less than 4MB, and square.

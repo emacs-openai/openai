@@ -99,7 +99,9 @@ otherwise return KEY."
                 alist))
 
 (defun openai--headers (content-type key org-id)
-  "Construct request headers."
+  "Construct request headers.
+
+Arguments CONTENT-TYPE, KEY, and ORG-ID are common request headers."
   (open--alist-omit-null `(("Content-Type"        . ,content-type)
                            ("Authorization"       . ,(if (or (null key)
                                                              (string-empty-p key))
@@ -108,7 +110,7 @@ otherwise return KEY."
                            ("OpenAI-Organization" . ,org-id))))
 
 (defun openai--json-encode (object)
-  "Wrapper for function `json-encode' but it removes `nil' value before
+  "Wrapper for function `json-encode' but it remove nil value before
 constructing JSON data.
 
 The argument OBJECT is an alist that can be construct to JSON data; see function

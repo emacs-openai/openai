@@ -44,8 +44,8 @@ information about each one such as the owner and availability.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments KEY is global option; however, you can overwrite the value by passing
-it in."
+Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+can overwrite the value by passing it in."
   (openai-request "https://api.openai.com/v1/engines"
     :type "GET"
     :headers (openai--headers content-type key org-id)
@@ -66,8 +66,8 @@ The argument ENGINE-ID is the engine to use for this request.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments KEY is global option; however, you can overwrite the value by passing
-it in."
+Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+can overwrite the value by passing it in."
   (openai-request (format "https://api.openai.com/v1/engines/%s" engine-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)

@@ -45,7 +45,10 @@ Argument INPUT is the text to classify.
 The argument CALLBACK is execuated after request is made.
 
 Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+can overwrite the value by passing it in.
+
+The rest of the arugments are optional, please see OpenAI API reference page
+for more information.  Arguments here refer to MODEL."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
     :headers (openai--headers content-type key org-id)

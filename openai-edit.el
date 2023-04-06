@@ -41,7 +41,7 @@
                                temperature
                                top-p
                                n)
-  "Creates a new edit for the provided input, instruction, and parameters.
+  "Create a new edit for the provided input, instruction, and parameters.
 
 The INPUT is text to use as a starting point for the edit.  The INSTRUCTION that
 tells the model how to edit the prompt.
@@ -52,7 +52,8 @@ Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
-for more information.  Arguments here refer to TEMPERATURE, TOP-P, and N."
+for more information.  Arguments here refer to MODEL, TEMPERATURE, TOP-P, and
+N."
   (openai-request "https://api.openai.com/v1/edits"
     :type "POST"
     :headers (openai--headers content-type key org-id)

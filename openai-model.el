@@ -31,15 +31,16 @@
 
 (cl-defun openai-models ( callback
                           &key
-                          (key openai-key))
+                          (content-type "application/json")
+                          (key openai-key)
+                          org-id)
   "Return models data and execute the CALLBACK.
 
-Arguments KEY is global options; however, you can overwrite the value by passing
-it in."
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in."
   (openai-request "https://api.openai.com/v1/models"
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)
@@ -47,15 +48,17 @@ it in."
 
 (cl-defun openai-model ( model callback
                          &key
-                         (key openai-key))
+                         (content-type "application/json")
+                         (key openai-key)
+                         org-id)
   "Return MODEL data and execute the CALLBACK.
 
-Arguments KEY is global options; however, you can overwrite the value by passing
-it in."
+
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in."
   (openai-request (format "https://api.openai.com/v1/models/%s" model)
     :type "GET"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)

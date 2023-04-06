@@ -33,26 +33,27 @@
 
 (cl-defun openai-image ( prompt callback
                          &key
+                         (content-type "application/json")
                          (key openai-key)
+                         org-id
                          n
                          size
                          response-format
                          (user openai-user))
-  "Creates an image given a PROMPT.
+  "Create an image given a PROMPT.
 
 Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
 either the question or instruction to OpenAI.  CALLBACK is the execuation after
 request is made.
 
-Arguments KEY and USER are global options; however, you can overwrite the value
-by passing it in.
+Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/generations"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("prompt"          . ,prompt)
              ("n"               . ,n)
@@ -66,27 +67,29 @@ for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
 
 (cl-defun openai-image-edit ( image prompt callback
                               &key
+                              content-type
                               (key openai-key)
+                              org-id
                               mask
                               n
                               size
                               response-format
                               (user openai-user))
-  "Creates an edited or extended image given an original IMAGE and a PROMPT.
+  "Create an edited or extended image given an original IMAGE and a PROMPT.
 
 Arguments IMAGE, PROMPT and CALLBACK are required for this type of request.
 PROMPT is a text description of the desired image(s).  IMAGE is the image file
 to edit.  CALLBACK is the execuation after request is made.
 
-Arguments KEY and USER are global options; however, you can overwrite the value
-by passing it in.
+Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MASK, N, SIZE, and
 RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/edits"
     :type "POST"
-    :headers `(("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("image"           . ,image)
              ("prompt"          . ,prompt)
@@ -102,26 +105,28 @@ RESPONSE-FORMAT."
 
 (cl-defun openai-image-variation ( image callback
                                    &key
+                                   content-type
                                    (key openai-key)
+                                   org-id
                                    mask
                                    n
                                    size
                                    response-format
                                    (user openai-user))
-  "Creates a variation of a given IMAGE.
+  "Create a variation of a given IMAGE.
 
 Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
 a valid PNG file, less than 4MB, and square.
 
-Arguments KEY and USER are global options; however, you can overwrite the value
-by passing it in.
+Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MASK, N, SIZE, and
 RESPONSE-FORMAT."
   (openai-request "https://api.openai.com/v1/images/variations"
     :type "POST"
-    :headers `(("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("image"           . ,image)
              ("mask"            . ,mask)

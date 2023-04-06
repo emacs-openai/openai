@@ -34,7 +34,9 @@
 ;;;###autoload
 (cl-defun openai-chat ( messages callback
                         &key
+                        (content-type "application/json")
                         (key openai-key)
+                        org-id
                         (model "gpt-3.5-turbo")
                         temperature
                         top-p
@@ -51,16 +53,15 @@
 Arguments MESSAGES and CALLBACK are required for this type of request.  MESSAGES
 is the conversation data.  CALLBACK is the execuation after request is made.
 
-Arguments KEY and USER are global options; however, you can overwrite the value
-by passing it in.
+Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL,  TEMPERATURE, TOP-P, N,
 STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
   (openai-request "https://api.openai.com/v1/chat/completions"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model"             . ,model)
              ("messages"          . ,messages)

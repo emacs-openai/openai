@@ -34,7 +34,9 @@
 ;;;###autoload
 (cl-defun openai-completion ( prompt callback
                               &key
+                              (content-type "application/json")
                               (key openai-key)
+                              org-id
                               (model "text-davinci-003")
                               suffix
                               max-tokens
@@ -56,8 +58,8 @@ Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
 either the question or instruction to OpenAI.  CALLBACK is the execuation after
 request is made.
 
-Arguments KEY and USER are global options; however, you can overwrite the value
-by passing it in.
+Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL, SUFFIX, MAX-TOKENS,
@@ -65,8 +67,7 @@ TEMPERATURE, TOP-P, N, STREAM, LOGPROBS, ECHO, STOP, PRESENCE-PENALTY,
 FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
   (openai-request "https://api.openai.com/v1/completions"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model"             . ,model)
              ("prompt"            . ,prompt)

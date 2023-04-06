@@ -34,27 +34,28 @@
 
 (cl-defun openai-embedding-create ( input callback
                                     &key
+                                    (content-type "application/json")
                                     (key openai-key)
+                                    org-id
                                     (model "text-embedding-ada-002")
                                     (user openai-user))
-  "Creates an embedding vector representing the input text.
+  "Create an embedding vector representing the input text.
 
 INPUT text to get embeddings for, encoded as a string or array of tokens.
 To get embeddings for multiple inputs in a single request, pass an array of
-strings or array of token arrays. Each input must not exceed 8192 tokens in
+strings or array of token arrays.  Each input must not exceed 8192 tokens in
 length.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments KEY and USER are global options; however, you can overwrite the value
-by passing it in.
+Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL."
   (openai-request "https://api.openai.com/v1/embeddings"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model" . ,model)
              ("input" . ,input)

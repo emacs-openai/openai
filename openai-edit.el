@@ -34,27 +34,29 @@
 
 (cl-defun openai-edit-create ( input instruction callback
                                &key
+                               (content-type "application/json")
                                (key openai-key)
+                               org-id
                                (model "text-davinci-edit-001")
                                temperature
                                top-p
                                n)
-  "Creates a new edit for the provided input, instruction, and parameters.
+  "Create a new edit for the provided input, instruction, and parameters.
 
 The INPUT is text to use as a starting point for the edit.  The INSTRUCTION that
 tells the model how to edit the prompt.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments KEY is global options; however, you can overwrite the value by passing
-it in.
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
-for more information.  Arguments here refer to TEMPERATURE, TOP-P, and N."
+for more information.  Arguments here refer to MODEL, TEMPERATURE, TOP-P, and
+N."
   (openai-request "https://api.openai.com/v1/edits"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model"       . ,model)
              ("input"       . ,input)

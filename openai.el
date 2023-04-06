@@ -31,6 +31,7 @@
 
 ;;; Code:
 
+(require 'auth-source)
 (require 'cl-lib)
 (require 'let-alist)
 (require 'pcase)
@@ -60,25 +61,62 @@
 ;;
 ;;; Request
 
+;;;###autoload
+(defun openai-key-auth-source ()
+  "Retrieve the OpenAI API key from auth-source."
+  (if-let ((auth-info (auth-source-search :max 1
+                                          :host "api.openai.com"
+                                          :require '(:user :secret))))
+      (funcall (plist-get (car auth-info) :secret))
+    (error "OpenAI API key not found in auth-source")))
+
 (defvar openai-key ""
-  "Generated API key.")
+  "Variable storing the openai key or a function name to retrieve it.
+
+The function should take no arguments and return a string containing the key.
+
+A function, `openai-key-auth-source', that retrieves the key from
+auth-source is provided for convenience.")
 
 (defvar openai-user ""
   "A unique identifier representing your end-user, which can help OpenAI to
 monitor and detect abuse.")
 
+(defun openai--resolve-key (key)
+  "If the given KEY is a function call it and return the result, otherwise
+return KEY."
+  (cond ((functionp key)                                (funcall key))
+        ((and (stringp key) (not (string-empty-p key))) key)
+        (t  (user-error "[INFO] Invalid API key, please set it to the correct value: %s" key))))
+
+(defun open--alist-omit-null (alist)
+  "Omit null value or empty string in ALIST."
+  (cl-remove-if (lambda (pair)
+                  (let ((value (cdr pair)))
+                    (or (null value)          ; ignore null
+                        (and (stringp value)  ; ignore empty string
+                             (string-empty-p value)))))
+                alist))
+
+(defun openai--headers (content-type key org-id)
+  "Construct request headers.
+
+Arguments CONTENT-TYPE, KEY, and ORG-ID are common request headers."
+  (setq key (openai--resolve-key key))
+  (open--alist-omit-null `(("Content-Type"        . ,content-type)
+                           ("Authorization"       . ,(if (or (null key)
+                                                             (string-empty-p key))
+                                                         ""
+                                                       (concat "Bearer " key)))
+                           ("OpenAI-Organization" . ,org-id))))
+
 (defun openai--json-encode (object)
-  "Wrapper for function `json-encode' but it removes `nil' value before
+  "Wrapper for function `json-encode' but it remove nil value before
 constructing JSON data.
 
 The argument OBJECT is an alist that can be construct to JSON data; see function
 `json-encode' for the detials."
-  (let* ((object (cl-remove-if (lambda (pair)
-                                 (let ((value (cdr pair)))
-                                   (or (null value)          ; ignore null
-                                       (and (stringp value)  ; ignore empty string
-                                            (string-empty-p value)))))
-                               object))
+  (let* ((object (open--alist-omit-null object))
          (encoded (json-encode object)))
     (openai--log "[ENCODED]: %s" encoded)
     encoded))
@@ -104,8 +142,7 @@ See https://beta.openai.com/docs/guides/error-codes/api-errors."
 
 The URL is the url for `request' function; then BODY is the arguments for rest."
   (declare (indent 1))
-  `(if (string-empty-p openai-key)
-       (user-error "[INFO] Invalid API key, please set it to the correct value: %s" openai-key)
+  `(progn
      (setq openai-error nil)
      (request ,url
        :error (cl-function

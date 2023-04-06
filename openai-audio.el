@@ -34,7 +34,9 @@
 ;;;###autoload
 (cl-defun openai-audio-create-transcription ( file callback
                                               &key
+                                              (content-type "application/json")
                                               (key openai-key)
+                                              org-id
                                               (model "whisper-1")
                                               prompt
                                               response-format
@@ -46,16 +48,15 @@ Argument FILE is audio file to transcribe, in one of these formats: mp3, mp4,
 mpeg, mpga, m4a, wav, or webm.  CALLBACK is the execuation after request is
 made.
 
-Arguments KEY is global options; however, you can overwrite the value by passing
-it in.
+Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 TEMPERATURE, and LANGUAGE."
   (openai-request "https://api.openai.com/v1/audio/transcriptions"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model"           . ,model)
              ("file"            . ,file)
@@ -71,7 +72,9 @@ TEMPERATURE, and LANGUAGE."
 ;;;###autoload
 (cl-defun openai-audio-create-translation ( file callback
                                             &key
+                                            (content-type "application/json")
                                             (key openai-key)
+                                            org-id
                                             (model "whisper-1")
                                             prompt
                                             response-format
@@ -79,18 +82,18 @@ TEMPERATURE, and LANGUAGE."
   "Send translate audio request.
 
 Argument FILE is the audio file to translate, in one of these formats: mp3, mp4,
-mpeg, mpga, m4a, wav, or webm. CALLBACK is the execuation after request is made.
+mpeg, mpga, m4a, wav, or webm.  CALLBACK is the execuation after request is
+made.
 
-Arguments KEY is global options; however, you can overwrite the value by passing
-it in.
+Arguments CONTENT-TYPE, KEY and ORG-ID are global options; however, you
+can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 and TEMPERATURE."
   (openai-request "https://api.openai.com/v1/audio/transcriptions"
     :type "POST"
-    :headers `(("Content-Type"  . "application/json")
-               ("Authorization" . ,(concat "Bearer " key)))
+    :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model"           . ,model)
              ("file"            . ,file)

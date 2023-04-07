@@ -41,20 +41,21 @@
                                               prompt
                                               response-format
                                               temperature
-                                              language)
+                                              language
+                                              (base-url openai-base-url))
   "Send transcribe audio request.
 
 Argument FILE is audio file to transcribe, in one of these formats: mp3, mp4,
 mpeg, mpga, m4a, wav, or webm.  CALLBACK is the execuation after request is
 made.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID, and BASE-URL are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 TEMPERATURE, and LANGUAGE."
-  (openai-request "https://api.openai.com/v1/audio/transcriptions"
+  (openai-request (concat base-url "/audio/transcriptions")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
@@ -78,20 +79,21 @@ TEMPERATURE, and LANGUAGE."
                                             (model "whisper-1")
                                             prompt
                                             response-format
-                                            temperature)
+                                            temperature
+                                            (base-url openai-base-url))
   "Send translate audio request.
 
 Argument FILE is the audio file to translate, in one of these formats: mp3, mp4,
 mpeg, mpga, m4a, wav, or webm.  CALLBACK is the execuation after request is
 made.
 
-Arguments CONTENT-TYPE, KEY and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID, and BASE-URL are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 and TEMPERATURE."
-  (openai-request "https://api.openai.com/v1/audio/transcriptions"
+  (openai-request (concat base-url "/audio/translations")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode

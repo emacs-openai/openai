@@ -83,7 +83,9 @@ auth-source is provided for convenience.")
 monitor and detect abuse.")
 
 (defcustom openai-base-url "https://api.openai.com/v1"
-  "The base URL for OpenAI API requests.")
+  "The base URL for OpenAI API requests."
+  :type 'string
+  :group 'openai)
 
 (defun openai--resolve-key (key)
   "If the given KEY is a function call it and return the result, otherwise

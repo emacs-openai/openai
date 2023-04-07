@@ -38,15 +38,16 @@
                                &key
                                (content-type "application/json")
                                (key openai-key)
-                               org-id)
+                               org-id
+                               (base-url openai-base-url))
   "Lists the currently available (non-finetuned) models, and provides basic
 information about each one such as the owner and availability.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request "https://api.openai.com/v1/engines"
+  (openai-request (concat base-url "/engines")
     :type "GET"
     :headers (openai--headers content-type key org-id)
     :parser 'json-read
@@ -58,7 +59,8 @@ can overwrite the value by passing it in."
                                    &key
                                    (content-type "application/json")
                                    (key openai-key)
-                                   org-id)
+                                   org-id
+                                   (base-url openai-base-url))
   "Retrieves a model instance, providing basic information about it such as the
 owner and availability.
 
@@ -66,9 +68,9 @@ The argument ENGINE-ID is the engine to use for this request.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request (format "https://api.openai.com/v1/engines/%s" engine-id)
+  (openai-request (format "%s/engines/%s" base-url engine-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)
     :parser 'json-read

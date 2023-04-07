@@ -32,14 +32,14 @@
 ;;
 ;;; API
 
-(cl-defun openai-embedding-create (input callback
-                                         &key
-                                         (content-type "application/json")
-                                         (key openai-key)
-                                         org-id
-                                         (model "text-embedding-ada-002")
-                                         (user openai-user)
-                                         (base-url openai-base-url))
+(cl-defun openai-embedding-create ( input callback
+                                    &key
+                                    (content-type "application/json")
+                                    (key openai-key)
+                                    org-id
+                                    (model "text-embedding-ada-002")
+                                    (user openai-user)
+                                    (base-url openai-base-url))
   "Create an embedding vector representing the input text.
 
 INPUT text to get embeddings for, encoded as a string or array of tokens.

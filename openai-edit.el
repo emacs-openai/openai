@@ -49,7 +49,7 @@ tells the model how to edit the prompt.
 
 The argument CALLBACK is executed after request is made.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arguments are optional, please see OpenAI API reference page

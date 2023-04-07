@@ -37,19 +37,20 @@
                                      (content-type "application/json")
                                      (key openai-key)
                                      org-id
-                                     (model "text-moderation-latest"))
+                                     (model "text-moderation-latest")
+                                     (base-url openai-base-url))
   "Classifies if text violates OpenAI's Content Policy.
 
 Argument INPUT is the text to classify.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL."
-  (openai-request "https://api.openai.com/v1/embeddings"
+  (openai-request (concat base-url "/embeddings")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode

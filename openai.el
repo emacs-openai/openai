@@ -82,7 +82,7 @@ auth-source is provided for convenience.")
   "A unique identifier representing your end-user, which can help OpenAI to
 monitor and detect abuse.")
 
-(defvar openai-base-url "https://api.openai.com/v1"
+(defcustom openai-base-url "https://api.openai.com/v1"
   "The base URL for OpenAI API requests.")
 
 (defun openai--resolve-key (key)

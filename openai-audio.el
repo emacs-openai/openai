@@ -93,7 +93,7 @@ can overwrite the value by passing it in.
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 and TEMPERATURE."
-  (openai-request (concat base-url "/audio/transcriptions")
+  (openai-request (concat base-url "/audio/translations")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode

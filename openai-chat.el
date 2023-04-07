@@ -114,7 +114,7 @@ This is a ping pong message, so you will only get one response."
                    :max-tokens openai-chat-max-tokens
                    :temperature openai-chat-temperature
                    :user (unless (string= user "user") user))
-    (user-error "Abort, canecel chat operation")))
+    (user-error "Abort, cancel chat operation")))
 
 (provide 'openai-chat)
 ;;; openai-chat.el ends here

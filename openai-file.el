@@ -36,14 +36,15 @@
                              &key
                              (content-type "application/json")
                              (key openai-key)
-                             org-id)
+                             org-id
+                             (base-url openai-base-url))
   "Return a list of files that belong to the user's organization.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request "https://api.openai.com/v1/files"
+  (openai-request (concat base-url "/files")
     :type "GET"
     :headers (openai--headers content-type key org-id)
     :parser 'json-read
@@ -55,7 +56,8 @@ can overwrite the value by passing it in."
                                &key
                                (content-type "application/json")
                                (key openai-key)
-                               org-id)
+                               org-id
+                               (base-url openai-base-url))
   "Upload a file that contain document(s) to be used across various
 endpoints/features.
 
@@ -71,9 +73,9 @@ uploaded file.
 
 Argument CALLBACK is function with data pass in.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request "https://api.openai.com/v1/files"
+  (openai-request (concat base-url "/files")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
@@ -88,16 +90,17 @@ can overwrite the value by passing it in."
                                &key
                                (content-type "application/json")
                                (key openai-key)
-                               org-id)
+                               org-id
+                               (base-url openai-base-url))
   "Delete a file.
 
 The arument FILE-ID is id of the file to use for this request.
 
 Argument CALLBACK is function with data pass in.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request "https://api.openai.com/v1/files"
+  (openai-request (concat base-url "/files")
     :type "DELETE"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
@@ -111,16 +114,17 @@ can overwrite the value by passing it in."
                                  &key
                                  (content-type "application/json")
                                  (key openai-key)
-                                 org-id)
+                                 org-id
+                                 (base-url openai-base-url))
   "Return information about a specific file.
 
 The arument FILE-ID is id of the file to use for this request.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request (format "https://api.openai.com/v1/files/%s" file-id)
+  (openai-request (format "%s/files/%s" base-url file-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
@@ -134,7 +138,8 @@ can overwrite the value by passing it in."
                                          &key
                                          (content-type "application/json")
                                          (key openai-key)
-                                         org-id)
+                                         org-id
+                                         (base-url openai-base-url))
   "Return the contents of the specified file
 
 The arument FILE-ID is id of the file to use for this request.
@@ -142,9 +147,9 @@ The arument FILE-ID is id of the file to use for this request.
 The argument CALLBACK is execuated after request is made.
 
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request (format "https://api.openai.com/v1/files/%s/content" file-id)
+  (openai-request (format "%s/files/%s/content" base-url file-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode

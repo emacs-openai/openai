@@ -51,7 +51,8 @@
                               frequency-penalty
                               best-of
                               logit-bias
-                              (user openai-user))
+                              (user openai-user)
+                              (base-url openai-base-url))
   "Send completion request.
 
 Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
@@ -65,7 +66,7 @@ The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL, SUFFIX, MAX-TOKENS,
 TEMPERATURE, TOP-P, N, STREAM, LOGPROBS, ECHO, STOP, PRESENCE-PENALTY,
 FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
-  (openai-request "https://api.openai.com/v1/completions"
+  (openai-request (concat base-url "/completions")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode

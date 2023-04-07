@@ -39,19 +39,20 @@
                          n
                          size
                          response-format
-                         (user openai-user))
+                         (user openai-user)
+                         (base-url openai-base-url))
   "Create an image given a PROMPT.
 
 Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
 either the question or instruction to OpenAI.  CALLBACK is the execuation after
 request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID, USER and BASE-URL are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
-  (openai-request "https://api.openai.com/v1/images/generations"
+  (openai-request (concat base-url "/images/generations")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
@@ -74,20 +75,21 @@ for more information.  Arguments here refer to N, SIZE, and RESPONSE-FORMAT."
                               n
                               size
                               response-format
-                              (user openai-user))
+                              (user openai-user)
+                              (base-url openai-base-url))
   "Create an edited or extended image given an original IMAGE and a PROMPT.
 
 Arguments IMAGE, PROMPT and CALLBACK are required for this type of request.
 PROMPT is a text description of the desired image(s).  IMAGE is the image file
 to edit.  CALLBACK is the execuation after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID, USER and BASE-URL are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MASK, N, SIZE, and
 RESPONSE-FORMAT."
-  (openai-request "https://api.openai.com/v1/images/edits"
+  (openai-request (concat base-url "/images/edits")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
@@ -112,19 +114,20 @@ RESPONSE-FORMAT."
                                    n
                                    size
                                    response-format
-                                   (user openai-user))
+                                   (user openai-user)
+                                   (base-url openai-base-url))
   "Create a variation of a given IMAGE.
 
 Argument CALLBACK is function with data pass in, and the argument IMAGE  must be
 a valid PNG file, less than 4MB, and square.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID, USER and BASE-URL are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MASK, N, SIZE, and
 RESPONSE-FORMAT."
-  (openai-request "https://api.openai.com/v1/images/variations"
+  (openai-request (concat base-url "/images/variations")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode

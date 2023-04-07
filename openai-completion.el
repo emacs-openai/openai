@@ -59,7 +59,7 @@ Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
 either the question or instruction to OpenAI.  CALLBACK is the execuation after
 request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments CONTENT-TYPE, KEY, ORG-ID, USER and BASE-URL are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page

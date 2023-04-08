@@ -36,6 +36,7 @@
 
 (cl-defun openai-engine-list ( callback
                                &key
+                               (base-url openai-base-url)
                                (content-type "application/json")
                                (key openai-key)
                                org-id)
@@ -44,9 +45,9 @@ information about each one such as the owner and availability.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request "https://api.openai.com/v1/engines"
+  (openai-request (concat base-url "/engines")
     :type "GET"
     :headers (openai--headers content-type key org-id)
     :parser 'json-read
@@ -56,6 +57,7 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-engine-retrieve ( engine-id callback
                                    &key
+                                   (base-url openai-base-url)
                                    (content-type "application/json")
                                    (key openai-key)
                                    org-id)
@@ -66,9 +68,9 @@ The argument ENGINE-ID is the engine to use for this request.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
-  (openai-request (format "https://api.openai.com/v1/engines/%s" engine-id)
+  (openai-request (format "%s/engines/%s" base-url engine-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)
     :parser 'json-read

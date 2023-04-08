@@ -54,6 +54,12 @@ For requests that need your user identifier,
 (setq openai-user "[YOUR USER UID]")
 ```
 
+For using another OpenAI endpoint, 
+
+```elisp
+(setq openai-base-url "[OPENAI BASE URL]")
+```
+
 > 💡 Tip
 >
 > The two variables `openai-key` and `openai-user` are the default values for

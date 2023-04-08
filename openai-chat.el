@@ -34,6 +34,7 @@
 ;;;###autoload
 (cl-defun openai-chat ( messages callback
                         &key
+                        (base-url openai-base-url)
                         (content-type "application/json")
                         (key openai-key)
                         org-id
@@ -53,13 +54,13 @@
 Arguments MESSAGES and CALLBACK are required for this type of request.  MESSAGES
 is the conversation data.  CALLBACK is the execuation after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL,  TEMPERATURE, TOP-P, N,
 STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
-  (openai-request "https://api.openai.com/v1/chat/completions"
+  (openai-request (concat base-url "/chat/completions")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
@@ -113,7 +114,7 @@ This is a ping pong message, so you will only get one response."
                    :max-tokens openai-chat-max-tokens
                    :temperature openai-chat-temperature
                    :user (unless (string= user "user") user))
-    (user-error "Abort, canecel chat operation")))
+    (user-error "Abort, cancel chat operation")))
 
 (provide 'openai-chat)
 ;;; openai-chat.el ends here

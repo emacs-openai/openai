@@ -34,6 +34,7 @@
 
 (cl-defun openai-edit-create ( input instruction callback
                                &key
+                               (base-url openai-base-url)
                                (content-type "application/json")
                                (key openai-key)
                                org-id
@@ -46,15 +47,15 @@
 The INPUT is text to use as a starting point for the edit.  The INSTRUCTION that
 tells the model how to edit the prompt.
 
-The argument CALLBACK is execuated after request is made.
+The argument CALLBACK is executed after request is made.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in.
 
-The rest of the arugments are optional, please see OpenAI API reference page
+The rest of the arguments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL, TEMPERATURE, TOP-P, and
 N."
-  (openai-request "https://api.openai.com/v1/edits"
+  (openai-request (concat base-url "/edits")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode

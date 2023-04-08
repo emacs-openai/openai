@@ -34,6 +34,7 @@
 ;;;###autoload
 (cl-defun openai-completion ( prompt callback
                               &key
+                              (base-url openai-base-url)
                               (content-type "application/json")
                               (key openai-key)
                               org-id
@@ -58,14 +59,14 @@ Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
 either the question or instruction to OpenAI.  CALLBACK is the execuation after
 request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL, SUFFIX, MAX-TOKENS,
 TEMPERATURE, TOP-P, N, STREAM, LOGPROBS, ECHO, STOP, PRESENCE-PENALTY,
 FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
-  (openai-request "https://api.openai.com/v1/completions"
+  (openai-request (concat base-url "/completions")
     :type "POST"
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode

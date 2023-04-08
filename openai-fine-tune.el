@@ -58,7 +58,7 @@ data.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASe-URL, CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page

@@ -34,18 +34,18 @@
 
 (cl-defun openai-moderation-create ( input callback
                                      &key
+                                     (base-url openai-base-url)
                                      (content-type "application/json")
                                      (key openai-key)
                                      org-id
-                                     (model "text-moderation-latest")
-                                     (base-url openai-base-url))
+                                     (model "text-moderation-latest"))
   "Classifies if text violates OpenAI's Content Policy.
 
 Argument INPUT is the text to classify.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page

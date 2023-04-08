@@ -33,6 +33,7 @@
 
 (cl-defun openai-fine-tune-create ( training-file callback
                                     &key
+                                    (base-url openai-base-url)
                                     (content-type "application/json")
                                     (key openai-key)
                                     org-id
@@ -46,8 +47,7 @@
                                     classification-n-classes
                                     classification-positive-class
                                     classification-betas
-                                    suffix
-                                    (base-url openai-base-url))
+                                    suffix)
   "Create a job that fine-tunes a specified model from a given dataset.
 
 Response includes details of the enqueued job including job status and the name
@@ -58,14 +58,14 @@ data.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
+Arguments BASe-URL, CONTENT-TYPE, KEY, and ORG-ID are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL, VALIDATION-FILE, N-EPOCHS,
 BATCH-SIZE, LEARNING-RATE-MULTIPLIER, PROMPT-LOSS-WEIGHT,
 COMPUTE-CLASSIFICATION-METRICS, CLASSIFICATION-N-CLASSES,
-CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, SUFFIX and BASE-URL"
+CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS and SUFFIX."
   (openai-request (concat base-url "/fine-tunes")
     :type "POST"
     :headers (openai--headers content-type key org-id)
@@ -89,15 +89,15 @@ CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS, SUFFIX and BASE-URL"
 
 (cl-defun openai-fine-tune-list ( callback
                                   &key
+                                  (base-url openai-base-url)
                                   (content-type "application/json")
                                   (key openai-key)
-                                  org-id
-                                  (base-url openai-base-url))
+                                  org-id)
   "List your organization's fine-tuning jobs.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
   (openai-request (concat base-url "/fine-tunes")
     :type "GET"
@@ -109,17 +109,17 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-fine-tune-retrieve ( fine-tune-id callback
                                       &key
+                                      (base-url openai-base-url)
                                       (content-type "application/json")
                                       (key openai-key)
-                                      org-id
-                                      (base-url openai-base-url))
+                                      org-id)
   "Get info about the fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
   (openai-request (format "%s/fine-tunes/%s" base-url fine-tune-id)
     :type "GET"
@@ -131,17 +131,17 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-fine-tune-cancel ( fine-tune-id callback
                                     &key
+                                    (base-url openai-base-url)
                                     (content-type "application/json")
                                     (key openai-key)
-                                    org-id
-                                    (base-url openai-base-url))
+                                    org-id)
   "Immediately cancel a fine-tune job.
 
 The FINE-TUNE-ID of the fine-tune job to cancel.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
   (openai-request (format "%s/fine-tunes/%s/cancel" base-url fine-tune-id)
     :type "POST"

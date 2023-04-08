@@ -34,12 +34,12 @@
 
 (cl-defun openai-embedding-create ( input callback
                                     &key
+                                    (base-url openai-base-url)
                                     (content-type "application/json")
                                     (key openai-key)
                                     org-id
                                     (model "text-embedding-ada-002")
-                                    (user openai-user)
-                                    (base-url openai-base-url))
+                                    (user openai-user))
   "Create an embedding vector representing the input text.
 
 INPUT text to get embeddings for, encoded as a string or array of tokens.
@@ -49,7 +49,7 @@ length.
 
 The argument CALLBACK is executed after the request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID, USER and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
 can overwrite the value by passing it in.
 
 The rest of the arguments are optional, please see OpenAI API reference page

@@ -36,16 +36,16 @@
 
 (cl-defun openai-engine-list ( callback
                                &key
+                               (base-url openai-base-url)
                                (content-type "application/json")
                                (key openai-key)
-                               org-id
-                               (base-url openai-base-url))
+                               org-id)
   "Lists the currently available (non-finetuned) models, and provides basic
 information about each one such as the owner and availability.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
   (openai-request (concat base-url "/engines")
     :type "GET"
@@ -57,10 +57,10 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-engine-retrieve ( engine-id callback
                                    &key
+                                   (base-url openai-base-url)
                                    (content-type "application/json")
                                    (key openai-key)
-                                   org-id
-                                   (base-url openai-base-url))
+                                   org-id)
   "Retrieves a model instance, providing basic information about it such as the
 owner and availability.
 
@@ -68,7 +68,7 @@ The argument ENGINE-ID is the engine to use for this request.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
   (openai-request (format "%s/engines/%s" base-url engine-id)
     :type "GET"

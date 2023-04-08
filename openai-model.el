@@ -31,13 +31,13 @@
 
 (cl-defun openai-models ( callback
                           &key
+                          (base-url openai-base-url)
                           (content-type "application/json")
                           (key openai-key)
-                          org-id
-                          (base-url openai-base-url))
+                          org-id)
   "Return models data and execute the CALLBACK.
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
   (openai-request (concat base-url "/models")
     :type "GET"
@@ -49,14 +49,14 @@ can overwrite the value by passing it in."
 
 (cl-defun openai-model ( model callback
                          &key
+                         (base-url openai-base-url)
                          (content-type "application/json")
                          (key openai-key)
-                         org-id
-                         (base-url openai-base-url))
+                         org-id)
   "Return MODEL data and execute the CALLBACK.
 
 
-Arguments CONTENT-TYPE, KEY, ORG-ID and BASE-URL are global options; however, you
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
 can overwrite the value by passing it in."
   (openai-request (format "%s/models/%s" base-url model)
     :type "GET"

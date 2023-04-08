@@ -62,10 +62,11 @@
 ;;; Request
 
 ;;;###autoload
-(defun openai-key-auth-source ()
-  "Retrieve the OpenAI API key from auth-source."
+(defun openai-key-auth-source (&optional base-url)
+  "Retrieve the OpenAI API key from auth-source given a BASE-URL.
+If BASE-URL is not specified, it defaults to `openai-base-url'."
   (if-let ((auth-info (auth-source-search :max 1
-                                          :host "api.openai.com"
+                                          :host (url-host (url-generic-parse-url (or base-url openai-base-url)))
                                           :require '(:user :secret))))
       (funcall (plist-get (car auth-info) :secret))
     (error "OpenAI API key not found in auth-source")))

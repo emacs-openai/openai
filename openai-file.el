@@ -42,8 +42,8 @@
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (concat base-url "/files")
     :type "GET"
     :headers (openai--headers content-type key org-id)
@@ -73,8 +73,8 @@ uploaded file.
 
 Argument CALLBACK is function with data pass in.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (concat base-url "/files")
     :type "POST"
     :headers (openai--headers content-type key org-id)
@@ -98,8 +98,8 @@ The arument FILE-ID is id of the file to use for this request.
 
 Argument CALLBACK is function with data pass in.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (concat base-url "/files")
     :type "DELETE"
     :headers (openai--headers content-type key org-id)
@@ -122,8 +122,8 @@ The arument FILE-ID is id of the file to use for this request.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (format "%s/files/%s" base-url file-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)
@@ -147,8 +147,8 @@ The arument FILE-ID is id of the file to use for this request.
 The argument CALLBACK is execuated after request is made.
 
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (format "%s/files/%s/content" base-url file-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)

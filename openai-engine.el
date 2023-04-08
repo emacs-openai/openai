@@ -45,8 +45,8 @@ information about each one such as the owner and availability.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (concat base-url "/engines")
     :type "GET"
     :headers (openai--headers content-type key org-id)
@@ -68,8 +68,8 @@ The argument ENGINE-ID is the engine to use for this request.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (format "%s/engines/%s" base-url engine-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)

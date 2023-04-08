@@ -49,8 +49,8 @@ length.
 
 The argument CALLBACK is executed after the request is made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY, ORG-ID and USER are global options; however, you
-can overwrite the value by passing it in.
+Arguments BASE-URL, CONTENT-TYPE, KEY, ORG-ID and USER are global options;
+however, you can overwrite the value by passing it in.
 
 The rest of the arguments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL."

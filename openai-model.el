@@ -37,8 +37,8 @@
                           org-id)
   "Return models data and execute the CALLBACK.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (concat base-url "/models")
     :type "GET"
     :headers (openai--headers content-type key org-id)
@@ -56,8 +56,8 @@ can overwrite the value by passing it in."
   "Return MODEL data and execute the CALLBACK.
 
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in."
   (openai-request (format "%s/models/%s" base-url model)
     :type "GET"
     :headers (openai--headers content-type key org-id)

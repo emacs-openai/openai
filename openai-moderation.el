@@ -45,8 +45,8 @@ Argument INPUT is the text to classify.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however, you
-can overwrite the value by passing it in.
+Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+you can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL."

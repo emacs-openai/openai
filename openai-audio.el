@@ -35,6 +35,7 @@
 (cl-defun openai-audio-create-transcription ( file callback
                                               &key
                                               (base-url openai-base-url)
+                                              (parameters openai-parameters)
                                               (content-type "application/json")
                                               (key openai-key)
                                               org-id
@@ -49,7 +50,7 @@ Argument FILE is audio file to transcribe, in one of these formats: mp3, mp4,
 mpeg, mpga, m4a, wav, or webm.  CALLBACK is the execuation after request is
 made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global options; however,
 you can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
@@ -57,6 +58,7 @@ for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 TEMPERATURE, and LANGUAGE."
   (openai-request (concat base-url "/audio/transcriptions")
     :type "POST"
+    :params parameters
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model"           . ,model)
@@ -74,6 +76,7 @@ TEMPERATURE, and LANGUAGE."
 (cl-defun openai-audio-create-translation ( file callback
                                             &key
                                             (base-url openai-base-url)
+                                            (parameters openai-parameters)
                                             (content-type "application/json")
                                             (key openai-key)
                                             org-id
@@ -87,7 +90,7 @@ Argument FILE is the audio file to translate, in one of these formats: mp3, mp4,
 mpeg, mpga, m4a, wav, or webm.  CALLBACK is the execuation after request is
 made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global options; however,
 you can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
@@ -95,6 +98,7 @@ for more information.  Arguments here refer to MODEL PROMPT, RESPONSE-FORMAT,
 and TEMPERATURE."
   (openai-request (concat base-url "/audio/translations")
     :type "POST"
+    :params parameters
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
            `(("model"           . ,model)

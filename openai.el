@@ -78,6 +78,11 @@ monitor and detect abuse.")
   :type 'string
   :group 'openai)
 
+(defcustom openai-parameters '()
+  "The parameters for the OpenAI request."
+  :type 'list
+  :group 'openai)
+
 ;;;###autoload
 (defun openai-key-auth-source (&optional base-url)
   "Retrieve the OpenAI API key from auth-source given a BASE-URL.

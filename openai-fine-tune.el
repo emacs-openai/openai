@@ -161,9 +161,9 @@ options; however, you can overwrite the value by passing it in."
 
 (cl-defun openai-fine-tune-list-events ( fine-tune-id callback
                                          &key
-                                         (content-type "application/json")
                                          (base-url openai-base-url)
                                          (parameters openai-parameters)
+                                         (content-type "application/json")
                                          (key openai-key)
                                          org-id)
   "Get fine-grained status update for a fine-tune job.

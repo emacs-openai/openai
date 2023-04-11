@@ -42,6 +42,7 @@ Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global
 options; however, you can overwrite the value by passing it in."
   (openai-request (concat base-url "/models")
     :type "GET"
+    :params parameters
     :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function

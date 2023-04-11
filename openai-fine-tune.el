@@ -176,6 +176,7 @@ Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global
 options; however, you can overwrite the value by passing it in."
   (openai-request (format "%s/fine-tunes/%s/events" base-url fine-tune-id)
     :type "GET"
+    :params parameters
     :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function
@@ -200,6 +201,7 @@ Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
 you can overwrite the value by passing it in."
   (openai-request (format "%s/models/%s" base-url model)
     :type "DELETE"
+    :params parameters
     :headers (openai--headers content-type key org-id)
     :parser 'json-read
     :complete (cl-function

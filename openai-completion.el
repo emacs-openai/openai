@@ -57,11 +57,11 @@
   "Send completion request.
 
 Arguments PROMPT and CALLBACK are required for this type of request.  PROMPT is
-either the question or instruction to OpenAI.  CALLBACK is the execuation after
+either the question or instruction to OpenAI.  CALLBACK is the execution after
 request is made.
 
-Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY, ORG-ID and USER are global options;
-however, you can overwrite the value by passing it in.
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY, ORG-ID and USER are global
+options; however, you can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL, SUFFIX, MAX-TOKENS,

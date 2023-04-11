@@ -59,12 +59,12 @@ data.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY, and ORG-ID are global options; however,
-you can overwrite the value by passing it in.
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY, and ORG-ID are global
+options; however, you can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
-for more information.  Arguments here refer to MODEL, VALIDATION-FILE, N-EPOCHS,
-BATCH-SIZE, LEARNING-RATE-MULTIPLIER, PROMPT-LOSS-WEIGHT,
+for more information.  Arguments here refer to MODEL, VALIDATION-FILE,
+N-EPOCHS, BATCH-SIZE, LEARNING-RATE-MULTIPLIER, PROMPT-LOSS-WEIGHT,
 COMPUTE-CLASSIFICATION-METRICS, CLASSIFICATION-N-CLASSES,
 CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS and SUFFIX."
   (openai-request (concat base-url "/fine-tunes")
@@ -100,8 +100,8 @@ CLASSIFICATION-POSITIVE-CLASS, CLASSIFICATION-BETAS and SUFFIX."
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global options; however,
-you can overwrite the value by passing it in."
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global
+options; however, you can overwrite the value by passing it in."
   (openai-request (concat base-url "/fine-tunes")
     :type "GET"
     :params parameters
@@ -124,8 +124,8 @@ The FINE-TUNE-ID of the fine-tune job.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global options; however,
-you can overwrite the value by passing it in."
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global
+options; however, you can overwrite the value by passing it in."
   (openai-request (format "%s/fine-tunes/%s" base-url fine-tune-id)
     :type "GET"
     :params parameters
@@ -148,8 +148,8 @@ The FINE-TUNE-ID of the fine-tune job to cancel.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global options; however,
-you can overwrite the value by passing it in."
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global
+options; however, you can overwrite the value by passing it in."
   (openai-request (format "%s/fine-tunes/%s/cancel" base-url fine-tune-id)
     :type "POST"
     :params parameters
@@ -172,8 +172,8 @@ The FINE-TUNE-ID of the fine-tune job to get events for.
 
 The argument CALLBACK is execuated after request is made.
 
-Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global options; however,
-you can overwrite the value by passing it in."
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global
+options; however, you can overwrite the value by passing it in."
   (openai-request (format "%s/fine-tunes/%s/events" base-url fine-tune-id)
     :type "GET"
     :headers (openai--headers content-type key org-id)
@@ -189,11 +189,12 @@ you can overwrite the value by passing it in."
                                     (parameters openai-parameters)
                                     (key openai-key)
                                     org-id)
-  "Delete a fine-tuned model.  You must have the Owner role in your organization.
+  "Delete a fine-tuned model.  You must have the Owner role in your 
+organization.
 
 The MODEL to delete.
 
-The argument CALLBACK is execuated after request is made.
+The argument CALLBACK is executed after request is made.
 
 Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
 you can overwrite the value by passing it in."

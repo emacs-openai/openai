@@ -43,15 +43,15 @@
                                     (user openai-user))
   "Create an embedding vector representing the input text.
 
-INPUT text to get embeddings for, encoded as a string or array of tokens.
-To get embeddings for multiple inputs in a single request, pass an array of
+INPUT text to get embeddings for, encoded as a string or array of tokens.  To
+get embeddings for multiple inputs in a single request, pass an array of
 strings or array of token arrays.  Each input must not exceed 8192 tokens in
 length.
 
 The argument CALLBACK is executed after the request is made.
 
-Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY, ORG-ID and USER are global options;
-however, you can overwrite the value by passing it in.
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY, ORG-ID and USER are global
+options; however, you can overwrite the value by passing it in.
 
 The rest of the arguments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL."

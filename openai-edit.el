@@ -45,13 +45,13 @@
                                n)
   "Create a new edit for the provided input, instruction, and parameters.
 
-The INPUT is text to use as a starting point for the edit.  The INSTRUCTION that
-tells the model how to edit the prompt.
+The INPUT is text to use as a starting point for the edit. The INSTRUCTION
+that tells the model how to edit the prompt.
 
 The argument CALLBACK is executed after request is made.
 
-Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global options; however,
-you can overwrite the value by passing it in.
+Arguments BASE-URL, PARAMETERS, CONTENT-TYPE, KEY and ORG-ID are global
+options; however, you can overwrite the value by passing it in.
 
 The rest of the arguments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL, TEMPERATURE, TOP-P, and

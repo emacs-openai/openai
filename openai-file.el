@@ -92,8 +92,8 @@ options; however, you can overwrite the value by passing it in."
 
 (cl-defun openai-file-delete ( file-id callback
                                &key
-                               (parameters openai-parameters)
                                (base-url openai-base-url)
+                               (parameters openai-parameters)
                                (content-type "application/json")
                                (key openai-key)
                                org-id)

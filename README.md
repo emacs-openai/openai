@@ -152,7 +152,8 @@ While playing through this library, you might see this error quite often.
 400 - Bad request.  Please check error message and your parameters
 ```
 
-Try set the variable `openai--show-log` to `t`, it will show more error messages.
+Try setting the variable `openai--show-log` to `t`, it will show more error
+messages.
 
 ## 📂 Example projects
 

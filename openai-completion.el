@@ -96,7 +96,7 @@ FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
 ;;
 ;;; Application
 
-(defcustom openai-completion-max-tokens 4000
+(defcustom openai-completion-max-tokens 2000
   "The maximum number of tokens to generate in the completion."
   :type 'integer
   :group 'openai)
@@ -105,6 +105,21 @@ FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
   "What sampling temperature to use."
   :type 'number
   :group 'openai)
+
+(defun openai-completion--current-line-empty-p ()
+  "Current line empty, but accept spaces/tabs in there.  (not absolute)."
+  (save-excursion (beginning-of-line) (looking-at "[[:space:]\t]*$")))
+
+(defun openai-completion--fill-region (start end)
+  "Like function `fill-region' (START to END), improve readability."
+  (save-restriction
+    (narrow-to-region start end)
+    (goto-char (point-min))
+    (while (not (eobp))
+      (end-of-line)
+      (when (< fill-column (current-column))
+        (fill-region (line-beginning-position) (line-end-position)))
+      (forward-line 1))))
 
 ;;;###autoload
 (defun openai-completion-select-insert (start end)
@@ -120,6 +135,10 @@ START and END are selected region boundaries."
          (openai--pop-to-buffer initial-buffer)  ; make sure to stay in that buffer
          (let* ((choices (openai--data-choices data))
                 (result (openai--get-choice choices))
+                (cursor-at-start (= (point) start))
+                (end-line-empty-p (save-excursion
+                                    (goto-char end)
+                                    (openai-completion--current-line-empty-p)))
                 original-point)
            (when (string-empty-p result)
              (user-error "No response, please try again"))
@@ -127,14 +146,18 @@ START and END are selected region boundaries."
              (save-excursion
                (goto-char end)
                (insert "\n")))
-           (goto-char end)
-           (forward-paragraph)
+           (when cursor-at-start
+             (goto-char end))
+           (deactivate-mark)
+           (insert (if end-line-empty-p "\n" "\n\n"))
            (setq original-point (point))
-           (insert "\n" (string-trim result) "\n")
-           (fill-region original-point (point))
+           (insert (string-trim result))
+           (insert (if end-line-empty-p "\n" "\n\n"))
+           (openai-completion--fill-region original-point (point))
            ;; Highlight the region!
+           (forward-char -1)
            (call-interactively #'set-mark-command)
-           (goto-char (1+ original-point)))))
+           (goto-char original-point))))
      :max-tokens openai-completion-max-tokens
      :temperature openai-completion-temperature)))
 

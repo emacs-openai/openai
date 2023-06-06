@@ -77,7 +77,7 @@ FREQUENCY-PENALTY, BEST-OF, and LOGIT-BIAS."
              ("suffix"            . ,suffix)
              ("max_tokens"        . ,max-tokens)
              ("temperature"       . ,temperature)
-             ("top-p"             . ,top-p)
+             ("top_p"             . ,top-p)
              ("n"                 . ,n)
              ("stream"            . ,stream)
              ("logprobs"          . ,logprobs)

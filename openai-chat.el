@@ -70,7 +70,7 @@ STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
            `(("model"             . ,model)
              ("messages"          . ,messages)
              ("temperature"       . ,temperature)
-             ("top-p"             . ,top-p)
+             ("top_p"             . ,top-p)
              ("n"                 . ,n)
              ("stream"            . ,stream)
              ("stop"              . ,stop)

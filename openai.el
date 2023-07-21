@@ -69,6 +69,10 @@ The function should take no arguments and return a string containing the key.
 A function, `openai-key-auth-source', that retrieves the key from
 auth-source is provided for convenience.")
 
+(defvar openai-key-type :bearer
+  "Variable storing the openai key type.
+Should be one of either :bearer or :azure-api.")
+
 (defvar openai-user ""
   "A unique identifier representing your end-user, which can help OpenAI to
 monitor and detect abuse.")
@@ -115,10 +119,15 @@ return KEY."
 Arguments CONTENT-TYPE, KEY, and ORG-ID are common request headers."
   (setq key (openai--resolve-key key))
   (open--alist-omit-null `(("Content-Type"        . ,content-type)
-                           ("Authorization"       . ,(if (or (null key)
+                           ,(if (equal openai-key-type :bearer)
+                                `("Authorization" . ,(if (or (null key)
                                                              (string-empty-p key))
                                                          ""
                                                        (concat "Bearer " key)))
+                              `("api-key"         . ,(if (or (null key)
+                                                             (string-empty-p key))
+                                                         ""
+                                                       key)))
                            ("OpenAI-Organization" . ,org-id))))
 
 (defun openai--json-encode (object)

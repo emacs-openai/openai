@@ -125,15 +125,14 @@ return KEY."
 Arguments CONTENT-TYPE, KEY, and ORG-ID are common request headers."
   (setq key (openai--resolve-key key))
   (open--alist-omit-null `(("Content-Type"        . ,content-type)
-                           ,(if (equal openai-key-type :bearer)
-                                `("Authorization" . ,(if (or (null key)
-                                                             (string-empty-p key))
-                                                         ""
-                                                       (concat "Bearer " key)))
-                              `("api-key"         . ,(if (or (null key)
-                                                             (string-empty-p key))
-                                                         ""
-                                                       key)))
+                           ,(if (or (null key)
+                                     (string-empty-p key))
+                                 ""
+                              (pcase openai-key-type
+                                (:bearer    `("Authorization" . ,(concat "Bearer " key)))
+                                (:azure-api `("api-key" . ,key))
+                                (_           (user-error "Invalid key type: %s"
+                                                         openai-key-type))))
                            ("OpenAI-Organization" . ,org-id))))
 
 (defun openai--json-encode (object)

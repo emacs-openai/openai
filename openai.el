@@ -69,9 +69,15 @@ The function should take no arguments and return a string containing the key.
 A function, `openai-key-auth-source', that retrieves the key from
 auth-source is provided for convenience.")
 
-(defvar openai-key-type :bearer
-  "Variable storing the openai key type.
-Should be one of either :bearer or :azure-api.")
+(defcustom openai-key-type :bearer
+  "The type of key determines how the openai-key is sent in the request.
+For Azure keys without an expiration meant to be sent in the \"api-key\" header,
+use :azure-api.
+For OpenAI or Azure AD keys meant to be sent in the \"Authorization\" header,
+use :bearer. Default is :bearer."
+  :type '(choice (const :tag "bearer" :bearer)
+                 (const :tag "azure-api" :azure-api))
+  :group 'openai)
 
 (defvar openai-user ""
   "A unique identifier representing your end-user, which can help OpenAI to

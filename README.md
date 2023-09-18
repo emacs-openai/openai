@@ -7,7 +7,7 @@
 [![CI](https://github.com/emacs-openai/openai/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-openai/openai/actions/workflows/test.yml)
 
 The OpenAI Elisp library provides convenient access to the OpenAI API from
-applications written in the Elips language. 
+applications written in the Elisp language. 
 
 *P.S. This package is expected to be used as a library, so there are only a few
 interactable commands you can use, and those are mostly examples.*

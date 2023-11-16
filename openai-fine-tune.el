@@ -190,15 +190,15 @@ options; however, you can overwrite the value by passing it in."
                                     (parameters openai-parameters)
                                     (key openai-key)
                                     org-id)
-  "Delete a fine-tuned model.  You must have the Owner role in your 
+  "Delete a fine-tuned model.  You must have the Owner role in your
 organization.
 
 The MODEL to delete.
 
 The argument CALLBACK is executed after request is made.
 
-Arguments BASE-URL, CONTENT-TYPE, KEY and ORG-ID are global options; however,
-you can overwrite the value by passing it in."
+Arguments BASE-URL, CONTENT-TYPE, PARAMETERS, KEY and ORG-ID are global options;
+however, you can overwrite the value by passing it in."
   (openai-request (format "%s/models/%s" base-url model)
     :type "DELETE"
     :params parameters

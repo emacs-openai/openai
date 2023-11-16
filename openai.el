@@ -50,12 +50,16 @@
 ;;
 ;;; Logger
 
-(defvar openai--show-log nil
-  "Get more information from the program.")
+;;;###autoload
+(define-minor-mode openai-debug-mode
+  "Turn on/off debug mode for `openai'."
+  :group 'openai
+  :global t
+  :init-value nil)
 
 (defun openai--log (fmt &rest args)
   "Debug message like function `message' with same argument FMT and ARGS."
-  (when openai--show-log
+  (when openai-debug-mode
     (apply 'message fmt args)))
 
 ;;
@@ -110,7 +114,7 @@ return KEY."
         ((and (stringp key) (not (string-empty-p key))) key)
         (t  (user-error "[INFO] Invalid API key, please set it to the correct value: %s" key))))
 
-(defun open--alist-omit-null (alist)
+(defun openai--alist-omit-null (alist)
   "Omit null value or empty string in ALIST."
   (cl-remove-if (lambda (pair)
                   (let ((value (cdr pair)))
@@ -124,16 +128,16 @@ return KEY."
 
 Arguments CONTENT-TYPE, KEY, and ORG-ID are common request headers."
   (setq key (openai--resolve-key key))
-  (open--alist-omit-null `(("Content-Type"        . ,content-type)
-                           ,(if (or (null key)
-                                     (string-empty-p key))
-                                 ""
-                              (pcase openai-key-type
-                                (:bearer    `("Authorization" . ,(concat "Bearer " key)))
-                                (:azure-api `("api-key" . ,key))
-                                (_           (user-error "Invalid key type: %s"
-                                                         openai-key-type))))
-                           ("OpenAI-Organization" . ,org-id))))
+  (openai--alist-omit-null `(("Content-Type"        . ,content-type)
+                             ,(if (or (null key)
+                                      (string-empty-p key))
+                                  ""
+                                (pcase openai-key-type
+                                  (:bearer    `("Authorization" . ,(concat "Bearer " key)))
+                                  (:azure-api `("api-key" . ,key))
+                                  (_           (user-error "Invalid key type: %s"
+                                                           openai-key-type))))
+                             ("OpenAI-Organization" . ,org-id))))
 
 (defun openai--json-encode (object)
   "Wrapper for function `json-encode' but it remove nil value before
@@ -141,7 +145,7 @@ constructing JSON data.
 
 The argument OBJECT is an alist that can be construct to JSON data; see function
 `json-encode' for the detials."
-  (let* ((object (open--alist-omit-null object))
+  (let* ((object (openai--alist-omit-null object))
          (encoded (json-encode object)))
     (openai--log "[ENCODED]: %s" encoded)
     encoded))

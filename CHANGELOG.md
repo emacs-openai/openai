@@ -13,6 +13,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 * Add `openai-base-url` variable that configures the Open AI API endpoint base-url (#15)
 
 ## 0.1.0
-> Released N/A
+> Released Mar 17, 2023
 
 * Initial release

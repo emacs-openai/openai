@@ -182,7 +182,8 @@ Must be one of `url' or `b64_json'."
   "Async images entries.")
 
 (tblui-define
- openai-image "OpenAI Image" "Display image information from OpenAI."
+ openai-image
+ "OpenAI Image" "Display image information from OpenAI."
  (lambda () openai-image-entries)
  [("URL" 200 nil)]
  nil)

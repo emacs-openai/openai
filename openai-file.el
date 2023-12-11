@@ -214,7 +214,8 @@ options; however, you can overwrite the value by passing it in."
   "Async files entries.")
 
 (tblui-define
- openai-file nil nil
+ openai-file
+ "OpenAI File" "Display file information from OpenAI."
  (lambda () openai-file-entries)
  [("Filename" 15 nil)
   ("ID" 30 nil)

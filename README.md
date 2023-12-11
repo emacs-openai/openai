@@ -19,16 +19,20 @@ interactable commands you can use, and those are mostly examples.*
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
-- [🔨 Usage](#🔨-usage)
-  - [🔰 The simplest example](#🔰-the-simplest-example)
-  - [📨 Sending Request](#📨-sending-request)
-  - [📢 API functions](#📢-api-functions)
-    - [🔍 Parameters](#🔍-parameters)
-  - [🖥 Setting Model](#🖥-setting-model)
-- [🛑 Debugging](#🛑-debugging)
-- [📂 Example projects](#📂-example-projects)
-- [🔗 References](#🔗-references)
-- [Contribute](#contribute)
+- [OpenAI.el](#openaiel)
+  - [📚 Documentation](#📚-documentation)
+  - [🔨 Usage](#🔨-usage)
+    - [🔰 The simplest example](#🔰-the-simplest-example)
+    - [📨 Sending Request](#📨-sending-request)
+    - [📢 API functions](#📢-api-functions)
+      - [🔍 Parameters](#🔍-parameters)
+    - [🖥 Setting Model](#🖥-setting-model)
+  - [🛑 Debugging](#🛑-debugging)
+  - [📂 Example projects](#📂-example-projects)
+  - [🔗 References](#🔗-references)
+  - [🛠️ Contribute](#🛠️-contribute)
+    - [🔬 Development](#🔬-development)
+  - [⚜️ License](#⚜️-license)
 
 <!-- markdown-toc end -->
 

@@ -89,7 +89,7 @@ options; however, you can overwrite the value by passing it in."
   "Async files entries.")
 
 (tblui-define
- openai-engine
+ openai-engine nil nil
  (lambda () openai-engine-entries)
  [("ID" 30 nil)
   ("Object" 8 nil)

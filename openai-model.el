@@ -95,7 +95,7 @@ as the owner and permissioning."
          (openai-model model (lambda (data) (message "%s" (pp-to-string data)))))))))
 
 (tblui-define
- openai-model
+ openai-model nil nil
  (lambda () openai-model-entries)
  [("ID" 30 nil)
   ("Owned By" 6 nil)]

@@ -215,7 +215,7 @@ however, you can overwrite the value by passing it in."
   "Async files entries.")
 
 (tblui-define
- openai-fine-tune
+ openai-fine-tune nil nil
  (lambda () openai-fine-tune-entries)
  [("ID" 15 nil)
   ("Object" 30 nil)

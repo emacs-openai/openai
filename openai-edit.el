@@ -1,6 +1,6 @@
 ;;; openai-edit.el --- Edit presented documents with OpenAI API  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023  Shen, Jen-Chieh
+;; Copyright (C) 2023-2024  Shen, Jen-Chieh
 
 ;; This file is not part of GNU Emacs.
 

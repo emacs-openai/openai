@@ -1,4 +1,4 @@
-;;; openai-audio.el ---   -*- lexical-binding: t; -*-
+;;; openai-audio.el --- Create audio with OpenAI API  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2023-2024  Shen, Jen-Chieh
 

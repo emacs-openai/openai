@@ -1,4 +1,4 @@
-;;; openai-chat.el ---   -*- lexical-binding: t; -*-
+;;; openai-chat.el --- Create chat with OpenAI API  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2023-2024  Shen, Jen-Chieh
 

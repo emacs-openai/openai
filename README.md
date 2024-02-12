@@ -1,10 +1,8 @@
-<p align="right">
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="./etc/light.png">
   <source media="(prefers-color-scheme: dark)" srcset="./etc/dark.png">
-  <img width="25%" src="">
+  <img width="15%" src="" align="right">
 </picture>
-</p>
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![JCS-ELPA](https://raw.githubusercontent.com/jcs-emacs/badges/master/elpa/v/openai.svg)](https://jcs-emacs.github.io/jcs-elpa/#/openai)

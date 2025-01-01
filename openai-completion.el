@@ -1,6 +1,6 @@
 ;;; openai-completion.el --- Create completion with OpenAI API  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Shen, Jen-Chieh
+;; Copyright (C) 2023-2025  Shen, Jen-Chieh
 
 ;; This file is not part of GNU Emacs.
 

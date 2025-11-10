@@ -188,7 +188,6 @@ clone and make pull requests to this repository. Or you can
 clone the project and establish your own branch of this tool.
 Any methods are welcome!
 
-
 ### 🔬 Development
 
 To run the test locally, you will need the following tools:

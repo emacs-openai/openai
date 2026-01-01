@@ -1,6 +1,6 @@
 ;;; openai.el --- Elisp library for the OpenAI API  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Shen, Jen-Chieh
+;; Copyright (C) 2023-2026  Shen, Jen-Chieh
 
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
 ;; Maintainer: Shen, Jen-Chieh <jcs090218@gmail.com>

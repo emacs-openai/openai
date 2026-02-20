@@ -54,7 +54,7 @@
                         frequency-penalty
                         logit-bias
                         (user openai-user)
-                        (propmt-cache-key user))
+                        (prompt-cache-key user))
   "Send chat request.
 
 Arguments MESSAGES and CALLBACK are required for this type of request.
@@ -86,7 +86,7 @@ and SERVICE-TIER."
              ("presence_penalty"      . ,presence-penalty)
              ("frequency_penalty"     . ,frequency-penalty)
              ("logit_bias"            . ,logit-bias)
-             ("prompt_cache_key"      . ,propmt-cache-key)
+             ("prompt_cache_key"      . ,prompt-cache-key)
              ("user"                  . ,user)
              ("reasoning_effort"      . ,reasoning-effort)
              ("verbosity"             . ,verbosity)

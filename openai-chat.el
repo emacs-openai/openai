@@ -40,16 +40,21 @@
                         (key openai-key)
                         org-id
                         (model "gpt-3.5-turbo")
+                        reasoning-effort
+                        verbosity
+                        service-tier
                         temperature
                         top-p
                         n
                         stream
                         stop
                         max-tokens
+                        max-tokens-completion
                         presence-penalty
                         frequency-penalty
                         logit-bias
-                        (user openai-user))
+                        (user openai-user)
+                        (propmt-cache-key user))
   "Send chat request.
 
 Arguments MESSAGES and CALLBACK are required for this type of request.
@@ -61,24 +66,31 @@ options; however, you can overwrite the value by passing it in.
 
 The rest of the arugments are optional, please see OpenAI API reference page
 for more information.  Arguments here refer to MODEL,  TEMPERATURE, TOP-P, N,
-STREAM, STOP, MAX-TOKENS, PRESENCE-PENALTY, FREQUENCY-PENALTY, and LOGIT-BIAS."
+STREAM, STOP, MAX-TOKENS, MAX-COMPLETION-TOKENS PRESENCE-PENALTY,
+FREQUENCY-PENALTY, LOGIT-BIAS, PROMPT-CACHE-KEY, REASONING-EFFORT, VERBOSITY,
+and SERVICE-TIER."
   (openai-request (concat base-url "/chat/completions")
     :type "POST"
     :params parameters
     :headers (openai--headers content-type key org-id)
     :data (openai--json-encode
-           `(("model"             . ,model)
-             ("messages"          . ,messages)
-             ("temperature"       . ,temperature)
-             ("top_p"             . ,top-p)
-             ("n"                 . ,n)
-             ("stream"            . ,stream)
-             ("stop"              . ,stop)
-             ("max_tokens"        . ,max-tokens)
-             ("presence_penalty"  . ,presence-penalty)
-             ("frequency_penalty" . ,frequency-penalty)
-             ("logit_bias"        . ,logit-bias)
-             ("user"              . ,user)))
+           `(("model"                 . ,model)
+             ("messages"              . ,messages)
+             ("temperature"           . ,temperature)
+             ("top_p"                 . ,top-p)
+             ("n"                     . ,n)
+             ("stream"                . ,stream)
+             ("stop"                  . ,stop)
+             ("max_tokesn"            . ,max-tokens)
+             ("max_completion_tokens" . ,max-tokens-completion)
+             ("presence_penalty"      . ,presence-penalty)
+             ("frequency_penalty"     . ,frequency-penalty)
+             ("logit_bias"            . ,logit-bias)
+             ("prompt_cache_key"      . ,propmt-cache-key)
+             ("user"                  . ,user)
+             ("reasoning_effort"      . ,reasoning-effort)
+             ("verbosity"             . ,verbosity)
+             ("service_tier"          . ,service-tier)))
     :parser 'json-read
     :complete (cl-function
                (lambda (&key data &allow-other-keys)

@@ -1,7 +1,7 @@
 ;; -*- mode: eask; lexical-binding: t -*-
 
 (package "openai"
-         "0.1.0"
+         "0.1.1"
          "Elisp library for the OpenAI API")
 
 (website-url "https://github.com/emacs-openai/openai")
